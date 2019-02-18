@@ -1,0 +1,28 @@
+social:
+  github: pradyunsg
+  reddit: pradyunsg
+  bitbucket: pradyunsg
+  steam:
+  twitter: pradyunsg
+  skype: pradyunsg
+  linkedin: pradyunsg
+  angellist:
+  telegram: pradyunsg
+  stackoverflow_id:
+  google_plus_id:
+  medium_id:
+  vk_id:
+  bitcoin_url:
+  paypal_url:
+  flattr_button:
+
+share_icons:
+  facebook: false
+  twitter: false
+  googleplus: false
+  linkedin: false
+  digg: false
+  tumblr: false
+  reddit: false
+  stumbleupon: false
+  hackernews: false
