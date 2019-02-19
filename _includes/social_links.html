@@ -1,61 +1,61 @@
 <div class="social-icons">
   <div class="social-icons-right">
-    {% if site.data.owner.social.github %}
-      <a class="fa fa-github" href="https://github.com/{{ site.data.owner.social.github }}"></a>
+    {% if site.data.social.handles.github %}
+      <a class="fa fa-github" href="https://github.com/{{ site.data.social.handles.github }}"></a>
     {% endif %}
-    {% if site.data.owner.social.reddit %}
-    <a class="fa fa-reddit" href="https://reddit.com/user/{{ site.data.owner.social.reddit }}"></a>
+    {% if site.data.social.handles.reddit %}
+    <a class="fa fa-reddit" href="https://reddit.com/user/{{ site.data.social.handles.reddit }}"></a>
     {% endif %}
-    {% if site.data.owner.social.bitbucket %}
-      <a class="fa fa-bitbucket" href="https://bitbucket.org/{{ site.data.owner.social.bitbucket }}"></a>
+    {% if site.data.social.handles.bitbucket %}
+      <a class="fa fa-bitbucket" href="https://bitbucket.org/{{ site.data.social.handles.bitbucket }}"></a>
     {% endif %}
-    {% if site.data.owner.social.stackoverflow_id %}
-      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/{{ site.data.owner.social.stackoverflow_id }}"></a>
+    {% if site.data.social.handles.stackoverflow_id %}
+      <a class="fa fa-stack-overflow" href="https://stackoverflow.com/users/{{ site.data.social.handles.stackoverflow_id }}"></a>
     {% endif %}
     <a class="fa fa-rss" href="{{ "/feed.xml" | relative_url }}"></a>
-    {% if site.data.owner.social.twitter %}
-      <a class="fa fa-twitter" href="https://twitter.com/{{ site.data.owner.social.twitter }}"></a>
+    {% if site.data.social.handles.twitter %}
+      <a class="fa fa-twitter" href="https://twitter.com/{{ site.data.social.handles.twitter }}"></a>
     {% endif %}
-    {% if site.data.owner.social.facebook %}
-      <a class="fa fa-facebook" href="https://facebook.com/{{ site.data.owner.social.facebook }}"></a>
+    {% if site.data.social.handles.facebook %}
+      <a class="fa fa-facebook" href="https://facebook.com/{{ site.data.social.handles.facebook }}"></a>
     {% endif %}
-    {% if site.data.owner.social.skype %}
-      <a class="fa fa-skype" href="skype:{{ site.data.owner.social.skype }}?userinfo"></a>
+    {% if site.data.social.handles.skype %}
+      <a class="fa fa-skype" href="skype:{{ site.data.social.handles.skype }}?userinfo"></a>
     {% endif %}
-    {% if site.data.owner.social.steam %}
-      <a class="fa fa-steam-square" href="http://steamcommunity.com/id/{{ site.data.owner.social.steam }}"></a>
+    {% if site.data.social.handles.steam %}
+      <a class="fa fa-steam-square" href="http://steamcommunity.com/id/{{ site.data.social.handles.steam }}"></a>
     {% endif %}
-    {% if site.data.owner.social.google_plus_id %}
-      <a class="fa fa-google-plus" href="https://plus.google.com/{{ site.data.owner.social.google_plus_id }}/posts"></a>
+    {% if site.data.social.handles.google_plus_id %}
+      <a class="fa fa-google-plus" href="https://plus.google.com/{{ site.data.social.handles.google_plus_id }}/posts"></a>
     {% endif %}
     {% if site.email %}
-      <a class="fa fa-envelope" href="mailto:{{ site.data.owner.email }}"></a>
+      <a class="fa fa-envelope" href="mailto:{{ site.data.social.email }}"></a>
     {% endif %}
-    {% if site.data.owner.social.linkedin %}
-      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/{{ site.data.owner.social.linkedin }}"></a>
+    {% if site.data.social.handles.linkedin %}
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/{{ site.data.social.handles.linkedin }}"></a>
     {% endif %}
-    {% if site.data.owner.social.angellist %}
-      <a class="fa fa-angellist" href="https://angel.co/{{ site.data.owner.social.angellist }}"></a>
+    {% if site.data.social.handles.angellist %}
+      <a class="fa fa-angellist" href="https://angel.co/{{ site.data.social.handles.angellist }}"></a>
     {% endif %}
-    {% if site.data.owner.social.medium_id %}
-      <a class="fa fa-medium" href="https://medium.com/@{{ site.data.owner.social.medium_id }}"></a>
+    {% if site.data.social.handles.medium_id %}
+      <a class="fa fa-medium" href="https://medium.com/@{{ site.data.social.handles.medium_id }}"></a>
     {% endif %}
-    {% if site.data.owner.social.telegram %}
-      <a class="fa fa-telegram" href="https://t.me/{{ site.data.owner.social.telegram }}"></a>
+    {% if site.data.social.handles.telegram %}
+      <a class="fa fa-telegram" href="https://t.me/{{ site.data.social.handles.telegram }}"></a>
     {% endif %}
-    {% if site.data.owner.social.vk_id %}
-      <a class="fa fa-vk" href="https://vk.com/{{ site.data.owner.social.vk_id }}"></a>
+    {% if site.data.social.handles.vk_id %}
+      <a class="fa fa-vk" href="https://vk.com/{{ site.data.social.handles.vk_id }}"></a>
     {% endif %}
   </div>
   <div class="right">
-    {% if site.data.owner.social.bitcoin_url %}
-      <a class="fa fa-bitcoin" href="{{ site.data.owner.social.bitcoin_url }}"></a>
+    {% if site.data.social.handles.bitcoin_url %}
+      <a class="fa fa-bitcoin" href="{{ site.data.social.handles.bitcoin_url }}"></a>
     {% endif %}
-    {% if site.data.owner.social.paypal_url %}
-      <a class="fa fa-paypal" href="{{ site.data.owner.social.paypal_url }}"></a>
+    {% if site.data.social.handles.paypal_url %}
+      <a class="fa fa-paypal" href="{{ site.data.social.handles.paypal_url }}"></a>
     {% endif %}
-    {% if site.data.owner.social.flattr_button %}
-      {{ site.data.owner.social.flattr_button }}
+    {% if site.data.social.handles.flattr_button %}
+      {{ site.data.social.handles.flattr_button }}
     {% endif %}
   </div>
 </div>
