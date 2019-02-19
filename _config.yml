@@ -27,10 +27,6 @@ enable_anchorjs: false
 # Preview image for social media aka og:image and twitter:image
 post_preview_image: false
 
-# Disqus post comments
-# (leave blank to disable Disqus)
-disqus_shortname:
-
 # Build settings
 markdown:     kramdown
 redcarpet:

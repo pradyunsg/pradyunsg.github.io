@@ -5,3 +5,5 @@ comments:
   facebook:
     appid:
     count: 10
+  # Disqus -> Set value to be the shortname
+  disqus:
