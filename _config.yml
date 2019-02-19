@@ -13,7 +13,6 @@ header_pages:
 # Google services
 # Use either direct GA implementation or set up GTM account
 # - using both will skew your data (leave blank to not use at all)
-google_analytics:
 google_tag_manager:
 
 # Optional features
