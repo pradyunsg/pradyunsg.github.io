@@ -10,6 +10,7 @@ contact_form_ajax: false
 
 # Post-related functionality
 posts:
+  show_footers: false
   show_related: false
 
 verification:

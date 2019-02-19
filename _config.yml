@@ -7,8 +7,6 @@ baseurl:     ""
 url:         "http://pixyll.com"
 date_format: "%b %-d, %Y"
 
-# Optional features
-show_post_footers:    false
 # Preview image for social media aka og:image and twitter:image
 post_preview_image: false
 
