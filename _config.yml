@@ -8,7 +8,6 @@ url:         "http://pixyll.com"
 date_format: "%b %-d, %Y"
 
 # Optional features
-animated:             false
 show_related_posts:   false
 show_post_footers:    false
 show_social_icons:    false

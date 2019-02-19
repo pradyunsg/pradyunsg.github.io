@@ -1,3 +1,6 @@
+# Controls whether the template animates content
+animated: false
+
 verification:
   google:
   bing:
