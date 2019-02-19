@@ -31,11 +31,6 @@ enable_anchorjs: false
 # Preview image for social media aka og:image and twitter:image
 post_preview_image: false
 
-# Facebook Page integration
-# (for instant articles and other stuff)
-fb_page: false
-fb_page_id:
-
 # Disqus post comments
 # (leave blank to disable Disqus)
 disqus_shortname:
