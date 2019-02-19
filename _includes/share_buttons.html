@@ -1,7 +1,7 @@
 <div class="share-page">
   {{ site.data.text.share_buttons.text | default: "Share this post!" }}
 
-  <div class="share-links">
+  <div class="share-links social-icons">
     {% if site.data.social.share_icons.facebook %}
       <a class="fa fa-facebook" rel="nofollow" target="_blank"
          href="https://facebook.com/sharer.php?u={{ site.url | cgi_escape }}{{ page.url | cgi_escape }}"
