@@ -2,51 +2,10 @@
 layout: default
 ---
 
-{% assign minutes = content | strip_html | number_of_words | divided_by: 180 %}
-{% if minutes == 0 %}
-{% assign minutes = 1 %}
-{% endif %}
-
-<div class="post-header mb2">
-  <h1>{{ page.title }}</h1>
-  <span class="post-meta">{{ page.date | date: site.date_format }}</span><br>
-  {% if page.update_date %}
-  <span class="post-meta">{{ site.data.text.post.updated | default: "Updated" }}:
-    {{ page.update_date | date: site.date_format }}</span><br>
-  {% endif %}
-  <span class="post-meta small">
-    {% if page.minutes %}
-    {{ page.minutes }} {{ site.data.text.post.minute_read | default: "minute read" }}
-    {% else %}
-    {{ minutes }} {{ site.data.text.post.minute_read | default: "minute read" }}
-    {% endif %}
-  </span>
-</div>
+{% include post/header.html %}
 
 <article class="post-content">
   {{ content }}
 </article>
 
-{% if site.data.social.show_sharing_icons %}
-{% include share_buttons.html %}
-{% endif %}
-
-{% if site.data.features.comments.disqus %}
-{% include helpers/disqus.html %}
-{% endif %}
-
-{% if site.data.features.comments.facebook.appid %}
-{% include helpers/facebook-comments-2.html %}
-{% endif %}
-
-{% if site.data.features.posts.show_related %}
-<h3 class="related-post-title">{{ site.data.text.post.related_posts | default: "Related Posts" }}</h3>
-{% for post in site.related_posts %}
-<div class="post ml2">
-  <a href="{{ post.url | relative_url }}" class="post-link">
-    <h4 class="post-title">{{ post.title }}</h4>
-    <p class="post-summary">{{ post.summary }}</p>
-  </a>
-</div>
-{% endfor %}
-{% endif %}
+{% include post/footer.html %}
