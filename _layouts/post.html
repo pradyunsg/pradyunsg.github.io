@@ -40,8 +40,7 @@ layout: default
 {% endif %}
 
 {% if site.data.features.comments.facebook.appid %}
-<div class="fb-comments" data-numposts="{{ site.data.features.comments.facebook.count }}" data-href="{{ site.url }}{{ page.url }}"
-  data-width="100%"></div>
+{% include helpers/facebook-comments-2.html %}
 {% endif %}
 
 {% if site.data.features.posts.show_related %}
