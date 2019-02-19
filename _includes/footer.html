@@ -5,13 +5,11 @@
     </small>
   </div>
 </footer>
-{% if site.data.features.anchorjs %}<!-- AnchorJS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/3.0.0/anchor.min.js"></script>
-<script>
-    anchors.options.visible = 'always';
-    anchors.add('article h2, article h3, article h4, article h5, article h6');
-</script>
+
+{% if site.data.features.anchorjs %}
+{% include helpers/anchorjs.html %}
 {% endif %}
+
 <script type="text/javascript">
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("{{ '/assets/js/sw.js' | relative_url }}")
