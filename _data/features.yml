@@ -1,5 +1,7 @@
 # Controls whether the template animates content
 animated: false
+# MathJax support
+mathjax: false
 
 verification:
   google:
