@@ -39,11 +39,11 @@
     {% endif %}
 
     <!-- Verifications -->
-    {% if site.google_verification %}
-      <meta name="google-site-verification" content="{{ site.google_verification }}" />
+    {% if site.data.features.verification.google %}
+      <meta name="google-site-verification" content="{{ site.data.features.verification.google }}" />
     {% endif %}
-    {% if site.bing_verification %}
-      <meta name="msvalidate.01" content="{{ site.bing_verification }}" />
+    {% if site.data.features.verification.bing %}
+      <meta name="msvalidate.01" content="{{ site.data.features.verification.bing }}" />
     {% endif %}
 
     {% if site.google_tag_manager %}
