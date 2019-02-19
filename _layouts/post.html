@@ -44,7 +44,7 @@ layout: default
   data-width="100%"></div>
 {% endif %}
 
-{% if site.show_related_posts %}
+{% if site.data.features.posts.show_related %}
 <h3 class="related-post-title">{{ site.data.text.post.related_posts | default: "Related Posts" }}</h3>
 {% for post in site.related_posts %}
 <div class="post ml2">

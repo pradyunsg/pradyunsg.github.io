@@ -8,6 +8,10 @@ anchorjs: false
 # Use AJAX in contact form
 contact_form_ajax: false
 
+# Post-related functionality
+posts:
+  show_related: false
+
 verification:
   google:
   bing:
