@@ -1,5 +1,6 @@
 html {
   font-size: $base-font-size;
+  font-weight: $base-font-weight;
 }
 
 abbr {
@@ -21,4 +22,8 @@ sup {
   position: relative;
   vertical-align: middle;
   top: -0.9ex;
+}
+
+strong {
+  font-weight: $bold-font-weight;
 }
