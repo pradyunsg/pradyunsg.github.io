@@ -2,6 +2,8 @@
 animated: false
 # MathJax support
 mathjax: false
+# AnchorJS (for deep page anchors)
+anchorjs: false
 
 verification:
   google:

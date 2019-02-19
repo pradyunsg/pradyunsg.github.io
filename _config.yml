@@ -11,7 +11,6 @@ date_format: "%b %-d, %Y"
 show_related_posts:   false
 show_post_footers:    false
 ajaxify_contact_form: false
-enable_anchorjs: false
 # Preview image for social media aka og:image and twitter:image
 post_preview_image: false
 
