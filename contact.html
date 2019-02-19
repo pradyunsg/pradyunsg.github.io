@@ -6,7 +6,7 @@ tags: contact
 ---
 
 <div class="py2">
-  {% if site.ajaxify_contact_form %}
+  {% if site.data.features.contact_form_ajax %}
     <form class="form-stacked">
       <label>
         Email
@@ -42,6 +42,6 @@ tags: contact
   {% endif %}
 </div>
 
-{% if site.ajaxify_contact_form %}
+{% if site.data.features.contact_form_ajax %}
   {% include ajaxify_content_form.html %}
 {% endif %}

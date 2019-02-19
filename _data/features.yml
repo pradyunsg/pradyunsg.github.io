@@ -5,6 +5,9 @@ mathjax: false
 # AnchorJS (for deep page anchors)
 anchorjs: false
 
+# Use AJAX in contact form
+contact_form_ajax: false
+
 verification:
   google:
   bing:
