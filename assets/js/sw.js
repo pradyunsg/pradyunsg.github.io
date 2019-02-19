@@ -7,7 +7,7 @@ self.addEventListener("install", function(e) {
   e.waitUntil(
     caches.open(CACHE_NAME).then(function(cache) {
       return cache.addAll([
-        "{{ '/css/styles.css' | relative_url }}?{{ site.time | date: '%Y%m%d%H%M' }}",
+        "{{ '/assets/css/styles.css' | relative_url }}?{{ site.time | date: '%Y%m%d%H%M' }}",
         "{{ '/' | relative_url }}"
       ]);
     })

@@ -14,6 +14,6 @@
 {% endif %}
 <script type="text/javascript">
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("{{ '/sw.js' | relative_url }}")
+      navigator.serviceWorker.register("{{ '/assets/js/sw.js' | relative_url }}")
     }
 </script>
