@@ -1,3 +1,7 @@
 verification:
   google:
   bing:
+comments:
+  facebook:
+    appid:
+    count: 10

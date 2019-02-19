@@ -39,8 +39,8 @@ layout: default
 {% include discuss_thread.html %}
 {% endif %}
 
-{% if site.facebook_comments %}
-<div class="fb-comments" data-numposts="{{ site.facebook_comments_number }}" data-href="{{ site.url }}{{ page.url }}"
+{% if site.data.features.comments.facebook.appid %}
+<div class="fb-comments" data-numposts="{{ site.data.features.comments.facebook.count }}" data-href="{{ site.url }}{{ page.url }}"
   data-width="100%"></div>
 {% endif %}
 
