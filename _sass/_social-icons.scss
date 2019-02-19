@@ -13,8 +13,9 @@
     opacity: 0.8;
     padding: 0.2em;
 
-    &:hover {
+    &:hover, &:focus, &:active {
       opacity: 1;
+      background-image: initial;
     }
   }
 
