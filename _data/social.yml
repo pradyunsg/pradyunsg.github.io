@@ -10,7 +10,6 @@ handles:
   facebook: pradyunsg
   telegram: pradyunsg
   stackoverflow_id: 1931274
-  google_plus_id:
   medium_id:
   vk_id:
   bitcoin_url:
@@ -21,7 +20,6 @@ show_sharing_icons: false
 share_icons:
   facebook: false
   twitter: false
-  googleplus: false
   linkedin: false
   digg: false
   tumblr: false

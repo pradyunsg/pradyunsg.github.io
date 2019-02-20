@@ -14,12 +14,6 @@
          title="{{ site.data.text.share_buttons.twitter | default: "Share on Twitter" }}">
       </a>
     {% endif %}
-    {% if site.data.social.share_icons.googleplus %}
-      <a class="fa fa-google-plus" rel="nofollow" target="_blank"
-         href="https://plus.google.com/share?url={{ site.url | cgi_escape }}{{ page.url | cgi_escape }}"
-         title="{{ site.data.text.share_buttons.googleplus | default: "Share on Google+" }}">
-      </a>
-    {% endif %}
     {% if site.data.social.share_icons.linkedin %}
       <a class="fa fa-linkedin" rel="nofollow" target="_blank"
          href="http://www.linkedin.com/shareArticle?url={{ site.url | cgi_escape }}{{ page.url | cgi_escape }}&amp;title={{ page.title | cgi_escape }}"
