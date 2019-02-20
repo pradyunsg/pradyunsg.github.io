@@ -11,13 +11,17 @@ date_format: "%b %-d, %Y"
 markdown:     kramdown
 redcarpet:
   extensions: ['smart', 'tables', 'with_toc_data']
-permalink:    pretty
-paginate:     4
 sass:
   style: compressed
 plugins:
   - jekyll-paginate
   - jekyll-sitemap
+
+# Blog Settings
+permalink: blog/:year/:month/:day/:title/
+paginate: 4
+paginate_path: "/blog/:num/"
+
 # https://github.com/jekyll/jekyll/issues/2938
 exclude:
   - Gemfile
