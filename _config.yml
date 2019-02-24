@@ -8,7 +8,7 @@ url:         "http://pixyll.com"
 date_format: "%b %-d, %Y"
 
 # Build settings
-markdown:     kramdown
+markdown: kramdown
 redcarpet:
   extensions: ['smart', 'tables', 'with_toc_data']
 sass:
