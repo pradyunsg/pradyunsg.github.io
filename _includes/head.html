@@ -11,7 +11,7 @@
     {% if page.meta_robots %}<meta name="robots" content="{{ page.meta_robots }}">
     {% else %}<meta name="robots" content="all">{% endif %}
     <meta name="author" content="{{ site.author }}">
-    {% if site.owner.social.facebook %}<meta property="fb:pages" content="{{ site.owner.social.facebook }}" />{% endif %}
+    {% if site.data.social.handles.facebook %}<meta property="fb:pages" content="{{ site.data.social.handles.facebook }}" />{% endif %}
     {% if page.categories %}<meta name="keywords" content="{{ page.categories | join: ', ' }}">{% endif %}
     <link rel="canonical" href="{{ page.url | absolute_url }}">
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for {{ site.title }}" href="{{ "/feed.xml" | relative_url }}" />
@@ -56,9 +56,9 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary" />
-    {% if site.twitter_username %}
-        <meta name="twitter:site" content="@{{ site.twitter_username }}" />
-        <meta name="twitter:creator" content="@{{ site.twitter_username }}" />
+    {% if site.data.social.handles.twitter %}
+        <meta name="twitter:site" content="@{{ site.data.social.handles.twitter }}" />
+        <meta name="twitter:creator" content="@{{ site.data.social.handles.twitter }}" />
     {% endif %}
     <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}" />
     <meta name="twitter:description" content="{% if page.summary %}{{ page.summary }}{% else %}{{ site.description }}{% endif %}" />
