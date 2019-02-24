@@ -1,10 +1,17 @@
-# Site settings
-title:       Pixyll
-email:       your_email@example.com
-author:      John Otander
-description: "A simple, beautiful theme for Jekyll that emphasizes content rather than aesthetic fluff."
-baseurl:     ""
-url:         "http://pixyll.com"
+# Site Details
+title: Pradyun Gedam
+blog_title: Deep Thoughts and Nonsense
+description: >
+  Pradyun Gedam is an open source advocate, a polyglot software developer, and
+  a generally curious person. He works on improving the experience of using
+  software, for other humans.
+
+email: pradyunsg@gmail.com
+author: Pradyun Gedam
+
+# Site Configuration
+baseurl: ""
+url: "https://pradyunsg.me"
 date_format: "%b %-d, %Y"
 
 # Build settings
