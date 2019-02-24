@@ -19,7 +19,7 @@ plugins:
 
 # Blog Settings
 permalink: blog/:year/:month/:day/:title/
-paginate: 4
+paginate: 5
 paginate_path: "/blog/:num/"
 
 # https://github.com/jekyll/jekyll/issues/2938
