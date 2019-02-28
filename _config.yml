@@ -1,0 +1,39 @@
+# Site Details
+title: Pradyun Gedam
+blog_title: Deep Thoughts and Nonsense
+description: >
+  Pradyun Gedam is an open source advocate, a polyglot software developer, and
+  a generally curious person. He works on improving the experience of using
+  software, for other humans.
+
+email: pradyunsg@gmail.com
+author: Pradyun Gedam
+
+# Site Configuration
+baseurl: ""
+url: "https://pradyunsg.me"
+date_format: "%b %-d, %Y"
+
+# Build settings
+markdown: kramdown
+redcarpet:
+  extensions: ['smart', 'tables', 'with_toc_data']
+sass:
+  style: compressed
+plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
+
+# Blog Settings
+blog:
+  name: Scribbled Notes
+  link: /blog/
+permalink: blog/:year/:month/:day/:title/
+paginate: 5
+paginate_path: "/blog/:num/"
+
+# https://github.com/jekyll/jekyll/issues/2938
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor

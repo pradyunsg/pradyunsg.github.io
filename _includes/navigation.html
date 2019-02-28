@@ -1,0 +1,10 @@
+{% assign navigation = site.data.navigation %}
+
+{% for nav_item in navigation %}
+    {% assign item = site.pages | where: "path", nav_item.path | first %}
+    {% if page.name == nav_item.path %}
+        <a class="nav-active" href="{{ item.url | relative_url }}">{{ nav_item.title }}</a>
+    {% else %}
+        <a class="nav-link" href="{{ item.url | relative_url }}">{{ nav_item.title }}</a>
+    {% endif %}
+{% endfor %}

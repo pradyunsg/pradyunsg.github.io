@@ -1,0 +1,25 @@
+.social-icons {
+  @extend .mb2;
+  font-size: 1.25rem;
+  padding: 0;
+  width: 100%;
+
+  text-align: center;
+  float: none;
+
+  a.fa, a.fab {
+    cursor: pointer;
+    opacity: 0.8;
+    padding: 0.2em;
+
+    &:hover, &:focus, &:active {
+      opacity: 1;
+      background-image: initial;
+    }
+  }
+
+  iframe[title=Flattr] {
+    position: relative;
+    top: 0.1em;
+  }
+}
