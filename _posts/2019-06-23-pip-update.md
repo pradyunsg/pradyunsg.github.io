@@ -38,3 +38,5 @@ How you can help us?
 [resolver-rollout-issue]: https://github.com/pypa/pip/issues/6536
 [better-error-messages-milestone]: https://github.com/pypa/pip/milestone/25
 [fundable-projects]: https://wiki.python.org/psf/Fundable%20Packaging%20Improvements
+
+Thanks to Sumana Harihareswara for (a lot of) help in writing this, and Dan Ryan for reviewing the content!
