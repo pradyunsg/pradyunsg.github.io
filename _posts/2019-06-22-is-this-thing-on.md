@@ -11,7 +11,7 @@ Seems like this is reaching you.
 Hello there! I'm Pradyun. You probably knew that already. Thanks for spending
 the time to reach this random piece of writing by me.
 
-There isn't much to see here in this post, since this is mostly a test to make
+There isn't much to read here in this post, since this is mostly a test to make
 sure that things look good and the posts render properly. Hopefully, you like
 how things look! If you do, please let me know via [Twitter] -- it'll put a
 smile on my face! :)
