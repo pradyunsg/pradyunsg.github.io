@@ -31,12 +31,13 @@ though the layout and colours are solid in Pixyll.
 ## Testing how things look
 
 Well, since this is a heavily restyled website, I am going to use this post as
-an excuse to verify that all the content-related styling looks good.
-There is a significant amount of subtle, yet precisely calibrated, styling to
-ensure that the content looks good. I'm utilizing Pixyll's demo below. :)
+an excuse to verify that all the content-related styling looks good. I'm
+utilizing content from a example post from Pixyll here. :)
 
 ---
 
+There is a significant amount of subtle, yet precisely calibrated, styling to
+ensure that the content looks good.
 
 All links are easy to [locate and discern](#), yet don't detract from the [harmony
 of a paragraph](#). The _same_ goes for italics and __bold__ elements. Even the the strikeout
