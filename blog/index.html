@@ -20,7 +20,7 @@ layout: default
             {% if post.summary %}
               {{ post.summary }}
             {% else %}
-              {{ post.excerpt }}
+              {{ post.content | strip_html | truncatewords:12 }}
             {% endif %}
           </span>
         </div>
