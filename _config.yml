@@ -21,8 +21,10 @@ redcarpet:
 sass:
   style: compressed
 plugins:
+  - jekyll-default-layout
   - jekyll-paginate
   - jekyll-sitemap
+  - jekyll-titles-from-headings
 
 # Blog Settings
 blog:
@@ -37,3 +39,7 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - vendor
+
+titles_from_headings:
+  strip_title: true
+  collections: true
