@@ -21,10 +21,15 @@ This investment will enable us to untangle pip's internals from the resolver, en
 How you can help us?
 
 * triage pip bugs! Around 20% of pip's issues have not been triaged yet.
-* [draft a "how to triage pip bugs" guide][triage-guide-issue]
+
+* [draft a "how to triage pip bugs" guide][triage-guide-issue].
+
 * provide test cases where the latest released version of pip (19.1.1, at the time of writing) fails to resolve dependencies properly (on [zazo's issue tracker][zazo-issues]). They will help us test the new resolver.
-* look at [New Resolver: Rollout, Feedback Loops and Development Flow][resolver-rollout-issue] and help us decide: is the feature flag approach a good idea? is it a good idea to get rollout feedback via some mechanism other than the pip GitHub issues? any other thoughts to help us smooth out rollout?
-* talk with your company about becoming a PSF sponsor. The [Fundable Packaging Improvements page][fundable-projects] now summarizes what bugfixes/features/projects within and outside PyPA are blocked on the new resolver, some background context, and how funding would help us get it finished faster
+
+* look at [New Resolver: Rollout, Feedback Loops and Development Flow][resolver-rollout-issue] and help us decide: Is the feature flag approach a good idea? Is it a good idea to get rollout feedback via some mechanism other than the pip GitHub issues? Any other thoughts to help us smooth out the rollout?
+
+* talk with your company about becoming a PSF sponsor. The [Fundable Packaging Improvements page][fundable-projects] now summarizes what bugfixes/features/projects within and outside PyPA are blocked on the new resolver, some background context, and how funding would help us get it finished faster.
+
 * volunteer to [help us build robust testing infrastructure][integration-test]
 
 [resolvelib]: https://pypi.org/project/resolvelib/
