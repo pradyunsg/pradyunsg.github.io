@@ -1,7 +1,8 @@
 ---
-title: "What's happening with that pip dependency resolver?"
 summary: "I'm glad you asked."
 ---
+
+# What's happening with that pip dependency resolver?
 
 ## What's up?
 
