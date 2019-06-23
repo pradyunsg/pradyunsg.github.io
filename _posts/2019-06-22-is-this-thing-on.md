@@ -32,7 +32,7 @@ though the layout and colours are solid in Pixyll.
 
 Well, since this is a heavily restyled website, I am going to use this post as
 an excuse to verify that all the content-related styling looks good. I'm
-utilizing content from a example post from Pixyll here. :)
+utilizing content from an example post from Pixyll here. :)
 
 ---
 
