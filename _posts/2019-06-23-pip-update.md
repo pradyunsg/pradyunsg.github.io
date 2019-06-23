@@ -4,9 +4,11 @@ summary: "I'm glad you asked."
 
 # What's happening with that pip dependency resolver?
 
+I'm glad you asked.
+
 ## What's up?
 
-Over the past few months, I've worked on [a prototype for a resolver in pip][make-it-inside-branch], spent some time [planning][resolver-rollout-issue] what rolling out a new dependency resolver in pip might look like, and started [working on pip's build logic][build-logic-refactor-board] to decouple it from the dependency resolution logic.
+Over the past few months, I've worked on [a prototype for a resolver in pip][make-it-inside-branch], spent some time [planning][resolver-rollout-issue] what rolling out a new dependency resolver in pip might look like, and continue to [work on pip's build logic][build-logic-refactor-board] to decouple it from the dependency resolution logic.
 
 The prototype has helped me better understand the relationships and contracts between various portions of the codebase. This understanding has led me to conclude that it is a worthwhile investment to better decouple the build logic from the resolution logic, _then_ introduce the abstractions defined in [resolvelib]/[zazo], and _then_ proceed to adopting better dependency resolution.
 
