@@ -40,7 +40,7 @@ How you can help us?
 [hatch]: https://github.com/ofek/hatch/
 [zazo-issues]: https://github.com/pradyunsg/zazo/issues
 [integration-test]: https://github.com/pypa/integration-test/issues
-[make-it-inside-branch]: (https://github.com/pradyunsg/pip/tree/resolver/make-it-inside
+[make-it-inside-branch]: https://github.com/pradyunsg/pip/tree/resolver/make-it-inside
 [build-logic-refactor-board]: https://github.com/pypa/pip/projects/3
 [triage-guide-issue]: https://github.com/pypa/pip/issues/6583
 [resolver-rollout-issue]: https://github.com/pypa/pip/issues/6536
