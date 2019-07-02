@@ -1,10 +1,13 @@
 ---
 layout: home
 title: PyCon India 2019 Talk Material
+permalink: /talks/2019/pycon-india/
 do_not_show_title: true
 ---
 
-Pradyun's PyCon 2019 (proposed) talk's material is on this page.
+(A proposed PyCon India 2019 talk)
+
+title: Python Packaging: Where we are & Where we're headed
 
 The slide deck is [here][1].
 
