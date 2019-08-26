@@ -10,14 +10,16 @@ do_not_show_title: true
 
 Hello!
 
-I am an open source advocate, a polyglot software developer, a [Google Summer of Code 2017 Fellow][gsoc-2017] and in general, a curious person. I enjoy working on improving software systems so that they're more useful, for the humans using them.
+I am an open source advocate, a polyglot software developer, a Python Software Foundation Fellow, a [Google Summer of Code 2017 student][gsoc-2017] and in general, a curious person.
 
-I’m currently working on the tooling for packaging and installing Python based software and libraries; as a member of the [Python Packaging Authority][pypa] and a maintainer of [pip] and [virtualenv]. I am also in the [TOML] Core team.
+I enjoy working on improving software systems so that they're more useful, for the humans using them. Thus, I volunteer my time to work on tooling for packaging and installing Python based software and libraries; as a member of the [Python Packaging Authority][pypa] and a maintainer of [pip] and [virtualenv]. I am also in the [TOML] Core team.
 
-I am a senior (4th) year undergraduate student (B.Tech. Computer Science and Engineering). I'm currently looking for 16 weeks internships to do in my final semester in college, that start in early December 2019.
-<br><small>Last updated on: July 12, 2019</small>
+I occasionally write at [my blog].
 
-You can find me at a lot of places on the internet. I sometimes write in [my blog]. Feel free to reach out, if you'd like to chat. I am available to chat over [email] and Twitter.
+I'm currently looking for 20+ week internships, for my final semester credits in college, starting in December 2019 or early January 2020. If you reckon I'd be a good addition to your team, please reach out.
+<br><small>Last updated on: Aug 26, 2019</small>
+
+You can find me at a lot of places on the internet. Feel free to reach out, if you'd like to chat. I am available to chat over [email] and Twitter.
 
 {% include social_icons.html %}
 
