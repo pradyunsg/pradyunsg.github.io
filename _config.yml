@@ -25,6 +25,7 @@ plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-titles-from-headings
+  - jekyll-redirect-from
 
 # Blog Settings
 blog:
