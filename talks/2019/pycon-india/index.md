@@ -5,10 +5,13 @@ permalink: /talks/2019/pycon-india/
 do_not_show_title: true
 ---
 
-(A proposed PyCon India 2019 talk)
+Hi there!
 
-title: Python Packaging: Where we are & Where we're headed
+I haven't figured out what my website looks like for hosting my
+talks just yet. PyCon India came up a lot quicker than I'd expected.
 
-The slide deck is [here][1].
+**Title**: Python Packaging - where we are and where we're headed  
+**Slides**: [here][1]  
+**Transcipt**: will upload, sometime after the talk (mostly)  
 
-[1]: https://pradyunsg.me/talks/2019/pycon-india/slides.pptx
+[1]: https://pradyunsg.me/talks/2019/pycon-india/slides.pdf
