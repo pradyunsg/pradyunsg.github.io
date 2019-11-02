@@ -49,7 +49,9 @@ Once the Roundup 2 transition is completed, the documentation of the bpo instanc
 
 ---
 
-Thanks a lot to Ezio Melotti for indulging in a very insightful conversation and for helping me write this post.
+Many thanks to Ezio Melotti for indulging in a very insightful conversation and for helping me write this post.
+
+---
 
 [Roundup]: https://roundup-tracker.org/
 [PEP 581]: https://www.python.org/dev/peps/pep-0581/
