@@ -10,7 +10,7 @@ I won't go into whether PEP 581 or PEP 595 is a better idea -- that's something 
 
 Broadly, bpo is an instance of [Roundup], that is hosted by the PSF.
 
-"Roundup is a simple-to-use and -install issue-tracking system with command-line, web and e-mail interfaces. It is based on the winning design from Ka-Ping Yee in the Software Carpentry “Track” design competition."
+> Roundup is a simple-to-use and -install issue-tracking system with command-line, web and e-mail interfaces. It is based on the winning design from Ka-Ping Yee in the Software Carpentry “Track” design competition.
 
 By design, it is an extremely customizable platform. Roundup has a "core" that can run multiple issue trackers. Each of these issue trackers can contain customizations in the HTML/CSS and extensions for functionality that are specific to them.
 
