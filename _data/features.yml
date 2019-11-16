@@ -13,7 +13,6 @@ meta_preview_images: false
 # Post-related functionality
 posts:
   show_footers: false
-  show_related: false
 
 verification:
   google:
