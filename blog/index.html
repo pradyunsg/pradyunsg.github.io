@@ -7,7 +7,7 @@ layout: default
   {% if posts_count > 0 %}
     <div class="posts">
       {% for post in paginator.posts %}
-        <div class="post py3">
+        <div class="post">
           <p class="post-meta">
             {% if site.date_format %}
               {{ post.date | date: site.date_format }}
@@ -16,13 +16,6 @@ layout: default
             {% endif %}
           </p>
           <a href="{{ post.url | relative_url }}" class="post-link"><h3 class="h1 post-title">{{ post.title }}</h3></a>
-          <span class="post-summary">
-            {% if post.summary %}
-              {{ post.summary }}
-            {% else %}
-              {{ post.content | strip_html | truncatewords:12 }}
-            {% endif %}
-          </span>
         </div>
       {% endfor %}
     </div>
