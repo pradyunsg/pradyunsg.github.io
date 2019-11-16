@@ -2,7 +2,7 @@
 
 bugs.python.org is the issue tracker for CPython. "bpo", as it is commonly referenced, is where implementation bugs, smaller feature requests, and documentation issues are tracked as part of Python's development.
 
-[PEP 581] proposes sunsetting bugs.python.org, in favor of GitHub issues. "Why not focus on improving Roundup / bpo?" section made me wonder: What is needed to make improve Roundup / bpo? This blog post is my attempt at summarizing the state of bpo and how it could be improving in the future, based on a discussion with folks maintaining bpo.
+[PEP 581] proposes sunsetting bugs.python.org, in favor of GitHub issues. "Why not focus on improving Roundup / bpo?" section made me wonder: What is needed to improve Roundup / bpo? This blog post is my attempt at summarizing the state of bpo and how it could be improving in the future, based on a discussion with folks maintaining bpo.
 
 I won't go into whether PEP 581 or PEP 595 is a better idea -- that's something for the CPython core developers to decide on.
 
