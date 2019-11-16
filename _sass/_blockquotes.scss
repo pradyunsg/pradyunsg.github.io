@@ -4,7 +4,12 @@ blockquote {
   margin-left: $space-1;
   padding: $space-1;
 
+  p {
+    margin-bottom: 0;
+  }
+
   footer {
+    @extend .mt1;
     background-color: #fff;
     border-color: transparent;
     color: #7a7a7a;
