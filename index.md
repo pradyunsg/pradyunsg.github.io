@@ -4,6 +4,10 @@ title: Pradyun Gedam
 permalink: /
 contains_icons: true
 do_not_show_title: true
+summary: >
+  Pradyun Gedam is an open source advocate, a polyglot software developer, and
+  a generally curious person. He works on improving the experience of using
+  software, for other humans.
 ---
 
 # I'm Pradyun.
