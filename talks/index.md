@@ -19,7 +19,7 @@ In-depth discussion of some of these topics can be found in my writing.
 
 - Rethinking Python Packaging -- a thought experiment
   - [slides][slides--pyconf-hyd-2019]
-  - PyConf Hyderabad, December 2019 (video: soon)
+  - PyConf Hyderabad, December 2019
 
 [slides--pycon-korea-2019]: slides/2019-pycon-korea.pdf
 [slides--python-packaging-overview-2019]: slides/2019-python-packaging-overview.pdf
