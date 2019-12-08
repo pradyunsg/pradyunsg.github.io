@@ -14,7 +14,7 @@
   <span class="post-meta small">
     {% if page.minutes %}
     {{ page.minutes }} {{ site.data.text.post.minute_read | default: "minute read" }}
-    {% else %}
+    {% elsif page.skip_read_time != true %}
     {{ minutes }} {{ site.data.text.post.minute_read | default: "minute read" }}
     {% endif %}
   </span>
