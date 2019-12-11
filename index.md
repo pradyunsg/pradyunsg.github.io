@@ -20,7 +20,7 @@ I enjoy working on improving software systems so that they're more useful, for t
 
 I occasionally [blog].
 
-I'm currently looking for 20+ week internships, for my final semester credits in college, starting in December 2019 or early January 2020. If you reckon I'd be a good addition to your team, please reach out.
+Currently, I'm an intern at [FOSSEE] and working on improving Python packaging tooling. I am actively looking for full time placement starting in Jul 2020. If you reckon I'd be a good addition to your team, please reach out.
 <br><small>Last updated on: Aug 26, 2019</small>
 
 You can find me at a lot of places on the internet. Feel free to reach out, if you'd like to chat. I am available to chat over [email] and Twitter.
@@ -33,5 +33,5 @@ You can find me at a lot of places on the internet. Feel free to reach out, if y
 [virtualenv]: https://github.com/pypa/virtualenv
 [pypa]: https://pypa.io
 [TOML]: https://github.com/toml-lang/toml
-[Devspace]: https://devspace.csivit.com/
+[FOSSEE]: https://python.fossee.in/
 [email]: mailto:{{ site.email }}
