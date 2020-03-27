@@ -8,7 +8,7 @@ The motivation behind writing this, is to make sure all the developers working o
 
 The "legacy" resolver in pip, is implemented as part of pip's codebase and has been a part of it for many years. It's very tightly coupled with the existing code, isn't easy to work with and has severe backward compatibility concerns with modifying directly -- which is why we're implementing a separate "new" resolver in this project, instead of trying to improve the existing one.
 
-The "new" resolver that is under development, is not implemented as part of pip's codebase; not completely anyway. We're using an abstraction that separates all the metadata-generation-and-handling stuff vs the core algorithm. This allows us to work on the core algorithm logic (i.e. the NP-hard search problem) separately from pip-specific logic (eg. download, building etc). The abstraction and core algorithm are written/maintained in https://github.com/sarugaku/resolvelib right now. The pip-specific logic for implementing the "other side" of the abstraction is in https://github.com/pypa/pip/tree/master/src/pip/_internal/resolution/resolvelib.
+The "new" resolver that is under development, is not implemented as part of pip's codebase; not completely anyway. We're using an abstraction that separates all the metadata-generation-and-handling stuff vs the core algorithm. This allows us to work on the core algorithm logic (i.e. the NP-hard search problem) separately from pip-specific logic (eg. download, building etc). The abstraction and core algorithm are written/maintained in <https://github.com/sarugaku/resolvelib> right now. The pip-specific logic for implementing the "other side" of the abstraction is in <https://github.com/pypa/pip/tree/master/src/pip/_internal/resolution/resolvelib>.
 
 ## Testing
 
@@ -26,8 +26,8 @@ The tests in pip is where I'll start needing more words to explain what's happen
 
 We have "YAML" tests which I'd written back in 2017, as a format to easily write tests for pip's new resolver when we implement it. However, since we didn't have a need for it to be working completely back then (there wasn't a new resolver to test with it!), the "harness" for running these tests isn't complete and would likely need some work to be as feature complete as we'd want it to be, for writing good tests.
 
-YAML tests: https://github.com/pypa/pip/tree/master/tests/yaml
-YAML test "harness": https://github.com/pypa/pip/blob/master/tests/functional/test_yaml.py and https://github.com/pypa/pip/blob/master/tests/lib/yaml_helpers.py
+YAML tests: <https://github.com/pypa/pip/tree/master/tests/yaml>
+YAML test "harness": <https://github.com/pypa/pip/blob/master/tests/functional/test_yaml.py> and <https://github.com/pypa/pip/blob/master/tests/lib/yaml_helpers.py>
 
 #### "new" resolver tests
 
@@ -35,19 +35,19 @@ YAML test "harness": https://github.com/pypa/pip/blob/master/tests/functional/te
 
 We have some unit tests for the new resolver implementation. These cover very basic "sanity checks" to ensure it follows the "contract" of the abstraction, like "do the candidates returned by a requirement actually satisfy that requirement?". These likely don't need to be touched, since they're fairly well scoped and test fairly low-level details (i.e. ideal for unit tests).
 
-New resolver unit tests: https://github.com/pypa/pip/tree/master/tests/unit/resolution_resolvelib
+New resolver unit tests: <https://github.com/pypa/pip/tree/master/tests/unit/resolution_resolvelib>
 
 ##### functional tests
 
 We also have "new resolver functional tests", which are written as part of the current work. These exist since how-to-work-with-YAML-tests was not an easy question to answer and there needs to be work done (both on the YAML format, as well as the YAML test harness) to flag which tests should run with which resolver (both, only legacy, only new) and make it possible to put run these tests in CI easily.
 
-New resolver functional tests: https://github.com/pypa/pip/blob/master/tests/functional/test_new_resolver.py
+New resolver functional tests: <https://github.com/pypa/pip/blob/master/tests/functional/test_new_resolver.py>
 
 #### test_install*.py
 
 These files test all the functionality of the install command (like: does it use the right build dependencies, does it download the correct files, does it write the correct metadata etc). There might be some dependency-resolution-related tests in `test_install*.py` files.
 
-These files contain a lot of tests so, ideally, at some point, someone would go through and de-duplicate tests from this as well. 
+These files contain a lot of tests so, ideally, at some point, someone would go through and de-duplicate tests from this as well.
 
 ## How can you help?
 
