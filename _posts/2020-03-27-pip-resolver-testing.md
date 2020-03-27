@@ -26,7 +26,7 @@ The tests in pip is where I'll start needing more words to explain what's happen
 
 We have "YAML" tests which I'd written back in 2017, as a format to easily write tests for pip's new resolver when we implement it. However, since we didn't have a need for it to be working completely back then (there wasn't a new resolver to test with it!), the "harness" for running these tests isn't complete and would likely need some work to be as feature complete as we'd want it to be, for writing good tests.
 
-YAML tests: <https://github.com/pypa/pip/tree/master/tests/yaml>
+YAML tests: <https://github.com/pypa/pip/tree/master/tests/yaml>  
 YAML test "harness": <https://github.com/pypa/pip/blob/master/tests/functional/test_yaml.py> and <https://github.com/pypa/pip/blob/master/tests/lib/yaml_helpers.py>
 
 #### "new" resolver tests
