@@ -1,3 +1,6 @@
+---
+---
+
 var CACHE_NAME = "pradyunsg-{{site.time | date: '%Y%m%d%H%M%S'}}";
 
 self.addEventListener("install", function(e) {
