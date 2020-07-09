@@ -4,34 +4,25 @@ title: Pradyun Gedam
 permalink: /
 contains_icons: true
 do_not_show_title: true
-summary: >
-  Pradyun Gedam is an open source advocate, a polyglot software developer, and
-  a generally curious person. He works on improving the experience of using
-  software, for other humans.
+summary: This is Pradyun Gedam's personal website!
 ---
 
 # I'm Pradyun.
 
 Hello!
 
-I am an open source advocate, a polyglot software developer, a Python Software Foundation Fellow, a [Google Summer of Code 2017 student][gsoc-2017] and in general, a curious person.
+I am an open source advocate, a software developer, and a generally curious person. I like to work on improving the experience of using software, for other humans.
 
-I enjoy working on improving software systems so that they're more useful, for the humans using them. Thus, I volunteer my time to work on tooling for packaging and installing Python based software and libraries; as a member of the [Python Packaging Authority][pypa] and a maintainer of [pip] and [virtualenv]. I am also in the [TOML] Core team.
+If you'd like to know more about my projects, talks, and community involvement, you can read my portfolio of [stuff]. And, in case you came looking, here's my [email] and my [blog].
 
-I occasionally [blog].
+Currently, I am working [part-time on pip as part of donor funded work][pip-work]. I just finished my undergraduate course, and am doing a lot of paperwork for what-comes-next!
+<small>Updated on 8th July, 2020.</small>
 
-Currently, I'm an intern at [FOSSEE] and working on improving Python packaging tooling. I am actively looking for full time placement starting in Jul 2020. If you reckon I'd be a good addition to your team, please reach out.
-<br><small>Last updated on: Aug 26, 2019</small>
-
-You can find me at a lot of places on the internet. Feel free to reach out, if you'd like to chat. I am available to chat over [email] and Twitter.
+Feel free to reach out, if you'd like to chat. You can find me at a lot of places on the internet.
 
 {% include social_icons.html %}
 
 [blog]: /blog/
-[gsoc-2017]: https://summerofcode.withgoogle.com/archive/2017/projects/5797394100781056/
-[pip]: https://github.com/pypa/pip
-[virtualenv]: https://github.com/pypa/virtualenv
-[pypa]: https://pypa.io
-[TOML]: https://github.com/toml-lang/toml
-[FOSSEE]: https://python.fossee.in/
+[stuff]: /stuff/
 [email]: mailto:{{ site.email }}
+[pip-work]: https://wiki.python.org/psf/Pip2020DonorFundedRoadmap
