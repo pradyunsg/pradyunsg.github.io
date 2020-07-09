@@ -77,6 +77,11 @@ SourceSort <small>2019</small>
 
   [Interview](https://sourcesort.com/interview/pradyun-gedam-pip)
 
+Google Summer of Code Student <small>2017</small>
+: First major chunk of work in OSS, where I [learnt a *lot*][gsoc-2017].
+
+[gsoc-2017]: https://pradyunsg.me/gsoc-2017/
+
 Last updated on: July 7, 2020
 
 ---
