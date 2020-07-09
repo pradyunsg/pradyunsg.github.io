@@ -18,8 +18,6 @@ Python Package Index <small>2017 - present</small>
 
   I am a moderator on PyPI.
 
-[Python Package Index]: https://pypi.org
-
 virtualenv <small>2018 - present</small>
 : virtualenv is a tool to create isolated Python environments.
 
@@ -80,11 +78,13 @@ SourceSort <small>2019</small>
 Google Summer of Code Student <small>2017</small>
 : First major chunk of work in OSS, where I [learnt a *lot*][gsoc-2017].
 
-[gsoc-2017]: https://pradyunsg.me/gsoc-2017/
-
 Last updated on: July 7, 2020
 
 ---
 
-Shoutout to the amazing [Thea Flowers](https://thea.codes) for the original
-[inspiration](https://thea.codes/stuff.html) that lead me to make this page. :)
+Shoutout to the amazing [Thea Flowers] for the original
+[inspiration](https://thea.codes/stuff.html) that lead to creating this page. :)
+
+[Python Package Index]: https://pypi.org
+[gsoc-2017]: https://pradyunsg.me/gsoc-2017/
+[Thea Flowers]: https://thea.codes
