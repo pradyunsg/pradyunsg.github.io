@@ -8,4 +8,4 @@ _check:
 build: _check
 	bundler exec jekyll build
 serve: _check
-	bundler exec jekyll serve
+	bundler exec jekyll serve --livereload --open-url --drafts --future
