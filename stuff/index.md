@@ -13,6 +13,11 @@ pip <small>2017 - present</small>
 
   I am a maintainer of pip, and have been the release manager for most pip releases since late 2018.
 
+Furo <small>2020 - present</small>
+: Furo is a documentation theme for [Sphinx-based] documentation, designed to emphasize on the content while still providing capable navigation around the documentation.
+
+  I am the creator and primary maintainer of Furo.
+
 Python Package Index <small>2017 - present</small>
 : [Python Package Index] (PyPI) is a repository of software for the Python programming language.
 
