@@ -1,0 +1,70 @@
+/* Tweak the colors and spacing */
+:root {
+  /* For the blog posts entries */
+  --entry: var(--theme);
+  /* Spacing */
+  --content-gap: 1rem;
+}
+
+/* Make all pages look the same */
+.list {
+  background: var(--theme);
+}
+
+/* Make navigation look nicer */
+.paginav {
+  background: var(--theme);
+  border: none;
+  display: flex;
+  align-items: center;
+}
+.paginav a {
+  line-height: normal;
+  padding: var(--gap);
+}
+
+/* Tweak spacing */
+.post-footer {
+  margin-top: calc(var(--gap) * 2);
+}
+.post-content code {
+  margin: auto;
+}
+
+/* Nicer links */
+.post-content a,
+.post-content a code {
+  box-shadow: none;
+}
+.post-content a, .post-description a {
+  text-decoration: underline;
+  text-decoration-color: var(--tertiary);
+}
+.post-content a:hover, .post-description a:hover {
+  text-decoration-color: var(--content);
+}
+
+/* Spacing for definition lists */
+.post-content dl {
+  margin-top: 1.5rem;
+}
+
+.post-content dd p {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+
+/* For the /stuff/ page */
+.post-content dt ~ dt, .post-content dd ~ dd {
+  margin-top: 1.5rem;
+}
+.post-content dt em {
+  display: block;
+  text-align: left;
+
+  font-size: 0.875rem;
+  font-weight: 400;
+  font-style: normal;
+
+  color: var(--secondary);
+}

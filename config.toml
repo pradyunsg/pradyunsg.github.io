@@ -1,0 +1,70 @@
+baseURL = "http://pradyunsg.me/"
+title = "Pradyun Gedam"
+theme = "papermod"
+enableGitInfo = true
+
+# Infer my posts' dates from filename, like Jekyll
+[frontmatter]
+date = [":filename", ":default"]
+
+# Use the same URL structure as my Jekyll blog
+[permalinks]
+blog = "blog/:year/:month/:day/:slug/"
+
+[params]
+defaultTheme = "auto"
+showReadingTime = true
+showPostNavLinks = true
+
+# Shown on the home page
+socialIcons = [
+  { name = "email", url = "mailto:hi@pradyunsg.me" },
+  { name = "github", url = "https://github.com/pradyunsg" },
+  { name = "twitter", url = "https://twitter.com/pradyunsg" },
+  { name = "python", url = "https://discuss.python.org/u/pradyunsg/summary" },
+  { name = "stackoverflow", url = "https://stackoverflow.com/users/1931274/pradyunsg"},
+  { name = "gitlab", url = "https://gitlab.com/pradyunsg" },
+  { name = "keybase", url = "https://www.keybase.io/pradyunsg" },
+  { name = "linkedin", url = "https://www.linkedin.com/in/pradyunsg/" },
+  # { name = "reddit", url = "https://www.reddit.com/user/pradyunsg" },
+  # { name = "hackerrank", url = "https://www.hackerrank.com/profile/Pradyun"},
+]
+
+# Configure the home page
+[params.profileMode]
+enabled = true
+title = "Hi, I'm Pradyun."
+subtitle = "You can find me in a lot of places on the internet."
+
+# Site-wide navigation
+[[menu.main]]
+weight = 1
+identifier = "about"
+name = "about"
+title = "About"
+url = "/about/"
+
+[[menu.main]]
+weight = 2
+identifier = "writing"
+name = "writing"
+title = "Writing"
+url = "/blog/"
+
+[[menu.main]]
+weight = 3
+identifier = "speaking"
+name = "speaking"
+title = "Speaking"
+url = "/talks/"
+
+[[menu.main]]
+weight = 4
+identifier = "other stuff"
+name = "other stuff"
+title = "Other stuff"
+url = "/stuff/"
+
+# Allow HTML in my content pages.
+[markup.goldmark.renderer]
+unsafe = true
