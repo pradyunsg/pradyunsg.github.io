@@ -14,11 +14,12 @@ worked out pretty well too.
 Some notes from doing this transition:
 
 - Hugo's separation of content vs templates is GREAT.
-- Hugo's support for `{date}-{slug}.md` files is... sub-optimal.
 - Hugo's documentation is exceedingly beginner unfriendly. :(
+- Hugo's support for `{date}-{slug}.md` files is... difficult to
+  discover.
 - `redirect_from` == `aliases`
-- You can't search the changelog, which makes it difficult to figure out
-  whether something you're reading from a 2018 issue was removed.
+- I couldn't search Hugo's changelog, which makes it difficult to figure
+  out whether something you're reading from a 2018 issue was removed.
 - "Why is this like this" and other variants were spoken 17 times, in
   the span of 5 hours.
 
