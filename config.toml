@@ -1,6 +1,6 @@
 baseURL = "http://pradyunsg.me/"
 title = "Pradyun Gedam"
-theme = "papermod"
+theme = "PaperMod"
 enableGitInfo = true
 
 # Infer my posts' dates from filename, like Jekyll
