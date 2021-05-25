@@ -5,6 +5,11 @@ showReadingTime = false
 modified = 2021-04-05
 +++
 
+PyIstanbul *May 2021*
+: Gave a talk titled "How to write horrible documentation".  
+  ([Youtube Stream](https://www.youtube.com/watch?v=D3MXX9bIbXk),
+  [Slides](slides/2021-pyistanbul.pdf))
+
 FOSDEM *Feb 2021*
 : Part of a panel discussion titled "UX contributions to pip, Python's package installer" in the Open Source Design devroom.  
   ([Video](https://ftp.fau.de/fosdem/2021/D.design/improving_the_usability_of_pip_the_python_package_manager.mp4),
