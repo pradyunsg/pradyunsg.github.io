@@ -5,6 +5,7 @@ showReadingTime: false
 modified: 2021-04-05
 ---
 
+<!-- prettier-ignore-start -->
 PyIstanbul *May 2021*
 : Gave a talk titled "How to write horrible documentation".  
   ([Youtube Stream](https://www.youtube.com/watch?v=D3MXX9bIbXk),
@@ -35,3 +36,4 @@ PyCon India *Oct 2019*
 PyCon Korea *Aug 2019*
 : Gave a keynote titled "How did I get here?".  
   ([Video](https://www.youtube.com/watch?v=dvN3XH2Jtr4), [Slides](slides/2019-pycon-korea.pdf))
+<!-- prettier-ignore-end -->
