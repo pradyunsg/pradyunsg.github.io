@@ -11,6 +11,13 @@
   background: var(--theme);
 }
 
+/* Make post entries (in page list) look nicer */
+.post-entry {
+  border: none;
+  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.05),
+    0 0 0.0625rem rgba(0, 0, 0, 0.1);
+}
+
 /* Make navigation look nicer */
 .paginav {
   background: var(--theme);
@@ -36,11 +43,13 @@
 .post-content a code {
   box-shadow: none;
 }
-.post-content a, .post-description a {
+.post-content a,
+.post-description a {
   text-decoration: underline;
   text-decoration-color: var(--tertiary);
 }
-.post-content a:hover, .post-description a:hover {
+.post-content a:hover,
+.post-description a:hover {
   text-decoration-color: var(--content);
 }
 
@@ -55,7 +64,8 @@
 }
 
 /* For the /stuff/ page */
-.post-content dt ~ dt, .post-content dd ~ dd {
+.post-content dt ~ dt,
+.post-content dd ~ dd {
   margin-top: 1.5rem;
 }
 .post-content dt em {
