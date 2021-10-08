@@ -1,9 +1,9 @@
-+++
-title = "Speaking"
-layout = "single"
-showReadingTime = false
-modified = 2021-04-05
-+++
+---
+title: "Speaking"
+layout: "single"
+showReadingTime: false
+modified: 2021-04-05
+---
 
 PyIstanbul *May 2021*
 : Gave a talk titled "How to write horrible documentation".  

@@ -1,9 +1,9 @@
-+++
-title = "Fiddling with an InkPlate 6"
-tags = ["Electronics", "Inkplate"]
-summary = "Making things"
-draft = true
-+++
+---
+title: "Fiddling with an InkPlate 6"
+tags: ["Electronics", "Inkplate"]
+summary: "Making things"
+draft: true
+---
 
 I took a day off from work, to take a bit of a break. Turns out, I decided to pick up the Inkplate 6 that was sitting in a cupboard out to play with.
 

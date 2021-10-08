@@ -1,7 +1,7 @@
-+++
-title = "Testing the next-gen pip dependency resolver"
-tags = ["pip", "dependency resolver", "testing"]
-+++
+---
+title: "Testing the next-gen pip dependency resolver"
+tags: ["pip", "dependency resolver", "testing"]
+---
 
 This is an attempt to summarize the broader software architecture around dependency resolution in pip and how testing is being done around this area.
 

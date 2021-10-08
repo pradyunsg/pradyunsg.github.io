@@ -1,8 +1,8 @@
-+++
-title = "Revamping my personal website"
-tags = ["meta"]
-summary = "Hopping onto the hype train and migrating to Hugo."
-+++
+---
+title: "Revamping my personal website"
+tags: ["meta"]
+summary: "Hopping onto the hype train and migrating to Hugo."
+---
 
 I made an impulse decision to rework my personal website, to port it
 over to [Hugo], and away from [Jekyll]. This is now built using the

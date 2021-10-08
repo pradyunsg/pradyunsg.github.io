@@ -1,7 +1,7 @@
-+++
-title = "Is this thing on?"
-tags = ["meta"]
-+++
+---
+title: "Is this thing on?"
+tags: ["meta"]
+---
 
 \*tap\* \*tap\*
 

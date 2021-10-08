@@ -1,7 +1,7 @@
-+++
-title = "What's up with bugs.python.org?"
-tags = ["CPython", "b.p.o"]
-+++
+---
+title: "What's up with bugs.python.org?"
+tags: ["CPython", "b.p.o"]
+---
 
 bugs.python.org is the issue tracker for CPython. "bpo", as it is commonly referenced, is where implementation bugs, smaller feature requests, and documentation issues are tracked as part of Python's development.
 

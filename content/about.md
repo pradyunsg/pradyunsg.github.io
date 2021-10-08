@@ -1,9 +1,9 @@
-+++
-title = "About Me"
-layout = "single"
-showReadingTime = false
-modified = 2021-10-08
-+++
+---
+title: "About Me"
+layout: "single"
+showReadingTime: false
+modified: 2021-10-08
+---
 
 I am an open source advocate, a software developer, and a generally
 curious person. I like to work on improving the experience of using
