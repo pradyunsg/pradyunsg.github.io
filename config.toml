@@ -5,6 +5,7 @@ theme = "PaperMod"
 # Infer my posts' dates from filename, like Jekyll
 [frontmatter]
 date = [":filename", ":default"]
+publishDate = [":filename", ":default"]
 
 # Use the same URL structure as my Jekyll blog
 [permalinks]
