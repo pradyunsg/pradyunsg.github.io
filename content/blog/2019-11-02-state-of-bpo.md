@@ -1,5 +1,6 @@
 +++
 title = "What's up with bugs.python.org?"
+tags = ["CPython", "b.p.o"]
 +++
 
 bugs.python.org is the issue tracker for CPython. "bpo", as it is commonly referenced, is where implementation bugs, smaller feature requests, and documentation issues are tracked as part of Python's development.
@@ -34,7 +35,7 @@ PSF-hosted Roundup, runs 3 issue trackers:
 
 The maintainers of bpo want to switch to using upstream Roundup, instead of our PSF fork. To that end, most of the functionality improvement patches made in the fork have been ported upstream. There is only one major thing that's not been integrated upstream (yet!) -- GitHub integrations built as part of the GitHub migration of CPython source code.
 
-There's an upcoming Roundup 2 release (*maybe* Q1 2020) -- adding a new REST API, Python 3 support, a responsive UI and more. These would address some of the major concerns with Roundup powering bpo today. There is a plan to host a read-only test instance of Roundup 2 alpha/beta/rcs "soon", for exploring new functionality and usability.
+There's an upcoming Roundup 2 release (_maybe_ Q1 2020) -- adding a new REST API, Python 3 support, a responsive UI and more. These would address some of the major concerns with Roundup powering bpo today. There is a plan to host a read-only test instance of Roundup 2 alpha/beta/rcs "soon", for exploring new functionality and usability.
 
 Broadly, from what I can tell, the plan of action is:
 
@@ -51,8 +52,8 @@ Once the Roundup 2 transition is completed, the documentation of the bpo instanc
 
 Many thanks to Ezio Melotti for indulging in a very insightful conversation and for helping me write this post.
 
-[Roundup]: https://roundup-tracker.org/
-[PEP 581]: https://www.python.org/dev/peps/pep-0581/
+[roundup]: https://roundup-tracker.org/
+[pep 581]: https://www.python.org/dev/peps/pep-0581/
 [psf-bpo-bitbucket]: https://bitbucket.org/account/user/python/projects/BPO
 [bitbucket-hg-sunset]: https://bitbucket.org/blog/sunsetting-mercurial-support-in-bitbucket
 

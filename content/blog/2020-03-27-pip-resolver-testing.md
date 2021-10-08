@@ -1,5 +1,6 @@
 +++
 title = "Testing the next-gen pip dependency resolver"
+tags = ["pip", "dependency resolver", "testing"]
 +++
 
 This is an attempt to summarize the broader software architecture around dependency resolution in pip and how testing is being done around this area.
@@ -45,7 +46,7 @@ We also have "new resolver functional tests", which are written as part of the c
 
 New resolver functional tests: <https://github.com/pypa/pip/blob/master/tests/functional/test_new_resolver.py>
 
-#### test_install*.py
+#### test_install\*.py
 
 These files test all the functionality of the install command (like: does it use the right build dependencies, does it download the correct files, does it write the correct metadata etc). There might be some dependency-resolution-related tests in `test_install*.py` files.
 
