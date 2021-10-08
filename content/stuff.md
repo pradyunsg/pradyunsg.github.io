@@ -2,7 +2,7 @@
 title = "Other Stuff"
 layout = "single"
 showReadingTime = false
-modified = 2021-04-05
+modified = 2021-10-08
 +++
 
 ## Projects
