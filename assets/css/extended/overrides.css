@@ -78,3 +78,8 @@
 
   color: var(--secondary);
 }
+
+/* 404 page */
+.page-not-found {
+  text-align: center;
+}
