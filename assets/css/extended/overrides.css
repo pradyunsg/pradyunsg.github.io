@@ -6,6 +6,27 @@
   --content-gap: 1rem;
 }
 
+/* Add a bit of blue accent to the page, via the links */
+:root {
+  --accent: #3b82f6;
+}
+.dark {
+  --accent: #60a5fa;
+}
+
+body .post-content a,
+body .post-description a {
+  color: inherit;
+  text-decoration-color: var(--accent);
+}
+
+.social-icons a:hover,
+body .post-content a:hover,
+body .post-description a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
 /* Make all pages look the same */
 .list {
   background: var(--theme);
@@ -36,6 +57,12 @@
 }
 .post-content code {
   margin: auto;
+}
+.post-content li {
+  margin-top: 0.125rem;
+}
+.post-content ul > li > ul {
+  margin-bottom: 0;
 }
 
 /* Nicer links */
