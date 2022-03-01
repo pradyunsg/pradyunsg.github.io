@@ -14,5 +14,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          filename: .github/ISSUE_TEMPLATE/team-update.md
+          filename: .github/workflows/automated-issues/oss-update-reminder.md
       - run: "echo Created ${{ steps.create-issue.outputs.url }}"
