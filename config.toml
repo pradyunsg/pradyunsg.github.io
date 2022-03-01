@@ -52,20 +52,6 @@ name = "writing"
 title = "Writing"
 url = "/blog/"
 
-[[menu.main]]
-weight = 3
-identifier = "speaking"
-name = "speaking"
-title = "Speaking"
-url = "/talks/"
-
-[[menu.main]]
-weight = 4
-identifier = "other stuff"
-name = "other stuff"
-title = "Other stuff"
-url = "/stuff/"
-
 # Allow HTML in my content pages.
 [markup.goldmark.renderer]
 unsafe = true
