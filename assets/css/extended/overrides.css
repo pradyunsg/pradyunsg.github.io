@@ -20,11 +20,17 @@ body .post-description a {
   text-decoration-color: var(--accent);
 }
 
-.social-icons a:hover,
+a:hover,
+body .footer a:hover,
 body .post-content a:hover,
 body .post-description a:hover {
   color: var(--accent);
   text-decoration-color: var(--accent);
+}
+
+/* Respect user's typography */
+body {
+  font-size: 1rem;
 }
 
 /* Make all pages look the same */
