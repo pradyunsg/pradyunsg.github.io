@@ -17,6 +17,8 @@ meetups and conferences.
 At my day job, I make it easier for software developers to write software in
 Python; as part of [Bloomberg Engineering]’s Python Infrastructure team.
 
+Here's an audio clip of [how to say my name].
+
 [bloomberg engineering]: https://www.techatbloomberg.com/
 [how to say my name]: /media/how-to-say-pradyun.mp3
 
