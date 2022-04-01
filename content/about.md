@@ -50,6 +50,11 @@ sphinx-inline-tabs is a [Sphinx] plugin, that provides simple and easy-to-use
 tabs for inline content; for use in technical documentation.  
 {{% /AboutItem %}}
 
+{{% AboutItem name="[sphinx-theme-builder]" context="creator" time="2021 - present" %}}  
+Sphinx Theme Builder is a tool that greatly simplifies the Sphinx theme
+development workflow, by building upon existing standardised tools.  
+{{% /AboutItem %}}
+
 {{% AboutItem name="[vendoring]" context="creator" time="2019 - present" %}}  
 `vendoring` is a command line tool for vendoring Python Packages. It is designed
 specifically for pip's use case.  
