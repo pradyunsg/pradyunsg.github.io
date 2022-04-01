@@ -189,8 +189,29 @@ Python Packaging - where we are and where we're headed
 
 ## Community Engagement
 
+I'm fairly all over the place on this front -- in that, I actually end up doing
+a lot of stuff that don't quite fit the categories earlier on this page.
+
+The best place to see the detailed overview of how I've helped various
+community-driven open sources projects is, like, stalking me on GitHub?
+
+{{% AboutItem name="Python Packaging Authority" context="member" time="2017 - present" %}}  
+Maintain tooling that serves foundational digital infrastructure for the Python
+packaging ecosystem.  
+{{% /AboutItem %}}
+
+{{% AboutItem name="Executable Books" context="member" time="2021 - present" %}}  
+Part of a collaboration to create executable books with Jupyter, building upon
+the Sphinx ecosystem.  
+{{% /AboutItem %}}
+
+{{% AboutItem name="Python Docs WG" context="collaborator" time="2022 - present" %}}
+Helping improve CPython's Documentation!  
+{{% /AboutItem %}}
+
 {{% AboutItem name="Stack Overflow" time="2012 - present" %}}  
-[I occasionally write answers there](https://stackoverflow.com/users/1931274/pradyunsg?tab=profile).  
+I had a lot of free time before college. Nowadays, I occasionally
+[write answers there](https://stackoverflow.com/users/1931274/pradyunsg?tab=profile).  
 {{% /AboutItem %}}
 
 {{% AboutItem name="GSoC" time="2020" %}}  
