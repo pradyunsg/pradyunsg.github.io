@@ -45,6 +45,11 @@ Python Package Index (PyPI, pie-pee-aye) is a repository of software for the
 [Python] programming language.  
 {{% /AboutItem %}}
 
+{{% AboutItem name="[Flit]" context="maintainer" time="2021 - present" %}}  
+Flit is a simple way to put Python packages and modules on PyPI. It tries to
+require less thought about packaging and help you avoid common mistakes.  
+{{% /AboutItem %}}
+
 {{% AboutItem name="[sphinx-inline-tabs]" context="creator" time="2020 - present" %}}  
 sphinx-inline-tabs is a [Sphinx] plugin, that provides simple and easy-to-use
 tabs for inline content; for use in technical documentation.  
