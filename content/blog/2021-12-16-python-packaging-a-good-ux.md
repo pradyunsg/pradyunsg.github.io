@@ -1,5 +1,6 @@
 ---
 title: "Python packaging: A good user experience?!"
+# State of the Python Packaging Ecosystem
 tags: ["python", "ecosystem", "opinion"]
 summary: "What kind of sorcery would that be?"
 draft: true
@@ -96,6 +97,44 @@ Even then, you need These aren't negligible humps.
 
 Things are getting better. You can move away from certain painful things (eg:
 setuptools) Use flit
+
+This is a collection of summaries of the state of the Python Packaging
+Ecosystem.
+
+I've had a lot of people express confusion about the state of many ongoing
+projects in the Python packaging ecosystem. I'm very firmly in the middle of a
+lot of these things, in a
+
+## For package authors
+
+### Building pure-Python Packages
+
+### Building Python Packages with extensions in other languages
+
+## For package consumers
+
+## How can you help?
+
+In a lot of ways.
+
+## There is a problem
+
+In the spirit of "criticism is a
+
+So... I'll be honest, as someone who has been involved in this ecosystem for
+more than 5 years, this statement has been around since I got involved.
+
+feels like it's a placeholder for saying "I can't do exactly what I want to do".
+
+the statement is not untrue. There's a lot of moving pieces nearly all of those
+pieces are exposed to the user and there's a lot of flexibility provided by this
+for most users do not need this fix ability this flexibility is both the best
+and the worst parts of Python a python
+
+Let's look at what the workflow today looks like, and let's see how many times a
+user needs to make a choice.
+
+Let's start with a simple script that I want to ship to my users.
 
 ## Conclusions
 
