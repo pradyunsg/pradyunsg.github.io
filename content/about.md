@@ -98,6 +98,7 @@ JSON.minify is a minifier algorithm for JSON, to remove comments and whitespace.
 [json.minify]: https://github.com/getify/JSON.minify
 [packaging.python.org]: https://packaging.python.org/
 [docs.python.org]: https://docs.python.org/
+[sphinx-theme-builder]: https://sphinx-theme-builder.readthedocs.io/en/latest/
 
 ## Interviews & Features
 
