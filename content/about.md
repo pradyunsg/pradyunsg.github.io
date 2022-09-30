@@ -88,6 +88,7 @@ JSON.minify is a minifier algorithm for JSON, to remove comments and whitespace.
 [toml]: https://toml.io/
 [pypi]: https://pypi.org/
 [warehouse]: https://github.com/pypa/warehouse/
+[flit]: https://github.com/pypa/flit/
 [python]: https://python.org/
 [furo]: https://pradyunsg.me/furo/
 [sphinx-inline-tabs]: https://pradyunsg.me/sphinx-inline-tabs/
