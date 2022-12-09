@@ -1,0 +1,33 @@
+- thing: Talk Python To Me
+  timeline: Feb 2022
+  detail: Episode 354
+  link: https://talkpython.fm/episodes/show/354/sphinx-myst-and-python-docs-in-2022
+  description: |-
+    Invited to a panel on "Sphinx, MyST, and Python Docs in 2022", an area of the Python
+    ecosystem that I've become deeply involved in.
+
+- thing: PyDev of the Week
+  timeline: Nov 2021
+  link: https://www.blog.pythonlibrary.org/2021/11/29/pydev-of-the-week-pradyun-gedam/
+  description: |-
+    Interviewed about my work in the Python ecosystem, journey as the "PyDev of the
+    week".
+
+- thing: Podcast.\_\_init\_\_
+  detail: Episode 264
+  timeline: May 2020
+  link: https://www.pythonpodcast.com/pip-resolver-dependency-management-episode-264/
+  description: |-
+    Invited to a panel discussion about on pip's next-generation dependency resolver, a
+    project that I worked on.
+
+- thing: SourceSort
+  detail: Episode 264
+  timeline: May 2020
+  link: https://sourcesort.com/interview/pradyun-gedam-pip
+  description: |-
+    Interviewed as part of an ongoing series of "Interviews with open source maintainers
+    and developers" by SourceSort.
+
+    Update Nov 2022: The original blog post is now a broken link. :(<br>
+    Thankfully, I [keep extensive notes](https://hackmd.io/@pradyunsg/rkp9AAD9B).

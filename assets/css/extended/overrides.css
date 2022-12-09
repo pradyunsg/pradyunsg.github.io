@@ -14,6 +14,10 @@
   --accent: #60a5fa;
 }
 
+body {
+  line-height: 1.5;
+}
+
 body .post-content a,
 body .post-description a {
   color: inherit;
@@ -96,20 +100,62 @@ body {
   margin-bottom: 0;
 }
 
-/* For the /stuff/ page */
-.post-content dt ~ dt,
-.post-content dd ~ dd {
-  margin-top: 1.5rem;
+/* For the /about/ page */
+.about-list {
+  display: grid;
+  grid-template-columns: 15% auto;
+  grid-column-gap: 2.25rem;
+  grid-row-gap: 1.5rem;
 }
-.post-content dt em {
-  display: block;
-  text-align: left;
 
-  font-size: 0.875rem;
-  font-weight: 400;
-  font-style: normal;
+.about-item {
+  display: contents;
+}
 
-  color: var(--secondary);
+.about-item--context {
+  opacity: 0.5;
+}
+.about-item--context a {
+  text-decoration: none;
+}
+.about-item--context {
+  transition: opacity ease-in-out 0.125s;
+}
+
+.about-item:hover .about-item--context,
+.about-item:hover .about-item--detail,
+.about-item:hover .about-item--description {
+  opacity: 1;
+}
+
+.about-item--title {
+  font-weight: bold;
+}
+
+.about-item--link svg {
+  margin-left: 0.25rem;
+  height: 1em;
+  width: 1em;
+}
+
+.about-item--description {
+  margin-top: 0.5rem;
+}
+
+@media screen and (max-width: 768px) {
+  .about-list {
+    grid-template-columns: auto;
+    grid-row-gap: 0;
+  }
+  .about-item {
+    display: block;
+    margin-bottom: 2.25rem;
+  }
+}
+
+/* For the custom landing page */
+body .post-content .social-icons a {
+  text-decoration: none;
 }
 
 /* 404 page */

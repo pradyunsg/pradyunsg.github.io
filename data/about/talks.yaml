@@ -1,0 +1,67 @@
+- thing: Growing pains of an open source project
+  timeline: Oct 2022
+  detail: "Keynote: DjangoCon EU 2022"
+  description: |-
+    [Slides], [Video]
+
+    [slides]: https://pradyunsg.me/talks/slides/2022-djangocon-eu.pdf
+    [video]: https://www.youtube.com/watch?v=TRK6C09JHVc
+
+- thing: How to write horrible documentation
+  timeline: May 2021
+  detail: "Talk: PyIstanbul Python Hour #128"
+  description: |-
+    [Slides], [Video]
+
+    [slides]: https://pradyunsg.me/talks/slides/2021-pyistanbul.pdf
+    [video]: https://www.youtube.com/watch?v=D3MXX9bIbXk
+
+- thing: UX contributions to pip, Python's package installer
+  timeline: Feb 2021
+  detail: "Panel: FOSDEM 2021"
+  description: |-
+    [Video]
+
+    [video]: https://ftp.fau.de/fosdem/2021/D.design/improving_the_usability_of_pip_the_python_package_manager.mp4
+
+- thing: Improving pip for all users
+  timeline: Feb 2021
+  detail: "Panel: FOSDEM 2021"
+  description: |-
+    [Video]
+
+    [video]: https://mirrors.dotsrc.org/fosdem/2021/D.python/python_pip.mp4
+
+- thing: How pip works internally
+  timeline: Apr 2020
+  detail: "Talk: HydPy Meetup"
+  description: |-
+    [Video]
+
+    [video]: https://www.youtube.com/watch?v=U4lBdGfkKxg
+
+- thing: Rethinking Python Packaging - a thought experiment
+  timeline: Dec 2019
+  detail: "Talk: PyConf Hyderabad"
+  description: |-
+    [Slides]
+
+    [slides]: https://pradyunsg.me/talks/slides/2019-pyconf-hyd.pdf
+
+- thing: Python Packaging - where we are and where we're headed
+  timeline: Oct 2019
+  detail: "Talk: PyCon India 2019"
+  description: |-
+    [Slides], [Video]
+
+    [slides]: https://exmaple.com
+    [video]: https://www.youtube.com/watch?v=1WRRBrPpxhw
+
+- thing: How did I get here?
+  timeline: Aug 2019
+  detail: "Keynote: PyCon Korea"
+  description: |-
+    [Slides], [Video]
+
+    [slides]: https://exmaple.com
+    [video]: https://www.youtube.com/watch?v=dvN3XH2Jtr4

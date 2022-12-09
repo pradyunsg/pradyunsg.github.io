@@ -1,0 +1,86 @@
+# These are the old projects, ones that I've stopped or stepped away from.
+- thing: materialism
+  detail: Creator
+  timeline: 2020 - 2020
+  link: https://github.com/pradyun/materialism
+  description: |-
+    An attempt at creating a theme for Sphinx, based off of [mkdocs-material].
+    This was the final piece to motivate me to write Furo.
+
+    [sphinx]: https://www.sphinx-doc.org/en/master/
+    [mkdocs-material]: https://squidfunk.github.io/mkdocs-material/
+
+- thing: sphinx-mkdocs-theme
+  detail: Creator
+  timeline: 2020 - 2020
+  link: https://github.com/pradyun/sphinx-mkdocs-theme
+  description: |-
+    An attempt at writing a compatibility layer between [Sphinx] and themes
+    written for [MkDocs] (specifically, [mkdocs-material]). This led to me
+    starting work on `materialism`.
+
+    [sphinx]: https://www.sphinx-doc.org/en/master/
+    [mkdocs]: https://www.mkdocs.org/
+    [mkdocs-material]: https://squidfunk.github.io/mkdocs-material/
+
+- thing: virtualenv
+  detail: Maintainer
+  timeline: 2018 - 2021
+  link: https://github.com/pypa/virtualenv
+  description: |-
+    A tool for creating isolated "virtual" Python environments.
+
+- thing: JSON.minify
+  detail: Maintainer
+  timeline: 2017 - 2021
+  link: https://github.com/getify/JSON.minify
+  description: |-
+    A minifier algorithm for JSON to remove comments and whitespace, implemented
+    in multiple programming languages.
+
+- thing: alias-tips
+  detail: Maintainer
+  timeline: 2017 - 2021
+  link: https://github.com/djui/alias-tips
+  description: |-
+    Zsh plugin to help users remember shell aliases defined in their
+    shell configuration.
+
+- thing: Zazo
+  detail: Creator
+  timeline: 2016 - 2020
+  link: https://github.com/pradyunsg/zazo
+  description: |-
+    An initial attempt to design a dependency resolver, outside of pip,
+    for pip.
+
+- thing: Sublime Rainbow Theme
+  detail: Creator
+  timeline: 2016 - 2016
+  link: https://github.com/pradyun/Sublime-Rainbow-Theme
+  description: |-
+    An adaptive UI theme for Sublime Text 2/3 that changed colors based on the
+    active colour scheme. This concept is now shipped as part of Sublime Text,
+    as the "Adaptive" theme.
+
+- thing: nose-html-report
+  detail: Creator
+  timeline: 2014 - 2015
+  link: https://github.com/pradyun/nose-html-report
+  description: |-
+    Generate an HTML report for a `nose` test suite run.
+
+- thing: Py2C
+  detail: Creator
+  timeline: 2013 - 2016
+  link: https://github.com/pradyun/Py2C
+  description: |-
+    An optimistic teenager's learning ground for parsers, language design,
+    API design, how languages differ and transpilation.
+
+- thing: stack2py
+  detail: Creator
+  timeline: 2013 - 2013
+  link: https://github.com/pradyun/stack2py
+  description: |-
+    A Python library interact with to Stack Exchange's API.

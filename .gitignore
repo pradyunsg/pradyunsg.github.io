@@ -8,3 +8,6 @@ Thumbs.db
 # Hugo
 public/
 resources/_gen/
+
+# JS
+node_modules/

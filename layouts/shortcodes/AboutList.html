@@ -1,0 +1,85 @@
+{{/*
+
+The variants are:
+
+1.
+
+  [thing]       [detail] [links?]
+
+2.
+
+  [thing]       [detail] [links?]
+
+                [description]
+
+3.
+
+  [timeline]    [thing] [links?]
+                [detail]
+
+4.
+
+  [timeline]    [thing] [links?]
+
+                [description]
+
+5.
+
+  [timeline]    [thing] [links?]
+                [detail]
+
+                [description]
+
+*/}}
+<div class="about-list">
+  {{ $position := .Position }}
+  {{ $key := .Get 0 }}
+  {{ $list := index .Site.Data.about $key }}
+  {{ range $index, $mapping := $list }}
+  <div class="about-item">
+
+    {{- if not (isset $mapping "thing") }}
+      {{ errorf "%s: Missing key 'thing' at index %d" $position $index }}
+    {{ end -}}
+
+    {{- $slug := index $mapping "thing" | urlize -}}
+    {{- if isset $mapping "slug" }}
+      {{- $slug = index $mapping "slug" -}}
+    {{ end -}}
+
+    <div class="about-item--context"><a href="#{{ $slug }}" id="{{ $slug }}">
+      {{- if (isset $mapping "timeline") -}}
+        {{ index $mapping "timeline" }}
+      {{- else if (isset $mapping "detail") -}}
+        {{ index $mapping "thing" }}
+      {{- else -}}
+        {{ errorf "%s: Missing keys 'timeline' and 'detail' at index %d -- need at least one" $position $index }}
+      {{- end -}}
+    </a></div>
+
+    <div class="about-item--content">
+      <div class="about-item--title">
+        {{- if (isset $mapping "link") }}<a class="about-item--link" href="{{ index $mapping "link" }}">{{ end -}}
+        <span>
+          {{- if (isset $mapping "timeline") -}}
+            {{ index $mapping "thing" | markdownify }}
+          {{- else -}}
+            {{ index $mapping "detail" }}
+          {{- end -}}
+        </span>
+        {{- if (isset $mapping "link") }}</a>{{ end -}}
+      </div>
+      {{- if and (isset $mapping "timeline") (isset $mapping "detail") -}}
+      <div class="about-item--detail">
+        {{ index $mapping "detail" | markdownify }}
+      </div>
+      {{- end -}}
+      {{- if (isset $mapping "description") -}}
+      <div class="about-item--description">
+        {{ index $mapping "description" | markdownify }}
+      </div>
+      {{- end -}}
+    </div>
+  </div>
+  {{ end }}
+</div>

@@ -1,0 +1,47 @@
+- thing: Python Packaging Authority
+  detail: Member
+  timeline: 2017 - Now
+  description: |-
+    Maintain tooling that serves foundational digital infrastructure for the Python packaging ecosystem.
+
+- thing: Executable Books
+  detail: Member
+  timeline: 2021 - Now
+  description: |-
+    Part of a collaboration to create executable books with Jupyter, building upon the Sphinx ecosystem.
+
+- thing: PyCon US
+  timeline: 2022
+  slug: pycon-us-2022
+  description: |-
+    Co-organised the Python Packaging Summit.
+
+- thing: Google Summer of Code
+  timeline: 2020
+  slug: gsoc-2020
+  description: |-
+    Mentored a student who worked on pip.
+
+- thing: PyCon India
+  timeline: 2019
+  slug: pycon-india-2022
+  description: |-
+    Volunteered at the conference, mentor at Open Source sprint.
+
+- thing: PyConf Hyderabad
+  timeline: 2019
+  slug: pyconf-hyderabad-2019
+  description: |-
+    Volunteered at the conference, mentor at Open Source sprint.
+
+- thing: PyCon US
+  timeline: 2019
+  slug: pycon-us-2019
+  description: |-
+    Volunteered at the conference, participant at the "Python Packaging Mini-Summit" and in the development sprints.
+
+- thing: Google Summer of Code
+  timeline: 2017
+  slug: gsoc-2017
+  description: |-
+    I learnt a lot working toward introducing a better dependency resolver in pip.

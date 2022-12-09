@@ -1,3 +1,0 @@
-{{ $content := trim .Inner "\n " }}
-{{ .Get "name" }}{{ if isset .Params "context" }} _{{ .Get "context" }}_{{ end}}{{ if isset .Params "time" }} _{{ .Get "time" }}_{{ end}}
-: {{ replace $content "\n" "\n  " }}

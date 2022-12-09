@@ -1,9 +1,9 @@
 ---
-title: "Speaking"
+title: "Talks"
 layout: "single"
 showReadingTime: false
 modified: 2022-02-27
 ---
 
-The information on this page has been consolidated into
+The information that used to be here has been consolidated into
 [this page](../about/#talks).

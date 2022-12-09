@@ -1,0 +1,101 @@
+- thing: pip
+  detail: Maintainer
+  timeline: 2016 - Now
+  link: https://github.com/pypa/pip/
+  description: |-
+    The standard package manager for Python, for installing and managing libraries
+    that aren't included in Python's standard library.
+
+- thing: TOML
+  detail: Maintainer
+  timeline: 2018 - Now
+  link: https://github.com/toml-lang/toml/
+  description: |-
+    Configuration file format, with an emphasis on simplicity. It is used in many
+    places, including Python's `pyproject.toml` file and Rust's `cargo.toml`
+    file.
+
+- thing: Python Package Index
+  detail: Moderator
+  timeline: 2019 - Now
+  link: https://github.com/pypi/
+  description: |-
+    Serves as the primary repository of software for the Python programming language.
+
+- thing: vendoring
+  detail: Creator
+  timeline: 2019 - Now
+  link: https://github.com/pradyunsg/vendoring
+  description: |-
+    Command line tool for vendoring Python Packages. It is designed specifically
+    for pip's use case.
+
+- thing: pyproject-hooks
+  detail: Maintainer
+  timeline: 2019 - Now
+  link: https://github.com/pypa/pyproject-hooks
+  description: |-
+    Library providing the basic functionality to help write tooling that generates
+    distribution files from Python projects.
+
+- thing: Furo
+  detail: Creator
+  timeline: 2020 - Now
+  link: https://github.com/pradyunsg/furo/
+  description: |-
+    Documentation theme for [Sphinx]-based (technical) documentation, designed
+    to emphasize on the content while still providing capable navigation around
+    the documentation.
+
+    [Sphinx]: https://www.sphinx-doc.org/en/master/
+
+- thing: Sphinx Inline Tabs
+  detail: Creator
+  timeline: 2020 - Now
+  link: https://github.com/pradyunsg/sphinx-inline-tabs
+  description: |-
+    [Sphinx] plugin that provides simple and easy-to-use tabs for inline
+    content; for use in technical documentation.
+
+    [Sphinx]: https://www.sphinx-doc.org/en/master/
+
+- thing: installer
+  detail: Creator
+  timeline: 2020 - Now
+  link: https://github.com/pradyunsg/installer
+  description: |-
+    Library for installing Python "wheel" distributions, serving as building
+    block for Python package/dependency management tooling.
+
+- thing: Sphinx Themes Gallery
+  detail: Maintainer, Curator
+  timeline: 2020 - Now
+  link: https://sphinx-themes.org/
+  description: |-
+    The canonical gallery of HTML themes available for the Sphinx documentation
+    generator. Also, [the home of my best PR, in terms of numbers][pr-diff].
+
+    [pr-diff]: https://github.com/sphinx-themes/sphinx-themes.org/pull/19
+
+- thing: Flit
+  detail: Maintainer
+  timeline: 2021 - Now
+  link: https://github.com/pypa/flit/
+  description: |-
+    Simplified packaging of Python modules and scripts. It tries to require less
+    thought about packaging and help you avoid common mistakes.
+
+- thing: Sphinx Theme Builder
+  detail: Creator
+  timeline: 2021 - Now
+  link: https://github.com/pradyunsg/sphinx-theme-builder
+  description: |-
+    Simplified packaging and development workflow for Sphinx themes, by building
+    upon existing de-facto standard tooling.
+
+- thing: CPython
+  detail: Triager
+  timeline: 2022 - Now
+  link: https://github.com/python/cpython
+  description: |-
+    The Python programming language.

@@ -1,0 +1,13 @@
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">Hi, I'm Pradyun.
+      <a class="icon-speak" href="/media/how-to-say-pradyun.mp3">{{- partial "icon-speak.html" . -}}</a>
+    </h1>
+  </header>
+  <div class="post-content">
+    {{- if not (.Param "disableAnchoredHeadings") }}
+    {{- partial "anchored_headings.html" .Content -}}
+    {{- else }}{{ .Content }}{{ end }}
+    {{- partial "social_icons.html" $.Site.Params.socialIcons -}}
+  </div>
+</article>
