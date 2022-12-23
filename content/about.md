@@ -30,16 +30,16 @@ etc. For things like work experience and education, see [Linkedin].
 
 [linkedin]: https://www.linkedin.com/in/pradyunsg/
 
-## Community Organisation and Engagement
-
-{{< AboutList "recognition" >}}  
-{{< AboutList "community" >}}
-
 ## Open Source Software
 
 I contribute to a _lot_ of open source software projects.
 
 {{< AboutList "open-source" >}}
+
+## Community Organisation and Engagement
+
+{{< AboutList "recognition" >}}  
+{{< AboutList "community" >}}
 
 ## Talks
 
