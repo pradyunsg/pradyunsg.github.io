@@ -43,13 +43,18 @@ I contribute to a _lot_ of open source software projects.
 
 ## Talks
 
-I have given many talks at many conferences and meetups. These are mostly about
-Python and software development. The topics are usually related to something I'm
-working on at that time.
+I am an experienced public speaker, having presented at numerous conferences and
+meetups on topics related to Python and software development. My talks have
+covered a range of subjects, such as open source project management,
+documentation best practices, UX design, and Python packaging.
 
 {{< AboutList "talks" >}}
 
 ## Interviews & Features
+
+In a variety of interviews and podcast appearances, I have had the opportunity
+to discuss my work in the Python community as well as my insights and
+experiences as an open source developer.
 
 {{< AboutList "interviews-and-features" >}}
 
