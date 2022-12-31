@@ -38,11 +38,6 @@ I contribute to a _lot_ of open source software projects.
 
 ## Community Organisation and Engagement
 
-I am an active member of the Python community, and have been involved in
-various efforts to improve the Python ecosystem. My work has been recognised
-by the Python Software Foundation, and I have been awarded the PSF
-Community Service Award in 2020.
-
 {{< AboutList "recognition" >}}  
 {{< AboutList "community" >}}
 
