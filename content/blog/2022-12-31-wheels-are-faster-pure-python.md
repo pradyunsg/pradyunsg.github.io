@@ -88,13 +88,15 @@ now have a wheel file which will then be handled like any other wheel file.
 
 - [How pip builds packages from source](https://pip.pypa.io/en/stable/reference/build-system/)
 - [Specification of the wheel format](https://packaging.python.org/en/latest/specifications/binary-distribution-format/)
-- [Installer]'s source code, if you're inclined that way
+- [Installer]'s [installation logic] code, if you're inclined that way
 - [pypackaging-native]: "a collection of content about key Python packaging
   topics and issues for projects using native code" (which is what made me write
   this post)
 
 [pip]: https://pip.pypa.io/
 [installer]: https://installer.pypa.io/
+[installation logic]:
+  https://github.com/pypa/installer/blob/0.6.0/src/installer/_core.py#L64
 [pypackaging-native]: https://pypackaging-native.github.io/
 
 [^1]:
