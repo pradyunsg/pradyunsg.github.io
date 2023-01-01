@@ -78,11 +78,11 @@ When installing from a wheel, pip will fetch the wheel file, and then unpack it.
 That's it. There's nothing else to do.
 
 When installing from a source distribution, pip will fetch the source
-distribution, unpack it to a temporary directory, (potentially) a build
-environment to be created and install build-dependencies in that environment,
-make a subprocess call (or multiple) to the build-backend to get it to generate
-a wheel file. The build environment and unpacked sources are then deleted. We
-now have a wheel file which will then be handled like any other wheel file.
+distribution, unpack it to a temporary directory, (potentially) create a build
+environment and install build-dependencies in that environment, make a
+subprocess call (or multiple) to the build-backend to get it to generate a wheel
+file. The build environment and unpacked sources are then deleted. We now have a
+wheel file which will then be handled like any other wheel file.
 
 ## Further reading
 
