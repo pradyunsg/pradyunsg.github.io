@@ -61,3 +61,5 @@ Overall, this is amusing enough to me that I decided to document it here.
     this topic
 
 [chatgpt]: https://openai.com/blog/chatgpt/
+[pip-error-issue]: https://github.com/pypa/pip/issues/10421
+[stb-errors]: https://sphinx-theme-builder.readthedocs.io/en/latest/errors/
