@@ -20,6 +20,11 @@ Functionally, each PyPA project is free to do what it wants. The only real
 benefit of being a PyPA project is the ability to use the PSF as a fiscal
 sponsor and the ability to say that it's a "PyPA project".
 
+Practically, the PyPA serves as ["a body to hammer out & maintain
+interoperability specifications"][pypa-hammer-specs] for Python packaging. The
+PyPA also includes foundational tools that are used in the Python packaging
+ecosystem, like `pip` and `setuptools`.
+
 ## Relationship with "Python Core"
 
 (I'm using "Core Python" to refer to the Python language and standard library,
@@ -89,8 +94,7 @@ There's [formal processes][process], [formal interoperability
 specifications][specs] as Python PEPs and a [formal governance
 model][governance].
 
-To quote
-[Thomas Kluyver](https://discuss.python.org/t/what-is-the-pypa/12297/2?u=pradyunsg):
+To quote [Thomas Kluyver][pypa-hammer-specs] again:
 
 > You don’t get much more authoritative than that without an army.
 > :slightly_smiling_face:
@@ -111,6 +115,8 @@ and/or tools that the PyPA works on ([conda][conda-build],
 
 [pypa-delegations]:
   https://github.com/python/steering-council/blob/main/process/standing-delegations.md#pypa-delegations
+[pypa-hammer-specs]:
+  https://discuss.python.org/t/what-is-the-pypa/12297/2?u=pradyunsg
 [cpython-core-team]: https://peps.python.org/pep-0013/#the-core-team
 [jest]: https://discuss.python.org/t/what-is-the-pypa/12297/6?u=pradyunsg
 [specs]: https://peps.python.org/topic/packaging/
