@@ -120,3 +120,13 @@ and/or tools that the PyPA works on ([conda][conda-build],
 [poetry-pyproject]: https://python-poetry.org/docs/pyproject/#poetry-and-pep-517
 [key-projects]:
   https://packaging.python.org/en/latest/key_projects/#non-pypa-projects
+
+[^cpython-count]:
+    Based on the number of eligible votes in the last SC election:
+    <https://peps.python.org/pep-8104/#results>. "active" is determined as
+    described in [Python Language Governance][python-governance] document.
+
+[^pypa-count]:
+    Based on public folks listed in https://github.com/orgs/pypa/people (not all
+    are active though, and there's active folks who are not members of the
+    GitHub org but have access to the various repositories).
