@@ -25,7 +25,7 @@ interoperability specifications"][pypa-hammer-specs] for Python packaging. The
 PyPA also includes foundational tools that are used in the Python packaging
 ecosystem, like `pip` and `setuptools`.
 
-## Relationship with "Python Core"
+## Relationship with "Core Python"
 
 (I'm using "Core Python" to refer to the Python language and standard library,
 as maintained by the CPython Core Developers, also known as ["core
