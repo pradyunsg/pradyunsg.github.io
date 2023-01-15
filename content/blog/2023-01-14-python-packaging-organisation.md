@@ -74,7 +74,7 @@ active in both CPython and one or more PyPA projects.
 
 ## A bit of history
 
-From https://www.pypa.io/en/latest/history/:
+From <https://www.pypa.io/en/latest/history/>:
 
 > 2011-02-28: The Python Packaging Authority (PyPA) is created to take over the
 > maintenance of pip and virtualenv from Ian Bicking, led by Carl Meyer, Brian
@@ -126,6 +126,7 @@ and/or tools that the PyPA works on ([conda][conda-build],
 [poetry-pyproject]: https://python-poetry.org/docs/pyproject/#poetry-and-pep-517
 [key-projects]:
   https://packaging.python.org/en/latest/key_projects/#non-pypa-projects
+[python-governance]: https://peps.python.org/pep-0013/#membership
 
 [^cpython-count]:
     Based on the number of eligible votes in the last SC election:
@@ -136,3 +137,6 @@ and/or tools that the PyPA works on ([conda][conda-build],
     Based on public folks listed in https://github.com/orgs/pypa/people (not all
     are active though, and there's active folks who are not members of the
     GitHub org but have access to the various repositories).
+
+[^setuptools-is-gonna-be-removed]:
+    Setuptools is gonna be removed, starting with Python 3.12.
