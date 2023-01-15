@@ -94,10 +94,9 @@ There's [formal processes][process], [formal interoperability
 specifications][specs] as Python PEPs and a [formal governance
 model][governance].
 
-To quote [Thomas Kluyver][pypa-hammer-specs] again:
+To quote [Thomas Kluyver][pypa-hammer-specs]:
 
 > You don’t get much more authoritative than that without an army.
-> :slightly_smiling_face:
 
 ## What about non-PyPA projects?
 
