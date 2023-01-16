@@ -99,3 +99,11 @@
   link: https://github.com/python/cpython
   description: |-
     The Python programming language.
+
+- thing: Spack
+  detail: Maintainer
+  timeline: 2022 - Now
+  link: https://github.com/spack/spack
+  description: |-
+    Spack is a multi-platform package manager that builds and installs multiple
+    versions and configurations of software.
