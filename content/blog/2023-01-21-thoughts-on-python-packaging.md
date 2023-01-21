@@ -234,7 +234,7 @@ From the discussions I've had, the reasons have ranged from some sense of mainta
 
 I think there's a need to reconsider what the Python Packaging Authority should be trying to do. We've been cruising on the premise that we're maintaining foundational tools and designing for interoperability is the "right" model for the Python packaging ecosystem. I'm not sure that's the case.
 
-Between the user surveys, having a $work role where I'm directly influencing user workflows beyond the installer, spending time helping out with scientific Python tooling and with [pyOpenSci](https://www.pyopensci.org/), and the discussions in the strategy thread... I'm starting to think that our current approach is not working and is harmful.[^unintentionally] unintentionally. Each projects' maintainers effectively decides on different aspects of the the overall UX for. Each project as its own project. There is no broader guiding "roadmap". Making decisions about how the default tooling of the ecosystem works is "not appropriate" for our process to hashing out technical design proposals. There is no "blessed" tool and yet there are defaults, or things that ship with the Python standard library and PyPA recommendations.
+Between the user surveys, having a $work role where I'm directly influencing user workflows beyond the installer, spending time helping out with scientific Python tooling and with [pyOpenSci](https://www.pyopensci.org/), and the discussions in the strategy thread... I'm starting to think that our current approach is not working and is harmful[^unintentionally] unintentionally. Each projects' maintainers effectively decides on different aspects of the the overall UX for. Each project acts as its own project. There is no broader guiding "roadmap". Making decisions about how the default tooling of the ecosystem works is "not appropriate" for our process to hashing out technical design proposals. There is no "blessed" tool and yet there are defaults, things that ship with the Python standard library and PyPA recommendations.
 
 I'm not sure what the right answer is, but I don't think we're in a good place right now. Here's where we are:
 
@@ -245,6 +245,7 @@ I'm not sure what the right answer is, but I don't think we're in a good place r
   - because "we should trust the XYZ authors to do the right thing"
   - difficult to answer basic questions like "what can a source distribution file be named" because the standard says one thing while the tools do something else because "the author prefers that"
   - implemented and publicized as features in tools, despite not being something that is "accepted"
+  - absolutely ignored by tool authors "because it's not a priority"
 - duplicated effort because multiple tools are competing
 - users are confused about what to use, what is deprecated, what is the "right" way to do things etc and there is no authoritative answer
 - say that PEPs are not documentation but, also, go read this PEP for the details on how this feature works because that's the only place we wrote it.
