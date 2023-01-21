@@ -301,7 +301,7 @@ No. That's been a part of the problem -- we've made it fairly tractable to "buil
 
 We _still_ don't have agreement that this is the direction that we, as a community, want pip to go.
 
-## Centralized user-facing communication channel
+## On user-facing communication
 
 There's no single place where users can go to get information about the Python packaging ecosystem -- either on how it's evolving or what the functional best-practices are _today_. We either (a) don't have them documented or (b) don't have a good approach to communicating about this to end users.
 
