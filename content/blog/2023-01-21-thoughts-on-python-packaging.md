@@ -287,7 +287,7 @@ Do I think there's a significant amount of work needed for making pip into a wor
 
 Yes.
 
-Do I think that the amount of collective energy that's gone into Poetry/Hatch/Pipenv/PDM development, collectively, would have made more than a meaningful dent at this issue?
+Do I think that the amount of energy that's gone into Poetry/Hatch/Pipenv/PDM development, collectively, would have made more than a meaningful dent at this issue?
 
 Yes.
 
@@ -353,7 +353,7 @@ Finally, I do have more thoughts; especially on how to get to a better place, bu
 [^flit-weaker-example]: I [may be biased](https://pradyunsg.me/about/#flit) but it's worth noting that Flit is part of _why_ PEP 517 happened.
 [^i-asked-for-packaging-in-surveys]: I'm _very_ happy that we have done this.
 
-    I'd initially discussed the idea of surveying Python Packaging users to Shamika, [the Python Packaging Project Manager](https://pyfound.blogspot.com/2021/04/the-psf-is-hiring-python-packaging.html), in late 2021, in an video call with her.
+    I'd initially discussed the idea of surveying users specifically on Python Packaging things to Shamika, [the Python Packaging Project Manager](https://pyfound.blogspot.com/2021/04/the-psf-is-hiring-python-packaging.html), in late 2021, in an video call with her.
 
     I'm very grateful for the work that Shamika and many others have put toward this; the 2021 Python Developer Survey included a [full section on Python Packaging][packaging-in-2021-py-dev-survey] (some are questions that I'd suggested!) and there's been a dedicated [2022 Python Packaging Survey][2022-py-pack-survey] which has some extremely valuable data.
 
