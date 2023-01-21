@@ -233,7 +233,7 @@ As it stands, the PyPA views itself as a big umbrella. Basically "any establishe
 
 From the discussions I've had, the reasons have ranged from some sense of maintaining control (which doesn't really have [good precedence](https://github.com/pypa/pipenv/issues/607#issuecomment-330878876)), to logistical issues like GitHub Actions queues, as well as a sense of being able to "be successful without the tag".
 
-Also, to say that these tools are "are not participating in the PyPA"[^lwn] is grossly incorrect. PDM's whole [pitch _today_](https://github.com/pdm-project/pdm/blob/c0974672a17be965ddcb0e191d35df08ad0c4b6e/README.md?plain=1#L5) is that it is "A modern Python package and dependency manager supporting the latest PEP standards". Poetry's authors somewhat regularly interact with the interoperability discussions and its original author has even co-authored a PEP.
+Also, to say that these tools are "are not participating in the PyPA"[^lwn] is incorrect. PDM's whole [pitch _today_](https://github.com/pdm-project/pdm/blob/c0974672a17be965ddcb0e191d35df08ad0c4b6e/README.md?plain=1#L5) is that it is "A modern Python package and dependency manager supporting the latest PEP standards". Poetry's authors somewhat regularly interact with the interoperability discussions and its original author has even co-authored a PEP.
 
 ## On the Python Packaging Authority
 
