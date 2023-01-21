@@ -120,8 +120,8 @@ These tools are firmly in a competitive model. They're competing for users. They
 
 Other than the obvious sign that these tools can't be used together on the same codebase (mostly), this can be seen in other aspects of these projects:
 
-- the way they're marketed/documented -- they have an incentive to do so, because they're competing for users and good-looking/flashy documentation is a good way to attract users.
-- the way they do community management: some have dedicated community Discord servers, mention $tool ecosystems, have their own $tool plugin ecosystems, etc
+- the way they're marketed/documented -- they have an incentive to invest in this, because they're competing for users and good-looking/flashy documentation is a good way to attract users.
+- the way they do community management: some have dedicated community Discord servers, mention $tool-specific ecosystems, have their own $tool plugin ecosystems, etc.
 - the way their users advocate for them as the one-true-solution on the internet :)
 
 This competition also leads to incentives for projects to do things that implement [draft standards that are not accepted or settled](https://github.com/pypa/hatch/commit/fea611be96f79559ecf227d2a68b6dfbf3b3c2ec) and [claims that standards are implemented, even when the implementation does not match the standard][pdm-pep582].
