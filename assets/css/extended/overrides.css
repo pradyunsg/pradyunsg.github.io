@@ -177,3 +177,8 @@ body .post-content .social-icons a {
 .footnotes li p {
   margin-bottom: 0.25rem;
 }
+
+.footnotes li:target {
+  opacity: 1;
+  background: var(--border);
+}
