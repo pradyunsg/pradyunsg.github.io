@@ -311,7 +311,7 @@ LWN [recently](https://lwn.net/SubscriberLink/920132/cb4d6c0f07b54952/) directed
 
 That blog post has captured the current discourse around Python packaging and set the tone: one painting the volunteers who currently maintain the tooling as being "vs reality".
 
-This is exactly the sort of thing that happens when there's no authoritative voice in the space: the vacuum will be filled by someone else on the internet, who will likely be making sensational claims that aren't being validated.
+This is exactly the sort of thing that happens when there's no authoritative voice in the space: the vacuum will be filled by someone else on the internet, who will likely be making sensational claims that aren't being validated before being repeated.
 
 ## On formal UX analysis
 
