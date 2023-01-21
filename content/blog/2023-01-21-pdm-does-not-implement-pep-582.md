@@ -33,7 +33,7 @@ Well, outside of the issues with implementing draft proposals in workflow toolin
 
 I'm willing to trust that PDM's authors are well intentioned and didn't intentionally aim to end up with "false advertising" in the first feature the project lists in the README.
 
-Besides, I only look closer look at this because I was talking to one of PEP 582's authors recently, and [LWN][lwn][^1] linked to someone on the internet was claiming that PDM is a solution to Python packaging.
+Besides, I only took closer look at this because I was talking to one of PEP 582's authors recently, and [LWN][lwn][^1] linked to someone on the internet was claiming that PDM is a solution to Python packaging.
 
 [lwn]: https://lwn.net/SubscriberLink/920132/cb4d6c0f07b54952/
 
