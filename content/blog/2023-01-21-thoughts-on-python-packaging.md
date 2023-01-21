@@ -357,7 +357,7 @@ Finally, I do have more thoughts; especially on how to get to a better place, bu
 [^pypa-goals-have-not-been-updated]: The PyPA goals should really be updated, once the dust has settled around the whole strategy discussion.
 [^pip-is-guaranteed]: Yes, I know about Linux distros that break things. Yes, I know that you have a `--without-pip` (or equivalent) flag on venv/virtualenv. They're both edge cases in this context, _not_ the norm.
 [^poetry-resolver]:
-    Poetry's dependency resolver and lockfile operates under the assumption that _all_ files for a package + version are going to have the exact same metadata. While is is a choice that Poetry can make, because it's "opinionated", it's not something that other tools can do.
+    Poetry's dependency resolver and lockfile operates under the assumption that _all_ files for a package + version are going to have the exact same metadata. While it is a choice that Poetry can make, because it's "opinionated", it's not something that other tools can do.
 
     Notably, it's an incorrect assumption; baked in because PyPI's rough-draft-became-production implementation of metadata handling treated metadata from the first wheel uploaded to PyPI as the releases' metadata.
 
