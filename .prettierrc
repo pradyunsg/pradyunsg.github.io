@@ -1,5 +1,5 @@
 {
-  "proseWrap": "always",
+  "proseWrap": "never",
   "overrides": [
     {
       "files": ["*.html"],
