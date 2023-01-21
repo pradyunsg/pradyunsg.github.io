@@ -206,7 +206,7 @@ Hatch is tied to hatchling, and ["it would be an extraordinary amount of effort"
 
 Poetry has its own dependency specification format, and the corresponding build-backend enables it to build packages that use that format.
 
-PDM is better on this front, in that it has greater backend-agnostic behaviours to it. However, pdm-backend undergoing is a rewrite to ["provide a similar extensible interface to hatchling"][pdm-rewrite].
+PDM is better on this front, in that it has greater backend-agnostic behaviours to it. However, pdm-backend is undergoing a rewrite to ["provide a similar extensible interface to hatchling"][pdm-rewrite].
 
 These were all made possible by the explicit focus of the PyPA on designing an interoperability model -- i.e. Unix-like approach -- which these tools have used to create tool-specific build-backends. :)
 
