@@ -112,7 +112,7 @@ The stated goal of PEP 517 is:
 
 > The goal of this PEP is get distutils-sig out of the business of being a gatekeeper for Python build systems. If you want to use distutils, great; if you want to use something else, then that should be easy to do using standardized methods.
 
-Moving to a competitive model for build mechanisms was intended to enable the ecosystem to move away from the "only one way" of building Python packages (the quote is from the Zen of Python) _because_ the [implementation of we had "only one way" was exceedingly difficult to evolve](https://peps.python.org/pep-0517/#abstract).
+Moving to a competitive model for build mechanisms was intended to enable the ecosystem to move away from the "only one way" of building Python packages (the quote is from the Zen of Python) _because_ the [implementation we had of "only one way" was exceedingly difficult to evolve](https://peps.python.org/pep-0517/#abstract).
 
 ### Poetry / PDM / Hatch / PyFlow / etc
 
