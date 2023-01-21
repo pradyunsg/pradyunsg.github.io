@@ -301,7 +301,7 @@ There's no single place where users can go to get information about the Python p
 
 We either (a) don't have them documented or (b) don't have a good approach to communicating about this to end users.
 
-### On formal UX analysis
+## On formal UX analysis
 
 This has been mentioned in multiple places and has come up in the past in other contexts around Python Packaging.
 
