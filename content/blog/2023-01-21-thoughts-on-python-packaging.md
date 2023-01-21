@@ -229,7 +229,7 @@ This is how, for example, we end up with [packaging.python.org](https://packagin
 
 The _only_ reason various Python packaging projects (notably, Poetry and PDM) are not PyPA projects is because they've never asked to become one.
 
-As it stands, the PyPA views itself as a big umbrella. Basically "any established Python packaging project" that asks to be included, will be accepted. If Poetry and PDM ever asked to join, as it stands, there's no version of this timeline where the existing PyPA members say no.
+As it stands, the PyPA views itself as a big umbrella. Basically any established Python packaging project that asks to be included, will be accepted. If Poetry and PDM ever asked to join, as it stands, there's no version of this timeline where the existing PyPA members say no.
 
 From the discussions I've had, the reasons have ranged from some sense of maintaining control (which doesn't really have [good precedence](https://github.com/pypa/pipenv/issues/607#issuecomment-330878876)), to logistical issues like GitHub Actions queues, as well as a sense of being able to "be successful without the tag".
 
