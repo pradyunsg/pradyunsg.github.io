@@ -340,7 +340,7 @@ Finally, I do have more thoughts; especially on how to get to a better place, bu
 [^stackoverflow-survey]: [The 2013/2014/2015 StackOverflow survey results](https://insights.stackoverflow.com/survey/2015#tech-lang) are a fun trip down technology history. PHP is more popular than Python. "Node.js and AngularJS are busting out". "Java is still the #1 server side language".
 [^dsa-lol]: If you clicked the link and think like me: yes, I checked, I did reasonably well in my Data Structures and Algorithms course.
 [^flit-weaker-example]: I [may be biased](https://pradyunsg.me/about/#flit) but it's worth noting that Flit is part of _why_ PEP 517 happened.
-[^i-asked-for-packaging-in-surveys]: I've _very_ happy that we have done this.
+[^i-asked-for-packaging-in-surveys]: I'm _very_ happy that we have done this.
 
     I'd initially discussed the idea of surveying Python Packaging users to Shamika, [the Python Packaging Project Manager](https://pyfound.blogspot.com/2021/04/the-psf-is-hiring-python-packaging.html), in late 2021, in an video call with her.
 
