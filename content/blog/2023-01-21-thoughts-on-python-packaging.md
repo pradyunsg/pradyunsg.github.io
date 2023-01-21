@@ -261,7 +261,7 @@ I'm not sure what the right answer is, but I don't think we're in a good place r
 
 ## We don't need _more_ "generic" build-backends today
 
-With [setuptools gaining pyproject.toml configuration support][setuptools-pyproject] and [a standard structure for declaring metadata that is implemented by ~every build-backend][pyproject-metadata], there isn't a significant difference between the various tools.
+With [setuptools gaining pyproject.toml configuration support][setuptools-pyproject] and [a standard structure for declaring metadata that is implemented by ~every build-backend][pyproject-metadata], there isn't a significant difference between the various tools for pure-Python packages.
 
 There are only so many ways to construct a `.zip` file containing a bunch of pure-Python files + metadata. The only real difference is in the user experience, and the user experience is largely determined by the tooling that invokes the build-backend.
 
