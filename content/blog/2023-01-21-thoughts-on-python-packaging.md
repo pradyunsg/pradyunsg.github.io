@@ -3,7 +3,7 @@ title: "Thoughts on the Python packaging ecosystem"
 tags: ["Python Packaging"]
 ---
 
-My response to the discussion topic posed in [Python Packaging Strategy Discussion Part 1][motivating-topic] become quite long, so I decided to move it to write a blog post instead. This post then started absorbing various draft posts I've had on this topic since this blog was started, morphing to include my broader thoughts on where we are today.
+My response to the discussion topic posed in [Python Packaging Strategy Discussion Part 1][motivating-topic] had become quite long, so I decided to move it to write a blog post instead. This post then started absorbing various draft posts I've had on this topic since this blog was started, morphing to include my broader thoughts on where we are today.
 
 ## TL;DR
 
