@@ -162,3 +162,18 @@ body .post-content .social-icons a {
 .page-not-found {
   text-align: center;
 }
+
+/* Footnotes plz */
+.footnotes {
+  font-size: 0.875rem;
+}
+.footnotes li {
+  opacity: 0.8;
+  margin-top: 1rem;
+}
+.footnotes li:hover {
+  opacity: 1;
+}
+.footnotes li p {
+  margin-bottom: 0.25rem;
+}
