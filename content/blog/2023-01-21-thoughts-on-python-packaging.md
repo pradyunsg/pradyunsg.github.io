@@ -124,7 +124,7 @@ Other than the obvious sign that these tools can't be used together on the same 
 - the way they do community management: some have dedicated community Discord servers, mention $tool-specific ecosystems, have their own $tool plugin ecosystems, etc.
 - the way their users advocate for them as the one-true-solution on the internet :)
 
-This competition also leads to incentives for projects to do things that implement [draft standards that are not accepted or settled](https://github.com/pypa/hatch/commit/fea611be96f79559ecf227d2a68b6dfbf3b3c2ec) and [claims that standards are implemented, even when the implementation does not match the standard][pdm-pep582].
+This competition also leads to incentives for projects to do things like implementing [draft standards that are not accepted or settled](https://github.com/pypa/hatch/commit/fea611be96f79559ecf227d2a68b6dfbf3b3c2ec) and [claims that standards are implemented, even when the implementation does not match the standard][pdm-pep582].
 
 ## Unintended competition
 
