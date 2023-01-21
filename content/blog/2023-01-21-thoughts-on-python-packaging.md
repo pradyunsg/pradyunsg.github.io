@@ -237,7 +237,7 @@ Also, to say that these tools are "are not participating in the PyPA"[^lwn] is g
 
 ## On the Python Packaging Authority
 
-I think there's a need to reconsider what the Python Packaging Authority should be trying to do. We've been cruising on the premise that we're maintaining foundational tools and designing for interoperability is the "right" model for the Python packaging ecosystem. I'm not sure that's the case.
+I think there's a need to reconsider what the Python Packaging Authority should be trying to do and what it even is. We've been cruising on the premise that we're maintaining foundational tools and designing for interoperability is the "right" model for the Python packaging ecosystem. I'm not sure that's the case.
 
 Between the user surveys, having a $work role where I'm directly influencing user workflows beyond the installer, spending time helping out with scientific Python tooling and with [pyOpenSci](https://www.pyopensci.org/), and the discussions in the strategy thread... I'm starting to think that our current approach is not working and is harmful[^unintentionally] unintentionally. Each projects' maintainers effectively decides on different aspects of the the overall UX for. Each project acts as its own project. There is no broader guiding "roadmap". Making decisions about how the default tooling of the ecosystem works is "not appropriate" for our process to hashing out technical design proposals. There is no "blessed" tool and yet there are defaults, things that ship with the Python standard library and PyPA recommendations.
 
