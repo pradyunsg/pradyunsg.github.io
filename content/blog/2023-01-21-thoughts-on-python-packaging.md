@@ -1,9 +1,12 @@
 ---
 title: "Thoughts on the Python packaging ecosystem"
 tags: ["Python Packaging"]
+modified: 2021-01-21
 ---
 
 My response to the discussion topic posed in [Python Packaging Strategy Discussion Part 1][motivating-topic] had become quite long, so I decided to move it to write a blog post instead. This post then started absorbing various draft posts I've had on this topic since this blog was started, morphing to include my broader thoughts on where we are today.
+
+_Note_: I've updated this to cover an aspect of the recent LWN article on the topic as well.
 
 ## TL;DR
 
@@ -230,6 +233,8 @@ As it stands, the PyPA views itself as a big umbrella. Basically "any establishe
 
 From the discussions I've had, the reasons have ranged from some sense of maintaining control (which doesn't really have [good precedence](https://github.com/pypa/pipenv/issues/607#issuecomment-330878876)), to logistical issues like GitHub Actions queues, as well as a sense of being able to "be successful without the tag".
 
+Also, to say that these tools are "are not participating in the PyPA"[^lwn] is grossly incorrect. PDM's whole [pitch _today_](https://github.com/pdm-project/pdm/blob/c0974672a17be965ddcb0e191d35df08ad0c4b6e/README.md?plain=1#L5) is that it is "A modern Python package and dependency manager supporting the latest PEP standards". Poetry's authors somewhat regularly interact with the interoperability discussions and its original author has even co-authored a PEP.
+
 ## On the Python Packaging Authority
 
 I think there's a need to reconsider what the Python Packaging Authority should be trying to do. We've been cruising on the premise that we're maintaining foundational tools and designing for interoperability is the "right" model for the Python packaging ecosystem. I'm not sure that's the case.
@@ -298,9 +303,13 @@ We _still_ don't have agreement that this is the direction that we, as a communi
 
 ## Centralized user-facing communication channel
 
-There's no single place where users can go to get information about the Python packaging ecosystem -- either on how it's evolving or what the functional best-practices are _today_.
+There's no single place where users can go to get information about the Python packaging ecosystem -- either on how it's evolving or what the functional best-practices are _today_. We either (a) don't have them documented or (b) don't have a good approach to communicating about this to end users.
 
-We either (a) don't have them documented or (b) don't have a good approach to communicating about this to end users.
+There's a cost to this.
+
+LWN [recently](https://lwn.net/SubscriberLink/920132/cb4d6c0f07b54952/) directed readers to a blog post that claims that the strategy discussion is evidence for that, implies that there's "ivory towers of packaging tool maintainers", that "half of the discussion participants did not even bother reading what the people think" based on a misunderstanding of how the discussions have occurred[^discourse-link-counts] and that the Python Packaging User survey happened in a vaccum (It didn't, and was [extensively](https://discuss.python.org/t/rfc-survey-to-help-define-a-python-packaging-vision-and-strategy/15658) [discussed](https://discuss.python.org/t/your-feedback-required-python-packaging-user-survey/18070) before that topic even started). That blog post captured the current discourse around Python packaging and set the tone: one painting the volunteers who currently maintain the tooling as being "vs reality".
+
+This is exactly the sort of thing that happens when there's no authoritative voice in the space: the media vacuum will be filled by someone else on the internet, who will likely be making sensational claims that aren't being validated.
 
 ## On formal UX analysis
 
@@ -364,3 +373,5 @@ Finally, I do have more thoughts; especially on how to get to a better place, bu
 [^unintentionally]: unintentionally. I don't think anyone came out thinking "We should design for a bad UX" but here we are.
 [^pipenv-kr]: Before an individual with a [controlling attitude](https://github.com/pypa/pipenv/issues/607#issuecomment-330878876) got involved and made some [overzealous marketing claims](https://github.com/pypa/pipfile/pull/138), and... [then this was published](https://vorpus.org/blog/why-im-not-collaborating-with-kenneth-reitz/).
 [^combative-packaging]: I'm referring to distutils2 / setuptools / distribute.
+[^lwn]: I'm absolutely looking at LWN's summary here. More on this later.
+[^discourse-link-counts]: Those links are in "Summary of discussions" -- discussions that most participants have already participated in. Plus, I'm pretty sure Discourse doesn't count middle-clicks.
