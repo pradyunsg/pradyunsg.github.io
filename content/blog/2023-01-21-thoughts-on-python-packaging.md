@@ -375,5 +375,5 @@ Finally, I do have more thoughts; especially on how to get to a better place, bu
 [^unintentionally]: unintentionally. I don't think anyone came out thinking "We should design for a bad UX" but here we are.
 [^pipenv-kr]: Before an individual with a [controlling attitude](https://github.com/pypa/pipenv/issues/607#issuecomment-330878876) got involved and made some [overzealous marketing claims](https://github.com/pypa/pipfile/pull/138), and... [then this was published](https://vorpus.org/blog/why-im-not-collaborating-with-kenneth-reitz/).
 [^combative-packaging]: I'm referring to distutils2 / setuptools / distribute.
-[^lwn]: I'm absolutely looking at LWN's summary here. More on this later. In case someone from LWN ends up reading this: I think that was a bad editorial choice.
+[^lwn]: I'm absolutely looking at LWN's summary here. More on this later but, in case someone from LWN ends up reading this: I think those quotes (and directing readers toward the post they're from) were a bad editorial choice. Tacking on "(opinionated)" is grossly insufficient, given the inaccuracy of multiple claims in that post.
 [^discourse-link-counts]: Those links are in "Summary of discussions" -- discussions that most participants have already participated in. Plus, I'm pretty sure Discourse doesn't count middle-clicks.
