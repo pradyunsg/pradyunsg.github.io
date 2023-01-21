@@ -331,6 +331,8 @@ Finally, I do have more thoughts; especially on how to get to a better place, bu
 [pypug-overview]: https://packaging.python.org/en/latest/overview/
 [pdm-rewrite]: https://discuss.python.org/t/python-packaging-strategy-discussion-part-1/22420/141?u=pradyunsg
 [pdm-pep582]: https://pradyunsg.me/blog/2023/01/21/pdm-does-not-implement-pep-582/
+[packaging-in-2021-py-dev-survey]: https://lp.jetbrains.com/python-developers-survey-2021/#PythonPackaging
+[2022-py-pack-survey]: https://drive.google.com/file/d/1U5d5SiXLVkzDpS0i1dJIA4Hu5Qg704T9/view
 
 [^setuptools-is-gonna-stop-shipping]: [Setuptools is not gonna installed by default in a `venv`, starting with Python 3.12](https://github.com/python/cpython/pull/101039) and only shipped with Python because it was needed by pip, prior to pyproject.toml-based builds being a thing.
 [^pyproject-toml-builds]: That's what the cool kids say now -- it's a bit of a mouthful, but it's more accurate than PEP 517, and better than PEP 517/518/621/660-based build systems. ;)
