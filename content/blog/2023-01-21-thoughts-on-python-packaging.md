@@ -307,9 +307,11 @@ There's no single place where users can go to get information about the Python p
 
 There's a cost to this.
 
-LWN [recently](https://lwn.net/SubscriberLink/920132/cb4d6c0f07b54952/) directed readers to a blog post that claims that the strategy discussion is evidence for that, implies that there's "ivory towers of packaging tool maintainers", that "half of the discussion participants did not even bother reading what the people think" based on a misunderstanding of how the discussions have occurred[^discourse-link-counts] and that the Python Packaging User survey happened in a vaccum (It didn't, and was [extensively](https://discuss.python.org/t/rfc-survey-to-help-define-a-python-packaging-vision-and-strategy/15658) [discussed](https://discuss.python.org/t/your-feedback-required-python-packaging-user-survey/18070) before that topic even started). That blog post captured the current discourse around Python packaging and set the tone: one painting the volunteers who currently maintain the tooling as being "vs reality".
+LWN [recently](https://lwn.net/SubscriberLink/920132/cb4d6c0f07b54952/) directed readers to a blog post that claims that the strategy discussion is evidence for that, implies that there's "ivory towers of packaging tool maintainers", that "half of the discussion participants did not even bother reading what the people think" based on a misunderstanding of how the discussions have occurred[^discourse-link-counts] and that the Python Packaging User survey happened in a vaccum (it was [extensively](https://discuss.python.org/t/rfc-survey-to-help-define-a-python-packaging-vision-and-strategy/15658) [discussed](https://discuss.python.org/t/your-feedback-required-python-packaging-user-survey/18070) before the strategy discussion even started).
 
-This is exactly the sort of thing that happens when there's no authoritative voice in the space: the media vacuum will be filled by someone else on the internet, who will likely be making sensational claims that aren't being validated.
+That blog post has captured the current discourse around Python packaging and set the tone: one painting the volunteers who currently maintain the tooling as being "vs reality".
+
+This is exactly the sort of thing that happens when there's no authoritative voice in the space: the vacuum will be filled by someone else on the internet, who will likely be making sensational claims that aren't being validated.
 
 ## On formal UX analysis
 
@@ -373,5 +375,5 @@ Finally, I do have more thoughts; especially on how to get to a better place, bu
 [^unintentionally]: unintentionally. I don't think anyone came out thinking "We should design for a bad UX" but here we are.
 [^pipenv-kr]: Before an individual with a [controlling attitude](https://github.com/pypa/pipenv/issues/607#issuecomment-330878876) got involved and made some [overzealous marketing claims](https://github.com/pypa/pipfile/pull/138), and... [then this was published](https://vorpus.org/blog/why-im-not-collaborating-with-kenneth-reitz/).
 [^combative-packaging]: I'm referring to distutils2 / setuptools / distribute.
-[^lwn]: I'm absolutely looking at LWN's summary here. More on this later.
+[^lwn]: I'm absolutely looking at LWN's summary here. More on this later. In case someone from LWN ends up reading this: I think that was a bad editorial choice.
 [^discourse-link-counts]: Those links are in "Summary of discussions" -- discussions that most participants have already participated in. Plus, I'm pretty sure Discourse doesn't count middle-clicks.
