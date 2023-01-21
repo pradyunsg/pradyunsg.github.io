@@ -3,7 +3,7 @@ title: "PDM does not implement PEP 582"
 tags: ["Python Packaging", "PDM", "PEP 582", "Quick Ones"]
 ---
 
-PDM [claims to implement PEP 582](https://github.com/pdm-project/pdm/tree/c0974672a17be965ddcb0e191d35df08ad0c4b6e#readme). However, if you look at what it implements, it is [something completely different](https://github.com/pdm-project/pdm/blob/c0974672a17be965ddcb0e191d35df08ad0c4b6e/src/pdm/pep582/sitecustomize.py#L11) from [the standard](https://peps.python.org/pep-0582/#example).
+PDM [claims to implement PEP 582](https://github.com/pdm-project/pdm/tree/c0974672a17be965ddcb0e191d35df08ad0c4b6e#highlights-of-features). However, if you look at what it implements, it is [something completely different](https://github.com/pdm-project/pdm/blob/c0974672a17be965ddcb0e191d35df08ad0c4b6e/src/pdm/pep582/sitecustomize.py#L11) from [the standard](https://peps.python.org/pep-0582/#example).
 
 ## PDM's file system structure
 
