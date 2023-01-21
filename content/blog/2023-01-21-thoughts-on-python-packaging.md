@@ -184,7 +184,7 @@ Given the privileged position that pip has within the ecosystem (i.e. ships with
 
 Now, on the face of it, this is a completely different direction from PyPA's model of "interoperability standards through concensus" because, effectively, whatever pip implements would become a de-facto standard for what the ecosystem and tooling supports.
 
-On the other hand, if we focus on designing an interoperability through concensus before implementing functionality in pip, implementing vital workflow improvements is now blocked on an exhaustingly long process of a non-iterative, waterfall-style design process. Further, An interoperable lockfile format also has to try to satisfy needs to tools that use completely different resolution models _even_ semantically incorrect ones[^poetry-resolver].
+On the other hand, if we focus on designing an interoperability through concensus before implementing functionality in pip, implementing vital workflow improvements is now blocked on an exhaustingly long process of a non-iterative, waterfall-style design process. Further, an interoperable lockfile format also has to try to satisfy needs to tools that use completely different resolution models _even_ semantically incorrect ones[^poetry-resolver].
 
 Taking a slightly iterative approach of "we'll cover the more complicated case later" caused [the last proposal for a lockfile format standard](https://peps.python.org/pep-0665/) to be rejected after months of discussion.
 
