@@ -187,7 +187,7 @@ Given the privileged position that pip has within the ecosystem (i.e. ships with
 
 Now, on the face of it, this is a completely different direction from PyPA's model of "interoperability standards through concensus" because, effectively, whatever pip implements would become a de-facto standard for what the ecosystem and tooling supports.
 
-On the other hand, if we focus on designing for interoperability through concensus before implementing functionality in pip, implementing vital workflow improvements is now blocked on an exhaustingly long process of a non-iterative, waterfall-style design process. Further, an interoperable lockfile format also has to try to satisfy needs to tools that use completely different resolution models _even_ semantically incorrect ones[^poetry-resolver].
+On the other hand, if we focus on designing for interoperability through concensus before implementing functionality in pip, implementing vital workflow improvements is now blocked on an exhaustingly long process of a non-iterative, waterfall-style design process. Further, an interoperable lockfile format also has to try to satisfy needs of tools that use completely different resolution models, _even_ semantically incorrect ones[^poetry-resolver].
 
 Taking a slightly iterative approach of "we'll cover the more complicated case later" caused [the last proposal for a lockfile format standard](https://peps.python.org/pep-0665/) to be rejected after months of discussion.
 
@@ -201,9 +201,9 @@ Hatchling, pdm-backend and poetry-core are all examples of this. Flit/flit-core 
 
 The build backends are all solving the "build a wheel from Python code" problem, but with different user experiences tacked onto them. Building multiple tools that solve the same problem is duplicated effort.
 
-Part of the problem here is that these tools (with the exception of PDM) are not built with interoperability in their design, and these tools have basically little to no incentive to take on the complexities of providing interoperability.
+Part of the problem here is that these tools (except for PDM) are not built with interoperability in their design, and these tools have basically little to no incentive to take on the complexities of providing interoperability.
 
-Flit can only be used with flit_core, and `flit build` doesn't build the same artifacts as `python -m build` would.
+Flit can only be used with flit_core, and `flit build` doesn't build the same artefacts as `python -m build` would.
 
 Hatch is tied to hatchling, and ["it would be an extraordinary amount of effort"][hatchling-coupling] to support using a different build-backend for your project when using Hatch.[^hatchling-hatch]
 
@@ -213,7 +213,7 @@ PDM is better on this front, in that it has greater backend-agnostic behaviours 
 
 These were all made possible by the explicit focus of the PyPA on designing an interoperability model -- i.e. Unix-like approach -- which these tools have used to create tool-specific build-backends. :)
 
-While we trying to enforce that one way of building packages/managing dependencies for all Python users is not feasible... having 4 build-backends that all handle pure-Python packages with the same file holding their configuration, while providing slightly different user experiences is _also_ not a good place to be in IMO.
+While trying to enforce that one way of building packages/managing dependencies for all Python users is not feasible... having 4 build-backends that all handle pure-Python packages with the same file holding their configuration, while providing slightly different user experiences is _also_ not a good place to be in IMO.
 
 ## Pick from N ~equivalent choices is really bad UX
 
@@ -223,23 +223,23 @@ The problem with not making a default recommendation for these largely-inconsequ
 
 This also leads to the same problems being solved twice -- there's duplicated effort and duplicated documentation. Each project will design their own approach and there's incentive for projects to try to "out-compete" each other by providing more features or by providing better documentation, rather than contributing to improving a common corpus.
 
-This is how, for example, we end up with [packaging.python.org](https://packaging.python.org) not having [a standard structure for declaring metadata that is implemented by ~every build-backend][pyproject-metadata] documented, even though there was _extensive_ documentation for the same in multiple tools' own documentation for months. Each of those tools' authors have had incentives to document it for their users and it was easier to do so in their own documentation where they don't have to worry about the concerns of other tools or "being generic enough".
+This is how, for example, we end up with [packaging.python.org](https://packaging.python.org) not having [a standard structure for declaring metadata that is implemented by ~every build-backend][pyproject-metadata] documented, even though there was _extensive_ documentation for the same in multiple tools' own documentation for months. Each of those tools' authors have had incentives to document it for their users and it was easier to do so in their own documentation, where they don't have to worry about the concerns of other tools or "being generic enough".
 
 ## "not a PyPA project"
 
 The _only_ reason various Python packaging projects (notably, Poetry and PDM) are not PyPA projects is because they've never asked to become one.
 
-As it stands, the PyPA views itself as a big umbrella. Basically any established Python packaging project that asks to be included, will be accepted. If Poetry and PDM ever asked to join, as it stands, there's no version of this timeline where the existing PyPA members say no.
+As it stands, the PyPA views itself as a big umbrella. Basically, any established Python packaging project that asks to be included, will be accepted. If Poetry and PDM ever asked to join, as it stands, there's no version of this timeline where the existing PyPA members say no.
 
 From the discussions I've had, the reasons have ranged from some sense of maintaining control (which doesn't really have [good precedence](https://github.com/pypa/pipenv/issues/607#issuecomment-330878876)), to logistical issues like GitHub Actions queues, as well as a sense of being able to "be successful without the tag".
 
-Also, to say that these tools are "are not participating in the PyPA"[^lwn] is incorrect. PDM's whole [pitch _today_](https://github.com/pdm-project/pdm/blob/c0974672a17be965ddcb0e191d35df08ad0c4b6e/README.md?plain=1#L5) is that it is "A modern Python package and dependency manager supporting the latest PEP standards". Poetry's authors somewhat regularly interact with the interoperability discussions and its original author has even co-authored a PEP.
+Also, to say that these tools are "are not participating in the PyPA"[^lwn] is incorrect. PDM's whole [pitch _today_](https://github.com/pdm-project/pdm/blob/c0974672a17be965ddcb0e191d35df08ad0c4b6e/README.md?plain=1#L5) is that it is "A modern Python package and dependency manager supporting the latest PEP standards". Poetry's authors somewhat regularly interact with the interoperability discussions, and its original author has even co-authored a PEP.
 
 ## On the Python Packaging Authority
 
 I think there's a need to reconsider what the Python Packaging Authority should be trying to do and what it even is. We've been cruising on the premise that we're maintaining foundational tools and designing for interoperability is the "right" model for the Python packaging ecosystem. I'm not sure that's the case.
 
-Between the user surveys, having a $work role where I'm directly influencing user workflows beyond the installer, spending time helping out with scientific Python tooling and with [pyOpenSci](https://www.pyopensci.org/), and the discussions in the strategy thread... I'm starting to think that our current approach is not working and is harmful[^unintentionally] unintentionally. Each projects' maintainers effectively decide on different aspects of the the overall UX. Each project acts as its own project. There is no broader guiding "roadmap". Making decisions about how the default tooling of the ecosystem works is "not appropriate" for our process to hashing out technical design proposals. There is no "blessed" tool and yet there are defaults, things that ship with the Python standard library and PyPA recommendations.
+Between the user surveys, having a $work role where I'm directly influencing user workflows beyond the installer, spending time helping out with scientific Python tooling and with [pyOpenSci](https://www.pyopensci.org/), and the discussions in the strategy thread... I'm starting to think that our current approach is not working and is harmful[^unintentionally] unintentionally. Each projects' maintainers effectively decide on different aspects of the overall UX. Each project acts as its own project. There is no broader guiding "roadmap". Making decisions about how the default tooling of the ecosystem works is "not appropriate" for our process to hashing out technical design proposals. There is no "blessed" tool and yet there are defaults, things that ship with the Python standard library and PyPA recommendations.
 
 I'm not sure what the right answer is, but I don't think we're in a good place right now. Here's where we are:
 
@@ -287,7 +287,7 @@ Do I think there's a significant amount of work needed for making pip into a wor
 
 Yes.
 
-Do I think that the amount of energy that's gone into Poetry/Hatch/Pipenv/PDM development, collectively, would have made more than a meaningful dent at this issue?
+Do I think that the amount of energy that's gone into Poetry/Hatch/Pipenv/PDM development, collectively, would have made more than a meaningful dent on this issue?
 
 Yes.
 
@@ -321,7 +321,7 @@ I think doing "full UX analysis" is going to be forbiddingly difficult. Don't ge
 
 Something like this is unlikely to happen because there's a _really_ motivated UX expert with a _lot_ of volunteer time to donate. We'd basically need an enormous cheque for work that's... "understand Python packaging really well and figure out a path to making it better". That's a difficult thing to tell a funder to throw money at.
 
-Notably, there's a lot of stakeholders here: the easiest "persona" to identify is the maintainers of the tools themselves. After that, it starts to become fuzzy quickly. There's redistributors, end users, Linux OS distros, Linux-specific non-OS package managers, cross-platform distributions, direct users, corporate users who have their own internal packaging systems, or like astronomers, students, statisticians, business analysts, and more.
+Notably, there are a lot of stakeholders here: the easiest "persona" to identify is the maintainers of the tools themselves. After that, it starts to become fuzzy quickly. There's redistributors, end users, Linux OS distros, Linux-specific non-OS package managers, cross-platform distributions, direct users, corporate users who have their own internal packaging systems, or like astronomers, students, statisticians, business analysts, and more.
 
 Breaking the UX problem into a smaller piece, like a single point from the [dimensions we could unify][dimensions], makes this a much more meaningfully sized piece for seeking funding toward. Even then, it'll still probably only be available to be funded by the larger wallets and likely need to be a part of a project that has some other deliverables.
 
