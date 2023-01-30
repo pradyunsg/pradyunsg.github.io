@@ -1,5 +1,5 @@
 ---
-title: "PDM does not implement PEP 582"
+title: "PDM does not implement PEP 582, as it is today"
 tags: ["Python Packaging", "PDM", "PEP 582", "Quick Ones"]
 ---
 
@@ -26,6 +26,12 @@ PDM [claims to implement PEP 582](https://github.com/pdm-project/pdm/tree/c09746
                     bottle
     myscript.py
 ```
+
+## How did this happen?
+
+PDM implemented a draft PEP. Draft PEPs are not final, and are subject to changes.
+
+Furthermore, PDM cannot evolve with the PEP since that "means frequent breakages to the user experience as the standard evolves".
 
 ## Why does this matter?
 
