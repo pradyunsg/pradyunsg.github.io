@@ -1,5 +1,5 @@
 ---
-title: "PDM does not implement PEP 582, as it is today"
+title: "PDM does not implement PEP 582, at the time of writing"
 tags: ["Python Packaging", "PDM", "PEP 582", "Quick Ones"]
 ---
 
