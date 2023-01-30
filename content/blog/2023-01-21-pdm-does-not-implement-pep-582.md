@@ -1,7 +1,10 @@
 ---
 title: "PDM does not implement PEP 582, at the time of writing"
 tags: ["Python Packaging", "PDM", "PEP 582", "Quick Ones"]
+modified: 2023-01-30T22:12:00-07:00
 ---
+
+Note: I've updated this to reflect _how_ this happened, on recommendation from PDM's author.
 
 PDM [claims to implement PEP 582](https://github.com/pdm-project/pdm/tree/c0974672a17be965ddcb0e191d35df08ad0c4b6e#highlights-of-features). However, if you look at what it implements, it is [something completely different](https://github.com/pdm-project/pdm/blob/c0974672a17be965ddcb0e191d35df08ad0c4b6e/src/pdm/pep582/sitecustomize.py#L11) from [the standard](https://peps.python.org/pep-0582/#example).
 
@@ -15,6 +18,8 @@ PDM [claims to implement PEP 582](https://github.com/pdm-project/pdm/tree/c09746
     myscript.py
 ```
 
+PDM will scan for the `__pypackages__` directory up to 5 folders above the "current" one.
+
 ## PEP 582's file system structure
 
 ```text
@@ -27,11 +32,13 @@ PDM [claims to implement PEP 582](https://github.com/pdm-project/pdm/tree/c09746
     myscript.py
 ```
 
+PEP 582 says that the `__pypackages__` directory should be next to the script being executed, and there's no discovery logic "above" the script.
+
 ## How did this happen?
 
-PDM implemented a draft PEP. Draft PEPs are not final, and are subject to changes.
+PDM implemented a draft PEP. Draft PEPs are not final, and are subject to changes. However, PDM cannot evolve with the PEP since that means frequent breakages to the user experience as the standard evolves.
 
-Furthermore, PDM cannot evolve with the PEP since that "means frequent breakages to the user experience as the standard evolves".
+This leads to a situation where PDM is advertising implementing a (draft) PEP, while not implementing that PEP since the draft has evolved.
 
 ## Why does this matter?
 
