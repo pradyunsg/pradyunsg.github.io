@@ -54,7 +54,7 @@
   description: |-
     [Slides], [Video]
 
-    [slides]: https://exmaple.com
+    [slides]: https://pradyunsg.me/talks/slides/2019-python-packaging-overview.pdf
     [video]: https://www.youtube.com/watch?v=1WRRBrPpxhw
 
 - thing: How did I get here?
@@ -63,5 +63,5 @@
   description: |-
     [Slides], [Video]
 
-    [slides]: https://exmaple.com
+    [slides]: https://pradyunsg.me/talks/slides/2019-pycon-korea.pdf
     [video]: https://www.youtube.com/watch?v=dvN3XH2Jtr4
