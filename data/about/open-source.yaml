@@ -22,6 +22,13 @@
   description: |-
     Serves as the primary repository of software for the Python programming language.
 
+- thing: CPython
+  detail: Core Developer
+  timeline: 2023 - Now
+  link: https://github.com/python/cpython
+  description: |-
+    The Python programming language. (became triager in 2022)
+
 - thing: vendoring
   detail: Creator
   timeline: 2019 - Now
@@ -93,13 +100,6 @@
     Simplified packaging and development workflow for Sphinx themes, by building
     upon existing de-facto standard tooling.
 
-- thing: CPython
-  detail: Triager
-  timeline: 2022 - 2023
-  link: https://github.com/python/cpython
-  description: |-
-    The Python programming language.
-
 - thing: Spack
   detail: Maintainer
   timeline: 2022 - Now
@@ -108,9 +108,9 @@
     Spack is a multi-platform package manager that builds and installs multiple
     versions and configurations of software.
 
-- thing: CPython
-  detail: Core Developer
+- thing: sphinx-autobuild
+  detail: Maintainer
   timeline: 2023 - Now
-  link: https://github.com/python/cpython
+  link: https://github.com/sphinx-doc/sphinx-autobuild
   description: |-
-    The Python programming language.
+    Rebuild Sphinx documentation on changes, with live-reload in the browser.

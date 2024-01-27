@@ -1,3 +1,11 @@
+- thing: "Python packaging at Bloomberg"
+  timeline: Oct 2023
+  detail: "Sponsor Talk: PackagingCon 2023"
+
+- thing: "Python and Bloomberg: An Open Source Duo"
+  timeline: April 2023
+  detail: "Sponsor Talk: PyCon US 2023"
+
 - thing: Growing pains of an open source project
   timeline: Oct 2022
   detail: "Keynote: DjangoCon EU 2022"
