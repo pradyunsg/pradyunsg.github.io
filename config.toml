@@ -21,19 +21,20 @@ showCodeCopyButtons = true
 # Shown on the home page
 socialIcons = [
   { name = "github", url = "https://github.com/pradyunsg" },
-  { name = "twitter", url = "https://twitter.com/pradyunsg" },
-  { name = "stackoverflow", url = "https://stackoverflow.com/users/1931274/pradyunsg"},
-  { name = "gitlab", url = "https://gitlab.com/pradyunsg" },
-  { name = "keybase", url = "https://www.keybase.io/pradyunsg" },
+  { name = "mastodon", url = "https://mastodon.social/@pradyunsg" },
+  { name = "stackoverflow", url = "https://stackoverflow.com/users/1931274/pradyunsg" },
   { name = "linkedin", url = "https://www.linkedin.com/in/pradyunsg/" },
   { name = "Python Discourse", url = "https://discuss.python.org/u/pradyunsg/summary" },
-  # { name = "reddit", url = "https://www.reddit.com/user/pradyunsg" },
+  { name = "gitlab", url = "https://gitlab.com/pradyunsg" },
+  { name = "keybase", url = "https://www.keybase.io/pradyunsg" },
+  { name = "reddit", url = "https://www.reddit.com/user/pradyunsg" },
+  { name = "twitter", url = "https://twitter.com/pradyunsg" },
   # { name = "hackerrank", url = "https://www.hackerrank.com/profile/Pradyun"},
 ]
 
 # Configure the home page
 [params.profileMode]
-enabled = true  # I override the index_profile.html file.
+enabled = true # I override the index_profile.html file.
 
 # Site-wide navigation
 [[menu.main]]
