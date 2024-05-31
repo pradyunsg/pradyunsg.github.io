@@ -29,7 +29,7 @@ This usually means that you need to create a virtual environment to run it. That
 
 I figured out a way to ensure that the script can be run without needing to manage a virtual environment myself. Now, it can be run on any machine with a working `curl`, `bash`, `python3` and the ability to download from https://github.com. It also gracefully triggers MacOS' prompt for "Hey, do you want to install our developer tooling stuff?" (XCode Command Line Tools, via the `python3` shim they install on a new Mac).
 
-This is made possible by `pipx`, inline dependency metadata and Python's zipapps. There are also a few shenanigans to make this script a valid Bash script and a valid Python script. A `""""true` serves as our little gem of polyglot magic to make that possible.
+This is made possible by `pipx`, inline dependency metadata and Python's zipapps. There are also a few shenanigans to make this script a valid Bash script and a valid Python script. A `""""true` serves as our little gem of polyglot magic to make that possible.[^3]
 
 ### How it works: Bash
 
@@ -119,3 +119,4 @@ This means that the Bash script is treated as a multiline string by Python. It's
 
 [^1]: `symlink` with periods around it based on where in the file it shows up
 [^2]: It is possible to put almost any valid Bash syntax after the 4 double quotes (like, you can start an `if` statement, or something else) as long as you don't have whitespace between the 4th double quote and the keyword/CLI tool name. I just didn't like how that stuff looked so I went with `true` on that line.
+[^3]: I learned about this approach from [this StackOverflow question](https://stackoverflow.com/q/15190055/1931274).
