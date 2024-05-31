@@ -182,3 +182,16 @@ body .post-content .social-icons a {
   opacity: 1;
   background: var(--border);
 }
+
+.share-buttons {
+  justify-content: left;
+  align-items: center;
+  background: unset;
+  border: none;
+}
+.share-buttons-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

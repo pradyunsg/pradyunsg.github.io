@@ -18,6 +18,7 @@ showReadingTime = true
 showPostNavLinks = true
 showCodeCopyButtons = true
 showFullTextinRSS = true
+showShareButtons = true
 
 # Shown on the home page
 socialIcons = [
