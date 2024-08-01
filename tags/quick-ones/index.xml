@@ -1,8 +1,473 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Quick ones on Pradyun Gedam</title><link>https://pradyunsg.me/tags/quick-ones/</link><description>Recent content in Quick ones on Pradyun Gedam</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 21 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/tags/quick-ones/index.xml" rel="self" type="application/rss+xml"/><item><title>PDM does not implement PEP 582, at the time of writing</title><link>https://pradyunsg.me/blog/2023/01/21/pdm-does-not-implement-pep-582/</link><pubDate>Sat, 21 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/21/pdm-does-not-implement-pep-582/</guid><description>Note: I&amp;rsquo;ve updated this to reflect how this happened, on recommendation from PDM&amp;rsquo;s author.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Quick ones on Pradyun Gedam</title><link>https://pradyunsg.me/tags/quick-ones/</link><description>Recent content in Quick ones on Pradyun Gedam</description><generator>Hugo -- 0.122.0</generator><language>en</language><lastBuildDate>Mon, 30 Jan 2023 22:12:00 -0700</lastBuildDate><atom:link href="https://pradyunsg.me/tags/quick-ones/index.xml" rel="self" type="application/rss+xml"/><item><title>PDM does not implement PEP 582, at the time of writing</title><link>https://pradyunsg.me/blog/2023/01/21/pdm-does-not-implement-pep-582/</link><pubDate>Sat, 21 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/21/pdm-does-not-implement-pep-582/</guid><description>Note: I&amp;rsquo;ve updated this to reflect how this happened, on recommendation from PDM&amp;rsquo;s author.
 PDM claims to implement PEP 582. However, if you look at what it implements, it is something completely different from the standard.
 PDM&amp;rsquo;s file system structure &amp;lt;root&amp;gt; __pypackages__ 3.10 bottle myscript.py PDM will scan for the __pypackages__ directory up to 5 folders above the &amp;ldquo;current&amp;rdquo; one.
-PEP 582&amp;rsquo;s file system structure &amp;lt;root&amp;gt; __pypackages__ lib python3.10 site-packages bottle myscript.</description></item><item><title>Excellent error messages from command line tools, according to ChatGPT</title><link>https://pradyunsg.me/blog/2023/01/02/chatgpt-fun-with-error-messages/</link><pubDate>Mon, 02 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/02/chatgpt-fun-with-error-messages/</guid><description>In late Dec 2022, I played around with ChatGPT in an evening.
+PEP 582&amp;rsquo;s file system structure &amp;lt;root&amp;gt; __pypackages__ lib python3.10 site-packages bottle myscript.</description><content:encoded><![CDATA[<p>Note: I&rsquo;ve updated this to reflect <em>how</em> this happened, on recommendation from PDM&rsquo;s author.</p>
+<p>PDM <a href="https://github.com/pdm-project/pdm/tree/c0974672a17be965ddcb0e191d35df08ad0c4b6e#highlights-of-features">claims to implement PEP 582</a>. However, if you look at what it implements, it is <a href="https://github.com/pdm-project/pdm/blob/c0974672a17be965ddcb0e191d35df08ad0c4b6e/src/pdm/pep582/sitecustomize.py#L11">something completely different</a> from <a href="https://peps.python.org/pep-0582/#example">the standard</a>.</p>
+<h2 id="pdms-file-system-structure">PDM&rsquo;s file system structure</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>&lt;root&gt;
+</span></span><span style="display:flex;"><span>    __pypackages__
+</span></span><span style="display:flex;"><span>        3.10
+</span></span><span style="display:flex;"><span>            bottle
+</span></span><span style="display:flex;"><span>    myscript.py
+</span></span></code></pre></div><p>PDM will scan for the <code>__pypackages__</code> directory up to 5 folders above the &ldquo;current&rdquo; one.</p>
+<h2 id="pep-582s-file-system-structure">PEP 582&rsquo;s file system structure</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>&lt;root&gt;
+</span></span><span style="display:flex;"><span>    __pypackages__
+</span></span><span style="display:flex;"><span>        lib
+</span></span><span style="display:flex;"><span>            python3.10
+</span></span><span style="display:flex;"><span>                site-packages
+</span></span><span style="display:flex;"><span>                    bottle
+</span></span><span style="display:flex;"><span>    myscript.py
+</span></span></code></pre></div><p>PEP 582 says that the <code>__pypackages__</code> directory should be next to the script being executed, and there&rsquo;s no discovery logic &ldquo;above&rdquo; the script.</p>
+<h2 id="how-did-this-happen">How did this happen?</h2>
+<p>PDM implemented a draft PEP. Draft PEPs are not final, and are subject to changes. However, PDM cannot evolve with the PEP since that means frequent breakages to the user experience as the standard evolves.</p>
+<p>This leads to a situation where PDM is advertising implementing a (draft) PEP, while not implementing that PEP since the draft has evolved.</p>
+<h2 id="why-does-this-matter">Why does this matter?</h2>
+<p>Well, outside of the issues with implementing draft proposals in workflow tooling, I think this is reflective of the issues with the competitive nature of the Python packaging ecosystem&rsquo;s workflow tooling space.</p>
+<p>I&rsquo;m willing to trust that PDM&rsquo;s authors are well intentioned and didn&rsquo;t intentionally aim to end up with &ldquo;false advertising&rdquo; in the first feature the project lists in the README.</p>
+<p>Besides, I only took a closer look at this because I was talking to one of PEP 582&rsquo;s authors recently, and <a href="https://lwn.net/SubscriberLink/920132/cb4d6c0f07b54952/">LWN</a><sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> linked to someone on the internet was claiming that PDM is a solution to Python packaging.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Which&hellip; in case someone from LWN ends up reading this: I think that was a bad editorial choice.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded></item><item><title>Excellent error messages from command line tools, according to ChatGPT</title><link>https://pradyunsg.me/blog/2023/01/02/chatgpt-fun-with-error-messages/</link><pubDate>Mon, 02 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/02/chatgpt-fun-with-error-messages/</guid><description>In late Dec 2022, I played around with ChatGPT in an evening.
 Since it was on the top of my mind1, I decided try to nudge ChatGPT into the direction of giving me a useful answer about error message design for command line tools.2
 Now, tell me what an excellent error message from a command line tool should contain.
-An excellent error message from a command line tool should contain the following elements:</description></item><item><title>Wheels are faster, even for pure Python packages</title><link>https://pradyunsg.me/blog/2022/12/31/wheels-are-faster-pure-python/</link><pubDate>Sat, 31 Dec 2022 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2022/12/31/wheels-are-faster-pure-python/</guid><description>When installing with pip (or from PyPI in general), wheels are much faster than source distributions, even for pure-Python projects.
-Packages with native code are a clearer win, because the wheel file will contain pre-compiled binaries for the platform you&amp;rsquo;re installing on. This means that you don&amp;rsquo;t need to have a compiler and non-Python build dependencies installed, and you don&amp;rsquo;t need to wait for the compiler to do its thing.</description></item></channel></rss>
+An excellent error message from a command line tool should contain the following elements:</description><content:encoded><![CDATA[<p>In late Dec 2022, I played around with <a href="https://openai.com/blog/chatgpt/">ChatGPT</a> in an evening.</p>
+<p>Since it was on the top of my mind<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>, I decided try to
+nudge ChatGPT into the direction of giving me a useful answer about error
+message design for command line tools.<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
+<blockquote>
+<p><strong>Now, tell me what an excellent error message from a command line tool should
+contain.</strong></p>
+<p>An excellent error message from a command line tool should contain the
+following elements:</p>
+<ol>
+<li>
+<p>A clear and concise description of the error: The error message should
+explain what went wrong and why the command failed.</p>
+</li>
+<li>
+<p>A suggestion for how to fix the error: If possible, the error message
+should provide a suggestion for how the user can fix the error and try the
+command again.</p>
+</li>
+<li>
+<p>The error code: It can be helpful to include an error code or other
+identifier that can be used to look up more information about the error.</p>
+</li>
+<li>
+<p>The context in which the error occurred: Providing information about the
+context in which the error occurred (e.g., the command that was being run,
+the arguments that were provided) can help the user understand the root
+cause of the error and how to fix it.</p>
+</li>
+<li>
+<p>A link to additional resources: If there are additional resources that can
+help the user understand and fix the error (e.g., documentation, forums),
+it can be helpful to include a link to these resources in the error
+message.</p>
+</li>
+</ol>
+</blockquote>
+<p>I&rsquo;ll admit this was mildly impressive on the first skim-read. Looking closer, it
+became clear that the response is actually flawed in multiple ways and the model
+made some assumptions that are not <em>completely</em> accurate.</p>
+<p>Overall, this is amusing enough to me that I decided to document it here.</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li><a href="https://abnormalsecurity.com/blog/double-edged-sword-of-chatgpt">https://abnormalsecurity.com/blog/double-edged-sword-of-chatgpt</a></li>
+<li><a href="https://stackoverflow.com/help/gpt-policy">https://stackoverflow.com/help/gpt-policy</a></li>
+<li><a href="https://twitter.com/emilymbender/status/1603039301864157184">https://twitter.com/emilymbender/status/1603039301864157184</a></li>
+<li><a href="https://mastodon.social/@Gargron/109469945447325370">https://mastodon.social/@Gargron/109469945447325370</a> ;)</li>
+</ul>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>I am currently working on a library to help achieve a great UX around errors
+(with a focus on command line tools), based off of my work around <a href="https://github.com/pypa/pip/issues/10421"><code>pip</code>&rsquo;s
+error message improvements</a>, <a href="https://sphinx-theme-builder.readthedocs.io/en/latest/errors/"><code>sphinx-theme-builder</code> error
+message design</a> and all the reading/research I&rsquo;ve been doing on
+this topic&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>I&rsquo;m intentionally <em>not</em> publishing the full context of the conversation &ndash;
+you&rsquo;ll have to wait until I release the library to read the final form of
+the blurb I used with ChatGPT as a prompt here. :)&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded></item><item><title>Wheels are faster, even for pure Python packages</title><link>https://pradyunsg.me/blog/2022/12/31/wheels-are-faster-pure-python/</link><pubDate>Sat, 31 Dec 2022 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2022/12/31/wheels-are-faster-pure-python/</guid><description>When installing with pip (or from PyPI in general), wheels are much faster than source distributions, even for pure-Python projects.
+Packages with native code are a clearer win, because the wheel file will contain pre-compiled binaries for the platform you&amp;rsquo;re installing on. This means that you don&amp;rsquo;t need to have a compiler and non-Python build dependencies installed, and you don&amp;rsquo;t need to wait for the compiler to do its thing.</description><content:encoded><![CDATA[<p>When installing with pip (or from PyPI in general), wheels are <em>much</em> faster
+than source distributions, <em>even</em> for pure-Python projects.</p>
+<p>Packages with native code are a clearer win, because the wheel file will contain
+pre-compiled binaries for the platform you&rsquo;re installing on. This means that you
+don&rsquo;t need to have a compiler and non-Python build dependencies installed, and
+you don&rsquo;t need to wait for the compiler to do its thing.</p>
+<h2 id="the-quick-answer">The quick answer</h2>
+<p>Installing from a wheel is analogous to unpacking a zip file. When installing
+from a source distribution, pip will actually build a wheel <em>from</em> the source
+distribution and then install using that wheel. It&rsquo;s the same operation at the
+end of the day, but there&rsquo;s a bunch of extra &ldquo;work&rdquo; involved in building a wheel
+from a source distribution (which contributes to making things slower).</p>
+<h2 id="the-picture-answer">The picture answer</h2>
+
+
+
+<div class="goat svg-container ">
+  
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      font-family="Menlo,Lucida Console,monospace"
+      
+        viewBox="0 0 464 777"
+      >
+      <g transform='translate(8,16)'>
+<path d='M 0,0 L 176,0' fill='none' stroke='currentColor'></path>
+<path d='M 176,16 L 336,16' fill='none' stroke='currentColor'></path>
+<path d='M 0,32 L 80,32' fill='none' stroke='currentColor'></path>
+<path d='M 80,32 L 176,32' fill='none' stroke='currentColor'></path>
+<path d='M 256,96 L 432,96' fill='none' stroke='currentColor'></path>
+<path d='M 256,144 L 336,144' fill='none' stroke='currentColor'></path>
+<path d='M 336,144 L 432,144' fill='none' stroke='currentColor'></path>
+<path d='M 256,192 L 448,192' fill='none' stroke='currentColor'></path>
+<path d='M 256,240 L 336,240' fill='none' stroke='currentColor'></path>
+<path d='M 336,240 L 448,240' fill='none' stroke='currentColor'></path>
+<path d='M 256,288 L 448,288' fill='none' stroke='currentColor'></path>
+<path d='M 256,336 L 336,336' fill='none' stroke='currentColor'></path>
+<path d='M 336,336 L 448,336' fill='none' stroke='currentColor'></path>
+<path d='M 256,384 L 432,384' fill='none' stroke='currentColor'></path>
+<path d='M 256,432 L 336,432' fill='none' stroke='currentColor'></path>
+<path d='M 336,432 L 432,432' fill='none' stroke='currentColor'></path>
+<path d='M 256,480 L 432,480' fill='none' stroke='currentColor'></path>
+<path d='M 256,528 L 336,528' fill='none' stroke='currentColor'></path>
+<path d='M 336,528 L 432,528' fill='none' stroke='currentColor'></path>
+<path d='M 0,560 L 216,560' fill='none' stroke='currentColor'></path>
+<path d='M 224,576 L 336,576' fill='none' stroke='currentColor'></path>
+<path d='M 0,592 L 80,592' fill='none' stroke='currentColor'></path>
+<path d='M 80,592 L 216,592' fill='none' stroke='currentColor'></path>
+<path d='M 0,640 L 176,640' fill='none' stroke='currentColor'></path>
+<path d='M 0,672 L 80,672' fill='none' stroke='currentColor'></path>
+<path d='M 80,672 L 176,672' fill='none' stroke='currentColor'></path>
+<path d='M 0,720 L 176,720' fill='none' stroke='currentColor'></path>
+<path d='M 0,752 L 176,752' fill='none' stroke='currentColor'></path>
+<path d='M 0,0 L 0,32' fill='none' stroke='currentColor'></path>
+<path d='M 0,560 L 0,592' fill='none' stroke='currentColor'></path>
+<path d='M 0,640 L 0,672' fill='none' stroke='currentColor'></path>
+<path d='M 0,720 L 0,752' fill='none' stroke='currentColor'></path>
+<path d='M 80,32 L 80,544' fill='none' stroke='currentColor'></path>
+<path d='M 80,592 L 80,624' fill='none' stroke='currentColor'></path>
+<path d='M 80,672 L 80,704' fill='none' stroke='currentColor'></path>
+<path d='M 176,0 L 176,16' fill='none' stroke='currentColor'></path>
+<path d='M 176,16 L 176,32' fill='none' stroke='currentColor'></path>
+<path d='M 176,640 L 176,672' fill='none' stroke='currentColor'></path>
+<path d='M 176,720 L 176,752' fill='none' stroke='currentColor'></path>
+<path d='M 216,560 L 216,592' fill='none' stroke='currentColor'></path>
+<path d='M 256,96 L 256,144' fill='none' stroke='currentColor'></path>
+<path d='M 256,192 L 256,240' fill='none' stroke='currentColor'></path>
+<path d='M 256,288 L 256,336' fill='none' stroke='currentColor'></path>
+<path d='M 256,384 L 256,432' fill='none' stroke='currentColor'></path>
+<path d='M 256,480 L 256,528' fill='none' stroke='currentColor'></path>
+<path d='M 336,16 L 336,80' fill='none' stroke='currentColor'></path>
+<path d='M 336,144 L 336,176' fill='none' stroke='currentColor'></path>
+<path d='M 336,240 L 336,272' fill='none' stroke='currentColor'></path>
+<path d='M 336,336 L 336,368' fill='none' stroke='currentColor'></path>
+<path d='M 336,432 L 336,464' fill='none' stroke='currentColor'></path>
+<path d='M 336,528 L 336,576' fill='none' stroke='currentColor'></path>
+<path d='M 432,96 L 432,144' fill='none' stroke='currentColor'></path>
+<path d='M 432,384 L 432,432' fill='none' stroke='currentColor'></path>
+<path d='M 432,480 L 432,528' fill='none' stroke='currentColor'></path>
+<path d='M 448,192 L 448,240' fill='none' stroke='currentColor'></path>
+<path d='M 448,288 L 448,336' fill='none' stroke='currentColor'></path>
+<path d='M 80,544 L 80,552' fill='none' stroke='currentColor'></path>
+<polygon points='96.000000,544.000000 84.000000,538.400024 84.000000,549.599976' fill='currentColor' transform='rotate(90.000000, 80.000000, 544.000000)'></polygon>
+<path d='M 80,624 L 80,632' fill='none' stroke='currentColor'></path>
+<polygon points='96.000000,624.000000 84.000000,618.400024 84.000000,629.599976' fill='currentColor' transform='rotate(90.000000, 80.000000, 624.000000)'></polygon>
+<path d='M 80,704 L 80,712' fill='none' stroke='currentColor'></path>
+<polygon points='96.000000,704.000000 84.000000,698.400024 84.000000,709.599976' fill='currentColor' transform='rotate(90.000000, 80.000000, 704.000000)'></polygon>
+<polygon points='232.000000,576.000000 220.000000,570.400024 220.000000,581.599976' fill='currentColor' transform='rotate(180.000000, 224.000000, 576.000000)'></polygon>
+<path d='M 336,80 L 336,88' fill='none' stroke='currentColor'></path>
+<polygon points='352.000000,80.000000 340.000000,74.400002 340.000000,85.599998' fill='currentColor' transform='rotate(90.000000, 336.000000, 80.000000)'></polygon>
+<path d='M 336,176 L 336,184' fill='none' stroke='currentColor'></path>
+<polygon points='352.000000,176.000000 340.000000,170.399994 340.000000,181.600006' fill='currentColor' transform='rotate(90.000000, 336.000000, 176.000000)'></polygon>
+<path d='M 336,272 L 336,280' fill='none' stroke='currentColor'></path>
+<polygon points='352.000000,272.000000 340.000000,266.399994 340.000000,277.600006' fill='currentColor' transform='rotate(90.000000, 336.000000, 272.000000)'></polygon>
+<path d='M 336,368 L 336,376' fill='none' stroke='currentColor'></path>
+<polygon points='352.000000,368.000000 340.000000,362.399994 340.000000,373.600006' fill='currentColor' transform='rotate(90.000000, 336.000000, 368.000000)'></polygon>
+<path d='M 336,464 L 336,472' fill='none' stroke='currentColor'></path>
+<polygon points='352.000000,464.000000 340.000000,458.399994 340.000000,469.600006' fill='currentColor' transform='rotate(90.000000, 336.000000, 464.000000)'></polygon>
+<text text-anchor='middle' x='16' y='20' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='16' y='660' fill='currentColor' style='font-size:1em'>U</text>
+<text text-anchor='middle' x='24' y='20' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='24' y='580' fill='currentColor' style='font-size:1em'>I</text>
+<text text-anchor='middle' x='24' y='660' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='24' y='740' fill='currentColor' style='font-size:1em'>I</text>
+<text text-anchor='middle' x='32' y='20' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='32' y='580' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='32' y='660' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='32' y='740' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='40' y='580' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='40' y='660' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='40' y='740' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='48' y='20' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='48' y='580' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='48' y='660' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='48' y='740' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='56' y='20' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='56' y='580' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='56' y='660' fill='currentColor' style='font-size:1em'>k</text>
+<text text-anchor='middle' x='56' y='740' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='64' y='20' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='64' y='580' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='64' y='740' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='72' y='20' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='72' y='580' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='72' y='660' fill='currentColor' style='font-size:1em'>w</text>
+<text text-anchor='middle' x='72' y='740' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='80' y='20' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='80' y='660' fill='currentColor' style='font-size:1em'>h</text>
+<text text-anchor='middle' x='80' y='740' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='88' y='20' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='88' y='580' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='88' y='660' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='88' y='740' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='96' y='20' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='96' y='52' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='96' y='68' fill='currentColor' style='font-size:1em'>w</text>
+<text text-anchor='middle' x='96' y='580' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='96' y='660' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='104' y='52' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='104' y='68' fill='currentColor' style='font-size:1em'>h</text>
+<text text-anchor='middle' x='104' y='580' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='104' y='660' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='104' y='740' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='112' y='20' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='112' y='52' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='112' y='68' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='112' y='580' fill='currentColor' style='font-size:1em'>m</text>
+<text text-anchor='middle' x='112' y='740' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='120' y='20' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='120' y='52' fill='currentColor' style='font-size:1em'>m</text>
+<text text-anchor='middle' x='120' y='68' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='120' y='660' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='120' y='740' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='128' y='20' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='128' y='68' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='128' y='580' fill='currentColor' style='font-size:1em'>w</text>
+<text text-anchor='middle' x='128' y='660' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='128' y='740' fill='currentColor' style='font-size:1em'>k</text>
+<text text-anchor='middle' x='136' y='20' fill='currentColor' style='font-size:1em'>k</text>
+<text text-anchor='middle' x='136' y='580' fill='currentColor' style='font-size:1em'>h</text>
+<text text-anchor='middle' x='136' y='660' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='136' y='740' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='144' y='20' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='144' y='580' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='144' y='660' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='144' y='740' fill='currentColor' style='font-size:1em'>g</text>
+<text text-anchor='middle' x='152' y='20' fill='currentColor' style='font-size:1em'>g</text>
+<text text-anchor='middle' x='152' y='580' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='152' y='740' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='160' y='20' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='160' y='580' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='176' y='580' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='184' y='580' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='192' y='580' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='200' y='580' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='272' y='212' fill='currentColor' style='font-size:1em'>(</text>
+<text text-anchor='middle' x='272' y='308' fill='currentColor' style='font-size:1em'>(</text>
+<text text-anchor='middle' x='280' y='116' fill='currentColor' style='font-size:1em'>U</text>
+<text text-anchor='middle' x='280' y='132' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='280' y='212' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='280' y='308' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='280' y='404' fill='currentColor' style='font-size:1em'>C</text>
+<text text-anchor='middle' x='280' y='420' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='280' y='500' fill='currentColor' style='font-size:1em'>D</text>
+<text text-anchor='middle' x='280' y='516' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='288' y='116' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='288' y='132' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='288' y='212' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='288' y='228' fill='currentColor' style='font-size:1em'>C</text>
+<text text-anchor='middle' x='288' y='308' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='288' y='324' fill='currentColor' style='font-size:1em'>P</text>
+<text text-anchor='middle' x='288' y='404' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='288' y='420' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='288' y='500' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='288' y='516' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='296' y='116' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='296' y='212' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='296' y='228' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='296' y='308' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='296' y='324' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='296' y='404' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='296' y='500' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='296' y='516' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='304' y='116' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='304' y='132' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='304' y='228' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='304' y='324' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='304' y='404' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='304' y='420' fill='currentColor' style='font-size:1em'>g</text>
+<text text-anchor='middle' x='304' y='500' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='312' y='116' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='312' y='132' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='312' y='212' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='312' y='228' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='312' y='308' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='312' y='324' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='312' y='420' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='312' y='500' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='312' y='516' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='320' y='116' fill='currentColor' style='font-size:1em'>k</text>
+<text text-anchor='middle' x='320' y='132' fill='currentColor' style='font-size:1em'>m</text>
+<text text-anchor='middle' x='320' y='212' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='320' y='228' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='320' y='308' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='320' y='324' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='320' y='404' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='320' y='420' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='320' y='500' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='320' y='516' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='328' y='132' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='328' y='212' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='328' y='228' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='328' y='308' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='328' y='324' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='328' y='404' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='328' y='420' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='328' y='516' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='336' y='116' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='336' y='132' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='336' y='212' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='336' y='308' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='336' y='324' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='336' y='404' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='336' y='420' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='336' y='500' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='336' y='516' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='344' y='116' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='344' y='132' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='344' y='212' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='344' y='228' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='344' y='308' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='344' y='324' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='344' y='404' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='344' y='420' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='344' y='500' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='344' y='516' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='352' y='52' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='352' y='68' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='352' y='116' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='352' y='132' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='352' y='212' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='352' y='228' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='352' y='308' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='352' y='404' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='352' y='420' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='352' y='500' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='352' y='516' fill='currentColor' style='font-size:1em'>k</text>
+<text text-anchor='middle' x='360' y='52' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='360' y='68' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='360' y='116' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='360' y='132' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='360' y='212' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='360' y='228' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='360' y='308' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='360' y='324' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='360' y='404' fill='currentColor' style='font-size:1em'>-</text>
+<text text-anchor='middle' x='360' y='420' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='360' y='500' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='360' y='516' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='368' y='52' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='368' y='68' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='368' y='116' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='368' y='132' fill='currentColor' style='font-size:1em'>y</text>
+<text text-anchor='middle' x='368' y='212' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='368' y='228' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='368' y='308' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='368' y='324' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='368' y='404' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='368' y='500' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='368' y='516' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='376' y='52' fill='currentColor' style='font-size:1em'>m</text>
+<text text-anchor='middle' x='376' y='68' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='376' y='116' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='376' y='228' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='376' y='324' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='376' y='404' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='376' y='420' fill='currentColor' style='font-size:1em'>w</text>
+<text text-anchor='middle' x='384' y='68' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='384' y='132' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='384' y='212' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='384' y='308' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='384' y='324' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='384' y='404' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='384' y='420' fill='currentColor' style='font-size:1em'>h</text>
+<text text-anchor='middle' x='384' y='500' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='384' y='516' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='392' y='68' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='392' y='116' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='392' y='132' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='392' y='212' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='392' y='228' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='392' y='308' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='392' y='324' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='392' y='404' fill='currentColor' style='font-size:1em'>k</text>
+<text text-anchor='middle' x='392' y='420' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='392' y='500' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='392' y='516' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='400' y='116' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='400' y='132' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='400' y='212' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='400' y='228' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='400' y='308' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='400' y='404' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='400' y='420' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='400' y='500' fill='currentColor' style='font-size:1em'>v</text>
+<text text-anchor='middle' x='400' y='516' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='408' y='116' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='408' y='212' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='408' y='228' fill='currentColor' style='font-size:1em'>v</text>
+<text text-anchor='middle' x='408' y='308' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='408' y='324' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='408' y='404' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='408' y='420' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='408' y='516' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='416' y='116' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='416' y='212' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='416' y='308' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='416' y='324' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='416' y='404' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='424' y='212' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='424' y='308' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='424' y='324' fill='currentColor' style='font-size:1em'>v</text>
+<text text-anchor='middle' x='432' y='212' fill='currentColor' style='font-size:1em'>)</text>
+<text text-anchor='middle' x='432' y='308' fill='currentColor' style='font-size:1em'>)</text>
+</g>
+
+    </svg>
+  
+</div>
+<h2 id="the-wordy-answer">The wordy answer</h2>
+<p>When installing from a wheel, pip will fetch the wheel file, and then unpack it.
+That&rsquo;s it. There&rsquo;s nothing else to do.</p>
+<p>When installing from a source distribution, pip will fetch the source
+distribution, unpack it to a temporary directory, (potentially) create a build
+environment and install build-dependencies in that environment, make a
+subprocess call (or multiple) to the build-backend to get it to generate a wheel
+file. The build environment and unpacked sources are then deleted. We now have a
+wheel file which will then be handled like any other wheel file.</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li><a href="https://pip.pypa.io/en/stable/reference/build-system/">How pip builds packages from source</a></li>
+<li><a href="https://packaging.python.org/en/latest/specifications/binary-distribution-format/">Specification of the wheel format</a></li>
+<li><a href="https://installer.pypa.io/">Installer</a>&rsquo;s <a href="https://github.com/pypa/installer/blob/0.6.0/src/installer/_core.py#L64">installation logic</a> code, if you&rsquo;re inclined that way</li>
+<li><a href="https://pypackaging-native.github.io/">pypackaging-native</a>: &ldquo;a collection of content about key Python packaging
+topics and issues for projects using native code&rdquo; (which is what made me write
+this post)</li>
+</ul>
+]]></content:encoded></item></channel></rss>

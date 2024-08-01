@@ -1,10 +1,1006 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Python packaging on Pradyun Gedam</title><link>https://pradyunsg.me/tags/python-packaging/</link><description>Recent content in Python packaging on Pradyun Gedam</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 13 May 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/tags/python-packaging/index.xml" rel="self" type="application/rss+xml"/><item><title>pip 24.1 betas -- help us test a major upcoming change!</title><link>https://pradyunsg.me/blog/2024/05/13/pip-24-1-betas/</link><pubDate>Mon, 13 May 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/05/13/pip-24-1-betas/</guid><description>The pip team has released pip 24.1b1 which contains a lot of significant improvements and bug fixes.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Python packaging on Pradyun Gedam</title><link>https://pradyunsg.me/tags/python-packaging/</link><description>Recent content in Python packaging on Pradyun Gedam</description><generator>Hugo -- 0.122.0</generator><language>en</language><lastBuildDate>Mon, 30 Jan 2023 22:12:00 -0700</lastBuildDate><atom:link href="https://pradyunsg.me/tags/python-packaging/index.xml" rel="self" type="application/rss+xml"/><item><title>pip 24.1 betas -- help us test a major upcoming change!</title><link>https://pradyunsg.me/blog/2024/05/13/pip-24-1-betas/</link><pubDate>Mon, 13 May 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/05/13/pip-24-1-betas/</guid><description>The pip team has released pip 24.1b1 which contains a lot of significant improvements and bug fixes.
 I&amp;rsquo;d like to highlight a major change in this blog post: the removal of support for &amp;ldquo;legacy&amp;rdquo; versions and dependency specification, or as I like to call it, nonsensical versions and dependencies. We&amp;rsquo;re releasing this as a beta to get feedback from the community on how this change affects their workflows.
-Nonsensical versions and dependencies For a bunch of historical reasons, pip has allowed many arbitrary strings as versions and dependency specification.</description></item><item><title>Choreographing a release process for my PyPI packages</title><link>https://pradyunsg.me/blog/2024/01/27/package-release-workflow/</link><pubDate>Sat, 27 Jan 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/01/27/package-release-workflow/</guid><description>I maintain quite a few Python packages and they all have development workflows as well as release processes that are different in various ways.
-This is basically my research document as I am exploring what I want the release process (and supporting development workflow) to look like for the Python packages I maintain, so that I can reduce the overhead caused by the various differences in these projects as well as the need to make all these decisions myself.</description></item><item><title>PDM does not implement PEP 582, at the time of writing</title><link>https://pradyunsg.me/blog/2023/01/21/pdm-does-not-implement-pep-582/</link><pubDate>Sat, 21 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/21/pdm-does-not-implement-pep-582/</guid><description>Note: I&amp;rsquo;ve updated this to reflect how this happened, on recommendation from PDM&amp;rsquo;s author.
+Nonsensical versions and dependencies For a bunch of historical reasons, pip has allowed many arbitrary strings as versions and dependency specification.</description><content:encoded><![CDATA[<p>The pip team has released <a href="https://pypi.org/project/pip/24.1b1/">pip 24.1b1</a> which contains a <a href="https://pip.pypa.io/en/latest/news/#b1-2024-05-06">lot of significant improvements and bug fixes</a>.</p>
+<p>I&rsquo;d like to highlight a major change in this blog post: the removal of support for &ldquo;legacy&rdquo; versions and dependency specification, or as I like to call it, nonsensical versions and dependencies. We&rsquo;re releasing this as a beta to get feedback from the community on how this change affects their workflows.</p>
+<h2 id="nonsensical-versions-and-dependencies">Nonsensical versions and dependencies</h2>
+<p>For a bunch of historical reasons, pip has allowed many arbitrary strings as versions and dependency specification. There&rsquo;s so many kinds of bad behaviours that this &ldquo;feature&rdquo; has enabled.</p>
+<p>My favourite example is <a href="https://github.com/pypa/packaging/issues/530">one I wrote back in 2022</a> on the <code>packaging</code><sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> project&rsquo;s issue tracker:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;This is a completely random string&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>LegacyVersion(<span style="color:#e6db74">&#39;This is a completely random string&#39;</span>)<span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><p>Or providing weird version comparisons:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;1.0&#34;</span>) <span style="color:#f92672">&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;99999.0.whatever&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;1.0&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>Version(<span style="color:#e6db74">&#39;1.0&#39;</span>)<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;99999.0.whatever&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>LegacyVersion(<span style="color:#e6db74">&#39;99999.0.whatever&#39;</span>)<span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><p>Or hiding mistakes in dependency declarations:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> all_dependencies <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>     <span style="color:#e6db74">&#34;package == 1&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>     <span style="color:#e6db74">&#34;another-package&#34;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>     <span style="color:#e6db74">&#34;yet-another-package&#34;</span>,
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> [packaging<span style="color:#f92672">.</span>requirements<span style="color:#f92672">.</span>Requirement(s) <span style="color:#66d9ef">for</span> s <span style="color:#f92672">in</span> all_dependencies]
+</span></span><span style="display:flex;"><span>[<span style="color:#f92672">&lt;</span>Requirement(<span style="color:#e6db74">&#39;package==1another-package&#39;</span>)<span style="color:#f92672">&gt;</span>, <span style="color:#f92672">&lt;</span>Requirement(<span style="color:#e6db74">&#39;yet-another-package&#39;</span>)<span style="color:#f92672">&gt;</span>]
+</span></span></code></pre></div><p>Over a decade ago, the Python packaging ecosystem adopted <a href="https://peps.python.org/pep-0440/">PEP 440</a> which defined a standard for versions and dependency specification. While this standard has been adopted by basically every single tool in the ecosystem, support for &ldquo;legacy&rdquo; versions and requirements has been maintained even though it has caused a lot of user confusion and bugs in the Python ecosystem.</p>
+<h2 id="getting-rid-of-the-nonsense">Getting rid of the nonsense</h2>
+<p>Over the course of the last decade, across multiple projects in the Python packaging ecosystem, many PyPA projects have been working to make this behaviour not possible. The package index, <a href="https://pypi.org">https://pypi.org</a>, has not accepted uploads with bad versions for many years now and is also enforcing validity of the requirements on all uploads. The tooling that generate packages (build-backends) also now refuse to generate packages with such bad metadata in them.</p>
+<p>This effort has been undertaken by many people across the Python packaging ecosystem, and I&rsquo;m very grateful for all the work that has gone into this. It regularly surprises me how much work goes into making sure that the foundational pieces of Python&rsquo;s packaging ecosystem are improving, even absent any institutional investment into it.</p>
+<p>This pip release marks the next major step in the direction of improving behaviours in this area: updating the package installer to stop accepting such packages. Starting with this pip release, pip will refuse to install packages with bad versions or dependency specification and will ignore any files with such bad versions or dependency specification during the dependency resolution step.</p>
+<h2 id="where-we-cant-see-the-nonsense">Where we can&rsquo;t see the nonsense</h2>
+<p>While a substantial amount of effort has been put into making sure pip can work correctly when enforcing correctness around these versions and dependency specification, we want to be cautious in rolling out this change. There are many places that Python is used where we can&rsquo;t access the packages (e.g. private package indexes hosting proprietary code), and thus can&rsquo;t ensure that packages have appropriate metadata in those spaces.</p>
+<p>We&rsquo;re releasing this as a beta to get feedback from the community on any issues that might arise from this change. This will help us better understand how this change affects user workflows and what actionable guidance can be provided to users in various contexts.</p>
+<h2 id="help-us-test-the-changes">Help us test the changes</h2>
+<p>We&rsquo;re looking for feedback from Python users on this beta release. Notably, we&rsquo;d like for users who are using package indexes other than PyPI to test their workflows against this beta release of pip and provide us with feedback.</p>
+<p>You can let us know about issues related to this change on pip&rsquo;s issue tracker (please check for duplicates before filing, and use reactions rather than saying &ldquo;me too&rdquo;!). Please also feel welcome to tell us about the good stuff, like if this release made dependency resolves quicker &ndash; we like hearing about that too! :)</p>
+<h2 id="acknowledgements">Acknowledgements</h2>
+<p>While there&rsquo;s a lot of people who have worked on things I mentioned in this blog post, I can&rsquo;t really list them all here &ndash; you know who you are, and thank you for all the work you&rsquo;ve done toward this as well as the other cool things you&rsquo;ve worked on.</p>
+<p>I do want to thank Paul Moore, Stéphane Bidoul, Richard Si and Pavithra Eswaramoorthy for reviewing various drafts of this post and providing feedback on it.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Listen, software engineers are great at naming things. This is obviously the Python package providing shared common implementations of Python packaging standards for Python packaging tools. And, yes, it&rsquo;s hosted on the Python package index.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded></item><item><title>Choreographing a release process for my PyPI packages</title><link>https://pradyunsg.me/blog/2024/01/27/package-release-workflow/</link><pubDate>Sat, 27 Jan 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/01/27/package-release-workflow/</guid><description>I maintain quite a few Python packages and they all have development workflows as well as release processes that are different in various ways.
+This is basically my research document as I am exploring what I want the release process (and supporting development workflow) to look like for the Python packages I maintain, so that I can reduce the overhead caused by the various differences in these projects as well as the need to make all these decisions myself.</description><content:encoded><![CDATA[<p>I maintain quite a few Python packages and they all have development workflows as well as release processes that are different in various ways.</p>
+<p>This is basically my research document as I am exploring what I want the release process (and supporting development workflow) to look like for the Python packages I maintain, so that I can reduce the overhead caused by the various differences in these projects as well as the need to make all these decisions myself. I&rsquo;m posting this publicly so that I can get feedback from a few people I know about this and whether they think it makes sense.</p>
+<p>None of this is related to the whole &ldquo;what build-backend/environment management/script runner tool should I use&rdquo; situation but rather it&rsquo;s everything &ldquo;around&rdquo; that. I&rsquo;m not going into the test running or documentation building aspects here, &ldquo;just&rdquo; the mechanics around making a package release.</p>
+<h2 id="my-design-goals">My design goals</h2>
+<p>This is basically &ldquo;what I want&rdquo; in terms of using existing communication channels, ensuring consistency and the development workflow.</p>
+<ul>
+<li>Have the version number managed as-is in the source tree.</li>
+<li>Have the version number be <code>{last_release+1}.dev{N}</code> during development.</li>
+<li>Have a git tag pointing to the commit with a release&rsquo;s code.</li>
+<li>Have a changelog auto-generated based on the Git history or source tree.</li>
+<li>Include the changelog in the documentation at the release tag.</li>
+<li>Publish to pypi.org via Trusted Publishers, triggered automatically but requiring manual approval<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.</li>
+<li>Publish a GitHub release.
+<ul>
+<li>Include the changelog in the GitHub release description.</li>
+<li>Include the release files on the GitHub release.</li>
+</ul>
+</li>
+<li>The git tag and GitHub release must not be published if the release cannot be uploaded to PyPI.</li>
+<li>Releasing to PyPI requires a manual approval even after PR merge.</li>
+</ul>
+<h2 id="what-those-design-goals-imply">What those design goals imply</h2>
+<ul>
+<li>changelog:
+<ul>
+<li>needs to be maintained in Markdown, specifically the intersection of <a href="https://github.github.com/gfm/">GFM</a> and <a href="https://myst-parser.readthedocs.io/en/latest/">MyST</a>.</li>
+<li>needs to be generated <em>before</em> making the commit that the release would be tagged on, since the documentation within the release should contain the generated changelog.</li>
+<li>needs to only describe what happened between this release and the last one (so that it makes sense in the GitHub releases UI).</li>
+</ul>
+</li>
+<li>PyPI release:
+<ul>
+<li>needs to happen on GitHub Actions, and the release needs to be triggered by a git tag (with protection rules on git tags).</li>
+<li>needs to also upload the files to GitHub release.</li>
+</ul>
+</li>
+<li>version number:
+<ul>
+<li>need a figure out the logic for bumping to next development version.</li>
+<li>need some way to detect when a PR changes the version number and determine the commit that should trigger a release.</li>
+</ul>
+</li>
+</ul>
+<h2 id="lets-figure-out-the-details-now">Let&rsquo;s figure out the details now</h2>
+<p>The specific flow that seems to be needed here is:</p>
+<ul>
+<li>Merge a PR that bumps the release version.</li>
+<li>The merge will trigger a &ldquo;release&rdquo; workflow that has the ability to push a commit (containing the changelog) and trigger a different &ldquo;publish&rdquo; workflow.</li>
+<li>The triggered &ldquo;publish&rdquo; workflow needs approval to run and has the ability to publish to PyPI, push a git tag, publish a GitHub release and include the description as well as release files<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>.</li>
+</ul>
+<h3 id="changelog-is-not-the-same-everywhere">Changelog is not the same everywhere</h3>
+<p>Well, the changelog in documentation needs to do some things that the GitHub UI would do for &ldquo;free&rdquo;: have a link to the original diff between releases and a link to individual PRs in changelog entries.</p>
+<p>Additionally, the changelog in documentation should also have a preview when looking at &ldquo;latest&rdquo; documentation, to communicate how things would work.</p>
+<h3 id="deciding-on-how-to-detect-version-number-changes">Deciding on how to detect version number changes</h3>
+<p>There&rsquo;s basically 2 options here:</p>
+<ul>
+<li>Try to look at the source of truth that lives in the source code (like <code>src/package/__init__.py -&gt; __version__</code> / <code>pyproject.toml -&gt; project.version</code>).</li>
+<li>Look at the relevant PR and bump the version based on some immutable thing about the PR.</li>
+</ul>
+<p>I think the first is a better experience, since it&rsquo;s a bit more intuitive &ndash; the version number changed and a release was automatically made. With this, an obvious place to make the release tag would be the &ldquo;first&rdquo; commit that bumps the version, which would need to vary based on merge strategy&hellip;</p>
+<ul>
+<li>merge commit: Use the merge commit into <code>main</code>, that has the multiple parents.</li>
+<li>squash merges: Use the first commit that bumps the version.</li>
+<li>rebase merges: Use the first commit that bumps the version&hellip; but wait&hellip;</li>
+</ul>
+<h4 id="oh-heck-rebase-merges">Oh heck, rebase merges</h4>
+<p>Ohk, let&rsquo;s think through this. I have a PR that contains 3 commits:</p>
+<ul>
+<li><code>3pstrel</code> Awesome change after the version bump</li>
+<li><code>2verbmp</code> Version bump</li>
+<li><code>1prerel</code> Awesome change before the version bump</li>
+<li><code>0staquo</code> (main) Status quo</li>
+</ul>
+<p>Assuming that this is rebase-merged, I <em>think</em> the release commit should be based on top of <code>2verbmp</code>. But, the only way to have it make sense with <code>3pstrel</code> is to have the release commit be based on <code>2verbmp</code> and then later to do a merge commit &ndash; which defeats the point of rebase merges (linear history).</p>
+<p>I guess there&rsquo;s 2 options here:</p>
+<ul>
+<li>Detect such cases and error out.</li>
+<li>Don&rsquo;t bother merging back the release tag commit.</li>
+</ul>
+<p>If we don&rsquo;t merge back the release tag commit, then the release process needs to not require <em>any</em> code change other than the version bump. The changelog needs to be managed out-of-tree somehow (eg: in git?). I like having the ability to update a changelog entry that was contributed by a fly-by contributor after the PR has been merged, so this is a no-go for me.</p>
+<p>In terms of detecting such cases, I guess I could have a GitHub Actions check that there isn&rsquo;t a commit in the PR after one that bumps the version.</p>
+<h4 id="looking-at-the-source-of-truth">Looking at the source of truth</h4>
+<p>Doing a quick search on the internet for how to find when a line has changed with git, I found <a href="https://stackoverflow.com/questions/13692072/git-blame-committed-line">a useful StackOverflow question</a> which points me to <code>git log -L &lt;range&gt;:&lt;file&gt;</code>. Trying it out on pip tells me this is a good option:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh-session" data-lang="sh-session"><span style="display:flex;"><span>❯ git ls -L 3,3:src/pip/__init__.py -q
+</span></span><span style="display:flex;"><span>c0cce3ca6 Bump for development [Stéphane Bidoul]
+</span></span><span style="display:flex;"><span>e3dc91dad (tag: 23.3) Bump for release [Stéphane Bidoul]
+</span></span><span style="display:flex;"><span>b6a267059 Bump for development [Paul Moore]
+</span></span><span style="display:flex;"><span>a3c2c43c5 (tag: 23.2) Bump for release [Paul Moore]
+</span></span><span style="display:flex;"><span>2fd3e408d Bump for development [Paul Moore]
+</span></span><span style="display:flex;"><span>6424ac460 (tag: 23.1) Bump for release [Paul Moore]
+</span></span><span style="display:flex;"><span>d21af1c98 Bump for development [Pradyun Gedam]
+</span></span><span style="display:flex;"><span>368c7b4c5 (tag: 23.0) Bump for release [Pradyun Gedam]
+</span></span><span style="display:flex;"><span>c8ae28001 Bump for development [Paul Moore]
+</span></span><span style="display:flex;"><span>0a76da3a9 (tag: 22.3) Bump for release [Paul Moore]
+</span></span><span style="display:flex;"><span>2132eb4cd Bump for development [Stéphane Bidoul]
+</span></span><span style="display:flex;"><span>8e7e76e60 (tag: 22.2) Bump for release [Stéphane Bidoul]
+</span></span><span style="display:flex;"><span>88d565cc3 Bump for development [Pradyun Gedam]
+</span></span><span style="display:flex;"><span>3c953322c (tag: 22.1) Bump for release [Pradyun Gedam]
+</span></span><span style="display:flex;"><span>6012b48e5 Bump for development [Pradyun Gedam]
+</span></span><span style="display:flex;"><span>9b203d5af (tag: 22.1b1) Bump for release [Pradyun Gedam]
+</span></span><span style="display:flex;"><span>0a916125e Bump for development [Pradyun Gedam]
+</span></span><span style="display:flex;"><span>1742af7bd (tag: 22.0) Bump for release [Pradyun Gedam]
+</span></span><span style="display:flex;"><span>2bf32f5f9 Bump for development [Pradyun Gedam]
+</span></span><span style="display:flex;"><span>abec8a701 (tag: 21.3) Bump for release [Pradyun Gedam]
+</span></span><span style="display:flex;"><span>[...]
+</span></span></code></pre></div><p>And, that the existing automation around pip releases is quite nice.</p>
+<p>I still need to figure out how to gracefully handle changes to the source of truth for versions as well as moving it around without logical changes (eg: editing the docstring, or changing quoting etc).</p>
+<p>Oh, this reminded me about pip&rsquo;s releases&hellip;</p>
+<h3 id="lets-think-about-pip">Let&rsquo;s think about pip</h3>
+<p>I&rsquo;m not the only one who makes the calls on this but I think it would be nice to move pip to Trusted Publishers for publishing releases. Looking at the documented pip process, the main things that&rsquo;d <strong>need</strong> to different if it adopted this release process would be:</p>
+<ol>
+<li>Update <code>get-pip.py</code>&rsquo;s GitHub repository to reflect the new pip release on PyPI.</li>
+<li>Update an AUTHORS file.</li>
+</ol>
+<p>Those don&rsquo;t seem particularly bad. For 1, we&rsquo;d need to tweak the generation logic over on <code>get-pip.py</code> to listen for <code>repository_dispatch</code> and <a href="https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event">trigger that event</a> manually with the relevant payload and that&rsquo;ll need <code>pypa/pip</code> to store an access token to <code>pypa/get-pip</code> that is only exposed for that specific trigger, which&hellip; seems doable.</p>
+<h2 id="what-needs-to-be-created">What needs to be created?</h2>
+<ul>
+<li>3 GitHub Actions reusable workflows for individual &ldquo;tasks&rdquo;
+<ul>
+<li>A &ldquo;release&rdquo; workflow that determines if a release needs to be made and triggers the &ldquo;publish&rdquo; workflow via a <code>workflow_dispatch</code>.</li>
+<li>A &ldquo;publish&rdquo; workflow that does all the mechanics of making the release.</li>
+<li>A &ldquo;release-check&rdquo; workflow that checks the commit situation to protect against &ldquo;commit after version bump&rdquo; edge cases.</li>
+</ul>
+</li>
+<li>1 GitHub Actions reusable workflow for consolidated handling in project CI, to enable the project&rsquo;s <code>release.yml</code> to be a short file that&rsquo;s &ldquo;just&rdquo; <code>on: [...]</code> and <code>uses: [...]</code>.</li>
+</ul>
+<h2 id="naming-the-second-hardest-problem-in-computer-science">Naming: The second hardest problem in computer science</h2>
+<p>I feel like I should come up with a name for this, because it&rsquo;d make communicating about this easier for me and because this workflow <em>feels</em> like it would be useful to more than just me.</p>
+<p>This is automation that makes a release when it detects by a version change in source code and publishes to PyPI and GitHub, with an auto-generated changelog.</p>
+<p>For now, this is a problem for future me and depends on whether he decides that he needs to maintain another piece of reusable software.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>With a few too many &ldquo;critical&rdquo; (i.e. top 1% packages) on PyPI, including literally pip, I think an extra step to ensure that it&rsquo;s a bit harder to take-over things unilaterally seems reasonable to me.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>If you&rsquo;re an SBOM/SLSA person, this is also where I&rsquo;d like to include some sort of attestation/provenance information but there isn&rsquo;t any clear-enough documentation that I could find for how to do this. Please email me if you know of a solution (<code>mail@{this domain}</code>).&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded></item><item><title>PDM does not implement PEP 582, at the time of writing</title><link>https://pradyunsg.me/blog/2023/01/21/pdm-does-not-implement-pep-582/</link><pubDate>Sat, 21 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/21/pdm-does-not-implement-pep-582/</guid><description>Note: I&amp;rsquo;ve updated this to reflect how this happened, on recommendation from PDM&amp;rsquo;s author.
 PDM claims to implement PEP 582. However, if you look at what it implements, it is something completely different from the standard.
 PDM&amp;rsquo;s file system structure &amp;lt;root&amp;gt; __pypackages__ 3.10 bottle myscript.py PDM will scan for the __pypackages__ directory up to 5 folders above the &amp;ldquo;current&amp;rdquo; one.
-PEP 582&amp;rsquo;s file system structure &amp;lt;root&amp;gt; __pypackages__ lib python3.10 site-packages bottle myscript.</description></item><item><title>Thoughts on the Python packaging ecosystem</title><link>https://pradyunsg.me/blog/2023/01/21/thoughts-on-python-packaging/</link><pubDate>Sat, 21 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/21/thoughts-on-python-packaging/</guid><description>My response to the discussion topic posed in Python Packaging Strategy Discussion Part 1 had become quite long, so I decided to move it to write a blog post instead. This post then started absorbing various draft posts I&amp;rsquo;ve had on this topic since this blog was started, morphing to include my broader thoughts on where we are today.
-Note: I&amp;rsquo;ve updated this to cover an aspect of the recent LWN article on the topic as well.</description></item><item><title>How the Python Packaging community is organised</title><link>https://pradyunsg.me/blog/2023/01/14/python-packaging-organisation/</link><pubDate>Sat, 14 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/14/python-packaging-organisation/</guid><description>The way the Python packaging community is organised is something that I&amp;rsquo;ve explained in multiple places, in multiple contexts. I figure that it&amp;rsquo;ll be useful to actually write it down in a single place, so that I don&amp;rsquo;t have to repeat myself.
-The Python Packaging Authority The Python Packaging Authority (PyPA) is a fairly loose group of projects that happen to be related to Python packaging. While the PyPA has a formal governance model, there&amp;rsquo;s no &amp;ldquo;oversight&amp;rdquo; or &amp;ldquo;enforcement&amp;rdquo; on projects that are part of the PyPA &amp;ndash; they are only required to adopt the PSF Code of Conduct and to be accepted by the existing members.</description></item><item><title>Wheels are faster, even for pure Python packages</title><link>https://pradyunsg.me/blog/2022/12/31/wheels-are-faster-pure-python/</link><pubDate>Sat, 31 Dec 2022 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2022/12/31/wheels-are-faster-pure-python/</guid><description>When installing with pip (or from PyPI in general), wheels are much faster than source distributions, even for pure-Python projects.
-Packages with native code are a clearer win, because the wheel file will contain pre-compiled binaries for the platform you&amp;rsquo;re installing on. This means that you don&amp;rsquo;t need to have a compiler and non-Python build dependencies installed, and you don&amp;rsquo;t need to wait for the compiler to do its thing.</description></item></channel></rss>
+PEP 582&amp;rsquo;s file system structure &amp;lt;root&amp;gt; __pypackages__ lib python3.10 site-packages bottle myscript.</description><content:encoded><![CDATA[<p>Note: I&rsquo;ve updated this to reflect <em>how</em> this happened, on recommendation from PDM&rsquo;s author.</p>
+<p>PDM <a href="https://github.com/pdm-project/pdm/tree/c0974672a17be965ddcb0e191d35df08ad0c4b6e#highlights-of-features">claims to implement PEP 582</a>. However, if you look at what it implements, it is <a href="https://github.com/pdm-project/pdm/blob/c0974672a17be965ddcb0e191d35df08ad0c4b6e/src/pdm/pep582/sitecustomize.py#L11">something completely different</a> from <a href="https://peps.python.org/pep-0582/#example">the standard</a>.</p>
+<h2 id="pdms-file-system-structure">PDM&rsquo;s file system structure</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>&lt;root&gt;
+</span></span><span style="display:flex;"><span>    __pypackages__
+</span></span><span style="display:flex;"><span>        3.10
+</span></span><span style="display:flex;"><span>            bottle
+</span></span><span style="display:flex;"><span>    myscript.py
+</span></span></code></pre></div><p>PDM will scan for the <code>__pypackages__</code> directory up to 5 folders above the &ldquo;current&rdquo; one.</p>
+<h2 id="pep-582s-file-system-structure">PEP 582&rsquo;s file system structure</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>&lt;root&gt;
+</span></span><span style="display:flex;"><span>    __pypackages__
+</span></span><span style="display:flex;"><span>        lib
+</span></span><span style="display:flex;"><span>            python3.10
+</span></span><span style="display:flex;"><span>                site-packages
+</span></span><span style="display:flex;"><span>                    bottle
+</span></span><span style="display:flex;"><span>    myscript.py
+</span></span></code></pre></div><p>PEP 582 says that the <code>__pypackages__</code> directory should be next to the script being executed, and there&rsquo;s no discovery logic &ldquo;above&rdquo; the script.</p>
+<h2 id="how-did-this-happen">How did this happen?</h2>
+<p>PDM implemented a draft PEP. Draft PEPs are not final, and are subject to changes. However, PDM cannot evolve with the PEP since that means frequent breakages to the user experience as the standard evolves.</p>
+<p>This leads to a situation where PDM is advertising implementing a (draft) PEP, while not implementing that PEP since the draft has evolved.</p>
+<h2 id="why-does-this-matter">Why does this matter?</h2>
+<p>Well, outside of the issues with implementing draft proposals in workflow tooling, I think this is reflective of the issues with the competitive nature of the Python packaging ecosystem&rsquo;s workflow tooling space.</p>
+<p>I&rsquo;m willing to trust that PDM&rsquo;s authors are well intentioned and didn&rsquo;t intentionally aim to end up with &ldquo;false advertising&rdquo; in the first feature the project lists in the README.</p>
+<p>Besides, I only took a closer look at this because I was talking to one of PEP 582&rsquo;s authors recently, and <a href="https://lwn.net/SubscriberLink/920132/cb4d6c0f07b54952/">LWN</a><sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> linked to someone on the internet was claiming that PDM is a solution to Python packaging.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Which&hellip; in case someone from LWN ends up reading this: I think that was a bad editorial choice.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded></item><item><title>Thoughts on the Python packaging ecosystem</title><link>https://pradyunsg.me/blog/2023/01/21/thoughts-on-python-packaging/</link><pubDate>Sat, 21 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/21/thoughts-on-python-packaging/</guid><description>My response to the discussion topic posed in Python Packaging Strategy Discussion Part 1 had become quite long, so I decided to move it to write a blog post instead. This post then started absorbing various draft posts I&amp;rsquo;ve had on this topic since this blog was started, morphing to include my broader thoughts on where we are today.
+Note: I&amp;rsquo;ve updated this to cover an aspect of the recent LWN article on the topic as well.</description><content:encoded><![CDATA[<p>My response to the discussion topic posed in <a href="https://discuss.python.org/t/python-packaging-strategy-discussion-part-1/22420?u=pradyunsg">Python Packaging Strategy Discussion Part 1</a> had become quite long, so I decided to move it to write a blog post instead. This post then started absorbing various draft posts I&rsquo;ve had on this topic since this blog was started, morphing to include my broader thoughts on where we are today.</p>
+<p><em>Note</em>: I&rsquo;ve updated this to cover an aspect of the recent LWN article on the topic as well.</p>
+<h2 id="tldr">TL;DR</h2>
+<p>This post is a bit long, so here&rsquo;s the key points I&rsquo;m making:</p>
+<ul>
+<li>The Python packaging ecosystem <em>unintentionally</em> became the type of competitive space that it is today.</li>
+<li>The community needs to make an explicit decision if it should continue operating under the model that led to status quo.</li>
+<li>Pick from N different tools that do N different things is a good model.</li>
+<li>Pick from N ~equivalent choices is a <em>really bad</em> user experience.</li>
+<li>Picking a default doesn&rsquo;t make other approaches illegal.</li>
+<li>Communication about the Python packaging ecosystem is fragmented, and we should improve that.</li>
+</ul>
+<hr>
+<details>
+<summary>My experience around Python Packaging</summary>
+<p>At the time of writing:</p>
+<ul>
+<li>I&rsquo;m a maintainer on pip, installer, resolvelib, packaging, flit, Spack (allegedly), sphinx-theme-builder, pyproject-hooks, and more.</li>
+<li>I&rsquo;m a moderator on PyPI.</li>
+<li>I&rsquo;ve contributed in varying manners to setuptools, wheel, warehouse (i.e. PyPI), pipenv, Poetry, packaging.python.org, build, and more.</li>
+<li>As a maintainer on pip, I&rsquo;m a member of the Python Packaging Authority (PyPA).</li>
+<li>I&rsquo;ve co-authored multiple <a href="https://peps.python.org/topic/packaging/">Packaging PEPs</a>, including the <a href="https://www.python.org/dev/peps/pep-0609/">PyPA&rsquo;s Governance Model</a>.</li>
+<li>I&rsquo;ve been the PEP-Delegate on multiple Packaging PEPs, trusted to make decisions on behalf of the community.</li>
+</ul>
+</details>
+<!-- Python packaging has quite a reputation of being ridiculously difficult to get right, understand and work with. It would not be a stretch to say that the packaging and distribution story for Python is one of the main sources of pain for many users. -->
+<h2 id="python-users-are-_not_-software-engineers">Python users are <em>not</em> software engineers</h2>
+<p>Many of the users who write Python code are <em>not</em> primarily full-time software engineers or &ldquo;developers&rdquo;. They are not particularly interested in this aspect of their job. They&rsquo;re using Python as a tool to get their job done. They&rsquo;re not interested in the details of how the tool works, or even how complicated things are under the hood.</p>
+<p>As Thea (Stargirl) Flowers <a href="https://hachyderm.io/@stargirl/109697057391904145">said recently</a>:</p>
+<blockquote>
+<p>The reason there are so many tools for managing Python dependencies is because Python is not a monoculture and different folks need different things.</p>
+</blockquote>
+<h2 id="user-expectations-for-a-default-workflow">User expectations for a &ldquo;default&rdquo; workflow</h2>
+<p>A class of users expect a packaging tool that provides a cohesive experience (like npm (NodeJS), cargo (Rust), gem (Ruby), pub (Dart), dotnet (C#/.NET), etc) &ndash; a single tool that provides a build system, dependency manager, publishing, running project-specific tasks/scripts, etc. I&rsquo;ve referred to this as &ldquo;workflow tool&rdquo; in this post.</p>
+<p>Certain other ecosystems have this in their &ldquo;default&rdquo; tool, providing a much more streamlined experience for users. I have first hand experience of this for NodeJS and Rust, where they have a single tool that users invoke to do the majority of their work:</p>
+<ul>
+<li>create a new project.</li>
+<li>install/manage dependencies.</li>
+<li>run their project w/ those dependencies.</li>
+<li>test their project.</li>
+<li>publish their project.</li>
+<li>more?!</li>
+</ul>
+<p>Today, each of these pieces is a separate tool for Python and doesn&rsquo;t have a strict 1:1 mapping to the &ldquo;best practices&rdquo;/&ldquo;secure&rdquo; workflows. This is at odds with the expectations that these users have. This class of users, by and large, want consolidation and a single-tool experience.</p>
+<p>We know that this class of users exists because we have:</p>
+<ul>
+<li>a number of popular tools that are attempting to provide this experience.</li>
+<li>results from user surveys we&rsquo;ve done<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> <a href="https://drive.google.com/file/d/1U5d5SiXLVkzDpS0i1dJIA4Hu5Qg704T9/view">clearly indicate this</a> as well.</li>
+<li>had multiple community members say this in multiple ways, across multiple channels.</li>
+</ul>
+<h2 id="flexibility-leads-to-complexity">Flexibility leads to complexity</h2>
+<p>Brian Skinn <a href="https://discuss.python.org/t/packaging-vision-and-strategy-next-steps/21513/8?u=pradyunsg">said recently</a>:</p>
+<blockquote>
+<p>You can package darn near anything in Python, even though it may take figuring out a complicated three-step-and-a-hop process to get there… and I suspect that this has been part of what’s enabled Python to grow into its “second best programming language for every task” aphorism.</p>
+</blockquote>
+<p>I think there&rsquo;s some truth to that. <a href="https://packaging.python.org/en/latest/overview/">&ldquo;An Overview of Packaging for Python&rdquo;</a> on packaging.python.org expresses a similar tone as well:</p>
+<blockquote>
+<p>Packaging in Python has a bit of a reputation for being a bumpy ride. This impression is mostly a byproduct of Python’s versatility.</p>
+</blockquote>
+<p>I do want to contrast this with the fact that the overview page takes over 3000 words, to provide the &ldquo;high-level&rdquo; overview for how one can approach packaging a Python project. It doesn&rsquo;t even touch the specifics of configuration or provide any specific workflow guidance with that much digital ink.</p>
+<p>The bumpy ride reputation is not misplaced, and is the most frequent user complaint (more on this later). There are consequences to the degree of flexibility afforded to users by the Python packaging ecosystem:</p>
+<ul>
+<li>every Python project has to make multiple decisions about how they want to do certain things</li>
+<li>every Python user has to make choices for how they wanna manage their Python installation and workflow tools</li>
+<li>it leads to multiple ways to achieve the same thing when trying to use Python packaging tools, with some of these ways being subtly wrong</li>
+<li>it leads to a larger surface area of behaviours of existing/established tools that users rely upon.</li>
+<li>it makes it much more likely that new users hit edge cases and paper-cuts, that more-experienced developers won&rsquo;t hit because they have adapted their workflow to avoid certain failure modes over time.</li>
+</ul>
+<p>The flexibility is <em>great</em> to have when you need it but, without a &ldquo;default&rdquo; workflow, it serves to create more user confusion than it resolves. It contributes to the bumpy ride reputation and to the perceived complexity.</p>
+<h2 id="placing-the-python-packaging-ecosystem-on-the-community-spectrum">Placing the Python packaging ecosystem on the community spectrum</h2>
+<p>When I was reading <a href="https://www.harihareswara.net/posts/2022/the-community-spectrum-caring-to-combative-insight-from-alex-bayley/">&ldquo;The community spectrum: caring to combative&rdquo; - Insight From Alex Bayley</a> on <a href="https://www.harihareswara.net/">Sumana Harihareswara&rsquo;s blog</a>, it flagged something amusing to me. I recommend reading the article, but I&rsquo;ll quote a portion that provides sufficient context for the rest of this post.</p>
+<blockquote>
+<p>The Competitive Spectrum describes communities as being:</p>
+<ul>
+<li><strong>Caring</strong>: members are motivated by helping each other.</li>
+<li><strong>Collaborative</strong>: members share goals and help each other to achieve them.</li>
+<li><strong>Cordial</strong>: members have their own goals which do not conflict with each other.</li>
+<li><strong>Competitive</strong>: members share the same goals, and compete against each other to achieve them.</li>
+<li><strong>Combative</strong>: members must achieve their goals by preventing others from being doing so.</li>
+</ul>
+</blockquote>
+<h3 id="pypa-and-conda">PyPA and Conda</h3>
+<p>Within this spectrum, I think the relationship between Conda and PyPA projects is definitely collaborative.</p>
+<p>The two groups of maintainers have worked together to solve problems that affect both groups. Conda packages are often built up from Python packages that are built with PyPA tools. Heck, at the time of writing, <a href="https://github.com/jezdez/">one of</a> the <a href="https://gist.github.com/jezdez/6222d1ba8b10d734d003492e58041687">founders of the PyPA</a> currently <a href="https://github.com/conda-incubator/governance/blob/0fa0e84f690e628fe7a232bb52938409b2fbc1e3/steering.csv?plain=1#L14">sits on the Conda Steering Council</a>.</p>
+<h3 id="python-build-backends">Python build-backends</h3>
+<p>The goal of enabling pyproject.toml-based builds<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> was to move Python packaging from a collaborative (or at least, cordial) model, to a competitive model for the build mechanisms.</p>
+<p>The stated goal of PEP 517 is:</p>
+<blockquote>
+<p>The goal of this PEP is get distutils-sig out of the business of being a gatekeeper for Python build systems. If you want to use distutils, great; if you want to use something else, then that should be easy to do using standardized methods.</p>
+</blockquote>
+<p>Moving to a competitive model for build mechanisms was intended to enable the ecosystem to move away from the &ldquo;only one way&rdquo; of building Python packages (the quote is from the Zen of Python) <em>because</em> the <a href="https://peps.python.org/pep-0517/#abstract">implementation we had of &ldquo;only one way&rdquo; was exceedingly difficult to evolve</a>.</p>
+<h3 id="poetry--pdm--hatch--pyflow--etc">Poetry / PDM / Hatch / PyFlow / etc</h3>
+<p>These tools are firmly in a competitive model. They&rsquo;re competing for users. They&rsquo;re competing to be the &ldquo;best&rdquo; solution to the &ldquo;workflow&rdquo; problem. They&rsquo;re, arguably, even competing for contributors.</p>
+<p>Other than the obvious sign that these tools can&rsquo;t be used together on the same codebase (mostly), this can be seen in other aspects of these projects:</p>
+<ul>
+<li>the way they&rsquo;re marketed/documented &ndash; they have an incentive to invest in this, because they&rsquo;re competing for users and good-looking/flashy documentation is a good way to attract users.</li>
+<li>the way they do community management: some have dedicated community Discord servers, mention $tool-specific ecosystems, have their own $tool plugin ecosystems, etc.</li>
+<li>the way their users advocate for them as the one-true-solution on the internet :)</li>
+</ul>
+<p>This competition also leads to incentives for projects to do things like implementing <a href="https://github.com/pypa/hatch/commit/fea611be96f79559ecf227d2a68b6dfbf3b3c2ec">draft standards that are not accepted or settled</a> and <a href="https://pradyunsg.me/blog/2023/01/21/pdm-does-not-implement-pep-582/">claims that standards are implemented, even when the implementation does not match the standard</a>.</p>
+<h2 id="unintended-competition">Unintended competition</h2>
+<p>In my opinion, ending up with multiple competing workflow tools in the Python ecosystem was not an intentional choice by any individual or group.</p>
+<p>While providing alternatives to distutils/setuptools was the intent of pyproject.toml-based build systems, I don&rsquo;t think it was intended nor was there ever consensus that we wanted to end up with an ecosystem of competing tools which <em>use</em> the pyproject.toml-based build system <em>and</em> provide an end-to-end workflow.</p>
+<p>I don&rsquo;t see any discussion of such tooling in the corresponding mailing list discussions and the PEPs certainly don&rsquo;t talk about trying to enable building alternative <em>workflow</em>-related tooling. There&rsquo;s extensive discussion about the technical design of the final solution and on many aspects of &ldquo;how to build distribution files&rdquo;, but there&rsquo;s no discussion about how competing workflow tools would be enabled.</p>
+<p>Another reason is&hellip; well&hellip; let&rsquo;s dig into some &ldquo;history&rdquo;. The Python Packaging Authority has <a href="https://www.pypa.io/en/latest/future/">publicly written goals</a> for them:</p>
+<blockquote>
+<ul>
+<li>Although it’s still being defined, to work towards a “Meta-Packaging” system that:
+<ul>
+<li>Clearly delineates the phases of distribution</li>
+<li>Allows for multiple interacting tools vs one monolithic tool</li>
+<li>Specifically allows for alternative build systems, i.e. a “MetaBuild” system.</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>These goals were <a href="https://github.com/pypa/pypa.io/blob/2ddc43fa4871e83365b8f43da19b7dc573b67ebd/source/future.rst">written in a different &ldquo;era&rdquo; of Python packaging</a>, before PEP 516/517/518 were being debated, when the ecosystem was still in an entirely collaborative/cordial model (on the other side of a combative era<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>), and when the &ldquo;Python ecosystem&rdquo; was much smaller than it is today<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup>.<sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup></p>
+<p>The intent was to enable the ecosystem to build multiple tools that interacted with each other and allow for alternative build tooling to solve problems that were difficult to solve with distutils/setuptools.</p>
+<p>A competitive ecosystem for workflow tooling is an unintended consequence of the pyproject.toml-based build system. The PyPA&rsquo;s focus on standardisation made it easier to build workflow tooling that interacted with other packages, with no mechanisms to check whether these tools are reciprocating on interoperability.</p>
+<h2 id="on-existing-workflow-tools">On existing workflow tools</h2>
+<p>I expect the most relevant people already know this, but I&rsquo;ll state it explicitly: I have a lot of respect for the work done by the authors and/or maintainers of tooling like Poetry, PDM, Hatch, Pipenv, PyFlow, etc. I think they each, individually, contribute meaningfully and positively to the ecosystem.</p>
+<p>The most popular workflow tools for Python handle the underlying details for the user and give them a single unified tool that has <code>install</code> / <code>publish</code> / <code>run</code> commands. They also provide functionality that the &ldquo;default&rdquo; tools do not (eg: environment-agnostic lockfiles, automated environment management etc). Serving as an end-to-end tool enables them to trim the scope and define it as they deem appropriate.</p>
+<p>Conda also does this to a certain extent, by tying the <a href="https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">environment management and package management together</a> into a single tool, but it also operates on a different level than these tools &ndash; packaging &ldquo;everything&rdquo; rather than just Python packages.</p>
+<h3 id="the-reasons-for-the-existence-of-workflow-tools">The reasons for the existence of workflow tools</h3>
+<p>Some/all of the &ldquo;workflow tools&rdquo; that exist today because the &ldquo;default&rdquo; tooling did not cover more of the user&rsquo;s workflow with a single piece.</p>
+<ul>
+<li>Pipenv&rsquo;s <code>Pipfile</code> was <a href="https://github.com/pypa/pip/issues/1795#issuecomment-261661124">created with the express goal of being for pip</a><sup id="fnref:6"><a href="#fn:6" class="footnote-ref" role="doc-noteref">6</a></sup>.</li>
+<li>Poetry was <a href="https://github.com/python-poetry/poetry/blob/a5d6333f27f261458ba5abe3e30cbf452fa7a10f/README.md#why">created to provide a single config file with a single tool experience, and a better dependency resolution model</a>.</li>
+<li>Hatch was <a href="https://github.com/pypa/hatch/blob/4202965f4a4b1d86e6c7de1224a359217df45314/README.rst">created as &ldquo;a productivity tool designed to make your workflow easier and more efficient, while also reducing the number of other tools you need to know.&rdquo;</a>.</li>
+<li>PDM was <a href="https://github.com/pdm-project/pdm/commit/06391eca0bed7b879af1bc84c1c737c99646741e">created as a &ldquo;Python package manager with PEP 582 support&rdquo;</a> (which is notable, given that <a href="https://pradyunsg.me/blog/2023/01/21/pdm-does-not-implement-pep-582/">PDM does not implement PEP 582</a>).</li>
+</ul>
+<p>These tools have <em>all</em> now dropped that language from their documentation (or at least evolved it) to reflect that they&rsquo;re now focused on providing a complete and unified experience for the user. This can be seen by the fact that they&rsquo;ve all gone ahead and invented their own build-backends (except Pipenv, which is maintaining a fork of pip within it), since providing a complete and unified experience requires that the tool also controls how projects are built.</p>
+<p>Now, to state the obvious, the folks who created these tools are not fools who like to create work for themselves or enjoy reinventing the wheel. They created because they felt that the existing tooling wasn&rsquo;t meeting their needs <em>and</em> that there was no clear path to improving the pre-existing tooling to meet those needs. Each of these tools solves the problem by making different calls for what the right trade-offs are.</p>
+<p>I am certain that it is not possible to create a single &ldquo;workflow&rdquo; tool for Python software. What we have today, an ecosystem of tooling where each makes different design choices and technical trade-offs, is a part of why Python is as widespread as it is today. This flexibility and availability of choice is, however, both a blessing and a curse. That&rsquo;s actually a great segue to talk about&hellip;</p>
+<h2 id="pip-a-privileged-player">pip: A privileged player</h2>
+<p>Today, <code>pip</code> is uniquely positioned within in the Python packaging ecosystem. It is the only<sup id="fnref:7"><a href="#fn:7" class="footnote-ref" role="doc-noteref">7</a></sup> piece of the Python packaging tooling that ships with Python, and is guaranteed<sup id="fnref:8"><a href="#fn:8" class="footnote-ref" role="doc-noteref">8</a></sup> to be installed in every environment. Nearly every Python user<sup id="fnref:9"><a href="#fn:9" class="footnote-ref" role="doc-noteref">9</a></sup> who wishes to share code (or use shared code) uses it today, directly or indirectly.</p>
+<p>The fact that I&rsquo;ve added 3 footnotes in the last paragraph is a symptom of <em>something</em> and I&rsquo;m not sure if it&rsquo;s a good thing or a bad thing.</p>
+<h2 id="pip-a-disadvantaged-player">pip: A disadvantaged player</h2>
+<p>This point is easier to make with an example, let&rsquo;s take lockfiles: it&rsquo;s technically feasible to implement an arbitrary lockfile format in pip, that evolves with pip, in lock-step with it (something of this sort is implemented already in the form of pip-tools).</p>
+<p>Given the privileged position that pip has within the ecosystem (i.e. ships with the language), whatever it does would become the de-facto standard and commercial tools/IDEs will add support for that model much quicker (eg: requirements.txt) than something similar from PDM, Poetry, Pipenv etc.</p>
+<p>Now, on the face of it, this is a completely different direction from PyPA&rsquo;s model of &ldquo;interoperability standards through concensus&rdquo; because, effectively, whatever pip implements would become a de-facto standard for what the ecosystem and tooling supports.</p>
+<p>On the other hand, if we focus on designing for interoperability through concensus before implementing functionality in pip, implementing vital workflow improvements is now blocked on an exhaustingly long process of a non-iterative, waterfall-style design process. Further, an interoperable lockfile format also has to try to satisfy needs of tools that use completely different resolution models, <em>even</em> semantically incorrect ones<sup id="fnref:10"><a href="#fn:10" class="footnote-ref" role="doc-noteref">10</a></sup>.</p>
+<p>Taking a slightly iterative approach of &ldquo;we&rsquo;ll cover the more complicated case later&rdquo; caused <a href="https://peps.python.org/pep-0665/">the last proposal for a lockfile format standard</a> to be rejected after months of discussion.</p>
+<p>We&rsquo;re in a state where the process for adding new functionality to our default &ldquo;out of the box&rdquo; experience is designed to be both very difficult and very &ldquo;energy&rdquo; intensive &ndash; leading to it being pretty slow. The reason the default tooling doesn&rsquo;t improve is that making meaningful improvements to it is blocked on trying to cater to all workflows; in ways that alternative tooling is not.</p>
+<p>The effect of this is that our &ldquo;out of the box&rdquo; experience is always going to be worse than the experience with other tools in the ecosystem. In a competitive ecosystem, is that what we want? Heck, at that point, do we even want to be in a competitive ecosystem?</p>
+<h2 id="on-build-backends-tied-to-workflow-tools">On build-backends tied to workflow tools</h2>
+<p>Hatchling, pdm-backend and poetry-core are all examples of this. Flit/flit-core is another slightly-weaker example of this<sup id="fnref:11"><a href="#fn:11" class="footnote-ref" role="doc-noteref">11</a></sup>. They each have build-backends that are either (a) tied to a particular workflow tool in some way or (b) promoted along with a workflow tool.</p>
+<p>The build backends are all solving the &ldquo;build a wheel from Python code&rdquo; problem, but with different user experiences tacked onto them. Building multiple tools that solve the same problem is duplicated effort.</p>
+<p>Part of the problem here is that these tools (except for PDM) are not built with interoperability in their design, and these tools have basically little to no incentive to take on the complexities of providing interoperability.</p>
+<p>Flit can only be used with flit_core, and <code>flit build</code> doesn&rsquo;t build the same artefacts as <code>python -m build</code> would.</p>
+<p>Hatch is tied to hatchling, and <a href="https://github.com/pypa/hatch/issues/507">&ldquo;it would be an extraordinary amount of effort&rdquo;</a> to support using a different build-backend for your project when using Hatch.<sup id="fnref:12"><a href="#fn:12" class="footnote-ref" role="doc-noteref">12</a></sup></p>
+<p>Poetry has its own dependency specification format, and the corresponding build-backend enables it to build packages that use that format.</p>
+<p>PDM is better on this front, in that it has greater backend-agnostic behaviours to it. However, pdm-backend is undergoing a rewrite to <a href="https://discuss.python.org/t/python-packaging-strategy-discussion-part-1/22420/141?u=pradyunsg">&ldquo;provide a similar extensible interface to hatchling&rdquo;</a>.</p>
+<p>These were all made possible by the explicit focus of the PyPA on designing an interoperability model &ndash; i.e. Unix-like approach &ndash; which these tools have used to create tool-specific build-backends. :)</p>
+<p>While trying to enforce that one way of building packages/managing dependencies for all Python users is not feasible&hellip; having 4 build-backends that all handle pure-Python packages with the same file holding their configuration, while providing slightly different user experiences is <em>also</em> not a good place to be in IMO.</p>
+<h2 id="pick-from-n-equivalent-choices-is-really-bad-ux">Pick from N ~equivalent choices is really bad UX</h2>
+<p>When you package Python software, a user has to make a lot of choices. There are a <em>lot</em>, and I do mean a <em>lot</em>, of &ldquo;A vs B&rdquo; comparisons that you can make when it comes to figuring out the scaffolding for packaging and distributing Python software.</p>
+<p>The problem with not making a default recommendation for these largely-inconsequential choices is that it means that <em>every</em> user has to make these choices. Instead of making a choice once and then being able to build upon that as an ecosystem, we keep moving in circles on these topics because we&rsquo;ve got two groups now and picking either choice means that the other group is unhappy.</p>
+<p>This also leads to the same problems being solved twice &ndash; there&rsquo;s duplicated effort and duplicated documentation. Each project will design their own approach and there&rsquo;s incentive for projects to try to &ldquo;out-compete&rdquo; each other by providing more features or by providing better documentation, rather than contributing to improving a common corpus.</p>
+<p>This is how, for example, we end up with <a href="https://packaging.python.org">packaging.python.org</a> not having <a href="https://packaging.python.org/en/latest/specifications/declaring-project-metadata/">a standard structure for declaring metadata that is implemented by ~every build-backend</a> documented, even though there was <em>extensive</em> documentation for the same in multiple tools&rsquo; own documentation for months. Each of those tools&rsquo; authors have had incentives to document it for their users and it was easier to do so in their own documentation, where they don&rsquo;t have to worry about the concerns of other tools or &ldquo;being generic enough&rdquo;.</p>
+<h2 id="not-a-pypa-project">&ldquo;not a PyPA project&rdquo;</h2>
+<p>The <em>only</em> reason various Python packaging projects (notably, Poetry and PDM) are not PyPA projects is because they&rsquo;ve never asked to become one.</p>
+<p>As it stands, the PyPA views itself as a big umbrella. Basically, any established Python packaging project that asks to be included, will be accepted. If Poetry and PDM ever asked to join, as it stands, there&rsquo;s no version of this timeline where the existing PyPA members say no.</p>
+<p>From the discussions I&rsquo;ve had, the reasons have ranged from some sense of maintaining control (which doesn&rsquo;t really have <a href="https://github.com/pypa/pipenv/issues/607#issuecomment-330878876">good precedence</a>), to logistical issues like GitHub Actions queues, as well as a sense of being able to &ldquo;be successful without the tag&rdquo;.</p>
+<p>Also, to say that these tools are &ldquo;are not participating in the PyPA&rdquo;<sup id="fnref:13"><a href="#fn:13" class="footnote-ref" role="doc-noteref">13</a></sup> is incorrect. PDM&rsquo;s whole <a href="https://github.com/pdm-project/pdm/blob/c0974672a17be965ddcb0e191d35df08ad0c4b6e/README.md?plain=1#L5">pitch <em>today</em></a> is that it is &ldquo;A modern Python package and dependency manager supporting the latest PEP standards&rdquo;. Poetry&rsquo;s authors somewhat regularly interact with the interoperability discussions, and its original author has even co-authored a PEP.</p>
+<h2 id="on-the-python-packaging-authority">On the Python Packaging Authority</h2>
+<p>I think there&rsquo;s a need to reconsider what the Python Packaging Authority should be trying to do and what it even is. We&rsquo;ve been cruising on the premise that we&rsquo;re maintaining foundational tools and designing for interoperability is the &ldquo;right&rdquo; model for the Python packaging ecosystem. I&rsquo;m not sure that&rsquo;s the case.</p>
+<p>Between the user surveys, having a $work role where I&rsquo;m directly influencing user workflows beyond the installer, spending time helping out with scientific Python tooling and with <a href="https://www.pyopensci.org/">pyOpenSci</a>, and the discussions in the strategy thread&hellip; I&rsquo;m starting to think that our current approach is not working and is harmful<sup id="fnref:14"><a href="#fn:14" class="footnote-ref" role="doc-noteref">14</a></sup> unintentionally. Each projects&rsquo; maintainers effectively decide on different aspects of the overall UX. Each project acts as its own project. There is no broader guiding &ldquo;roadmap&rdquo;. Making decisions about how the default tooling of the ecosystem works is &ldquo;not appropriate&rdquo; for our process to hashing out technical design proposals. There is no &ldquo;blessed&rdquo; tool and yet there are defaults, things that ship with the Python standard library and PyPA recommendations.</p>
+<p>I&rsquo;m not sure what the right answer is, but I don&rsquo;t think we&rsquo;re in a good place right now. Here&rsquo;s where we are:</p>
+<ul>
+<li>even co-operating tools are viewed as being in competition with each other</li>
+<li>interoperability standards that are written but are not enforced
+<ul>
+<li>on the principle of &ldquo;consenting adults&rdquo; or &ldquo;be permissive in what you accept&rdquo;</li>
+<li>for backwards compatibility reasons</li>
+<li>because &ldquo;we should trust the XYZ authors to do the right thing&rdquo;</li>
+<li>difficult to answer basic questions like &ldquo;what can a source distribution file be named&rdquo; because the standard says one thing while the tools do something else because &ldquo;the author prefers that&rdquo;</li>
+<li>implemented and publicized as features in tools, despite not being something that is &ldquo;accepted&rdquo;</li>
+<li>absolutely ignored by tool authors &ldquo;because it&rsquo;s not a priority&rdquo;</li>
+</ul>
+</li>
+<li>duplicated effort because multiple tools are competing</li>
+<li>users are confused about what to use, what is deprecated, what is the &ldquo;right&rdquo; way to do things etc and there is no authoritative answer</li>
+<li>say that PEPs are not documentation but, also, go read this PEP for the details on how this feature works because that&rsquo;s the only place we wrote it.</li>
+<li>no clear answer for step 0 questions like where should I put by .py files relative to my pyproject.toml file</li>
+<li>a lack of willingness to draw a line in the sand and say &ldquo;this is the way things are done&rdquo; because &ldquo;what if someone finds a better way in the future&rdquo;</li>
+<li>we don&rsquo;t pick one of two ~equivalent choices because &ldquo;they&rsquo;re both valid workflows&rdquo;</li>
+<li>there is <strong>no</strong> agreed upon direction for the ecosystem</li>
+</ul>
+<h2 id="we-dont-need-_more_-generic-build-backends-today">We don&rsquo;t need <em>more</em> &ldquo;generic&rdquo; build-backends today</h2>
+<p>With <a href="https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html">setuptools gaining pyproject.toml configuration support</a> and <a href="https://packaging.python.org/en/latest/specifications/declaring-project-metadata/">a standard structure for declaring metadata that is implemented by ~every build-backend</a>, there isn&rsquo;t a significant difference between the various tools for pure-Python packages.</p>
+<p>There are only so many ways to construct a <code>.zip</code> file containing a bunch of pure-Python files + metadata. The only real difference is in the user experience, and the user experience is largely determined by the tooling that invokes the build-backend.</p>
+<p>Building more build-backends that are intended to be extended (beyond what we already have, between <code>hatchling</code>, <code>pdm-backend</code> and <code>setuptools</code>) feels unnecessary to me; and we might already have one too many options for this.</p>
+<h2 id="on-pip-as-a-workflow-tool">On pip as a workflow tool</h2>
+<p>Donald Stufft has <a href="https://github.com/pypa/pip/issues/6041#issuecomment-516470124">said</a> on pip&rsquo;s issue tracker:</p>
+<blockquote>
+<p>All that being said, I think trying to follow the &ldquo;unix philosophy&rdquo; is a mistake and is actually a pretty poor UX. Yea a lot of nerds grok it because we&rsquo;ve caused enough collective brain damage by being forced to use it over time and it works better for the typical unix tools because they generally just come preinstalled. I think it would just add additional complexity to an already confusing landscape of tools for our end users.</p>
+</blockquote>
+<p>And, Paul Moore has <a href="https://discuss.python.org/t/adding-a-non-metadata-installer-only-dev-dependencies-table-to-pyproject-toml/20106/10?u=pradyunsg">said</a>:</p>
+<blockquote>
+<p>At some point, I do think that pip needs to make a firm decision on whether it’s a development workflow tool or just an installer</p>
+</blockquote>
+<p>And, I think that now is the time to make that decision.</p>
+<p>The <a href="https://discuss.python.org/t/python-packaging-strategy-discussion-part-1/22420?u=pradyunsg">recent strategy discussion</a> is sprawling and has largely operated with the assumption that pip is not something that can become a &ldquo;workflow tool&rdquo;. I think that&rsquo;s an incorrect assumption.</p>
+<p>Personally, I&rsquo;ve wanted pip to cover more aspects of the user&rsquo;s workflow <a href="https://github.com/pypa/pip/issues/5407#issuecomment-389621303">since before PEP 517 was implemented</a>, which was around the time <a href="http://pradyunsg.me/gsoc-2017/05/05/green-light/">I started getting involved in Python</a><sup id="fnref:15"><a href="#fn:15" class="footnote-ref" role="doc-noteref">15</a></sup>. Improving the &ldquo;base&rdquo; tool to cover more use cases is <strong>not</strong> a bad idea &ndash; it&rsquo;s helpful for most user personas. Outside of blessing another tool, this is the path of least resistance that we can take to getting to a better state.</p>
+<p>Do I think there&rsquo;s a significant amount of work needed for making pip into a workflow tool?</p>
+<p>Yes.</p>
+<p>Do I think that the amount of energy that&rsquo;s gone into Poetry/Hatch/Pipenv/PDM development, collectively, would have made more than a meaningful dent on this issue?</p>
+<p>Yes.</p>
+<p>Do I think that, at this point, blessing another tool is a good idea?</p>
+<p>Maybe. We&rsquo;ve built a competitive ecosystem, and I don&rsquo;t think we can just &ldquo;pick one&rdquo; of the &ldquo;new things&rdquo; and expect that to be the end of it.</p>
+<p>Did we ever have sufficient buy-in + capacity to do this with pip, along with contributor experiences that would facilitate this?</p>
+<p>No. That&rsquo;s been a part of the problem &ndash; we&rsquo;ve made it fairly tractable to &ldquo;build your own&rdquo; in a sandbox that lets you ignore the need to support entire swaths of workflows, and that&rsquo;s something you can&rsquo;t compete with easily for contributor experience. And, when the alternative is &ldquo;spend a few months trying to implement something in a &rsquo;legacy&rsquo; codebase, while catering to needs that you don&rsquo;t have, also convince a bunch of people with limited availability that your idea is a good one and wait for them to review what you wrote&rdquo;, it&rsquo;s not surprising that we end up with a bunch of &ldquo;new things&rdquo; and have multiple groups building multiple workflow tools.</p>
+<p>We <em>still</em> don&rsquo;t have agreement that this is the direction that we, as a community, want pip to go.</p>
+<h2 id="on-user-facing-communication">On user-facing communication</h2>
+<p>There&rsquo;s no single place where users can go to get information about the Python packaging ecosystem &ndash; either on how it&rsquo;s evolving or what the functional best-practices are <em>today</em>. We either (a) don&rsquo;t have them documented or (b) don&rsquo;t have a good approach to communicating about this to end users.</p>
+<p>There&rsquo;s a cost to this.</p>
+<p>LWN <a href="https://lwn.net/SubscriberLink/920132/cb4d6c0f07b54952/">recently</a> directed readers to a blog post<sup id="fnref:16"><a href="#fn:16" class="footnote-ref" role="doc-noteref">16</a></sup> that claims that the strategy discussion is evidence that &ldquo;PyPA must be destroyed&rdquo;, implies that there&rsquo;s &ldquo;ivory towers of packaging tool maintainers&rdquo;, that &ldquo;half of the discussion participants did not even bother reading what the people think&rdquo; based on a misunderstanding of how the discussions have occurred<sup id="fnref:17"><a href="#fn:17" class="footnote-ref" role="doc-noteref">17</a></sup> and that the Python Packaging User Survey somehow happened in a vacuum (it was <a href="https://discuss.python.org/t/rfc-survey-to-help-define-a-python-packaging-vision-and-strategy/15658">extensively</a> <a href="https://discuss.python.org/t/your-feedback-required-python-packaging-user-survey/18070">discussed</a> with lots of input from PyPA members).</p>
+<p>That blog post has captured the current discourse around Python packaging and set the tone: one painting the volunteers who currently maintain the tooling as being &ldquo;vs reality&rdquo;.</p>
+<p>This is exactly the sort of thing that happens when there&rsquo;s no authoritative voice in the space: the vacuum will be filled by someone else on the internet, who will likely be making sensational claims that aren&rsquo;t being validated before being repeated.</p>
+<h2 id="on-formal-ux-analysis">On formal UX analysis</h2>
+<p>This has been mentioned in multiple places and has come up in the past in other contexts around Python Packaging.</p>
+<p>I think doing &ldquo;full UX analysis&rdquo; is going to be forbiddingly difficult. Don&rsquo;t get me wrong: a complete UX review of the Python Packaging ecosystem would be <em>awesome</em> as part of a coordinated effort to make progress on the fundamental problems here.</p>
+<p>Something like this is unlikely to happen because there&rsquo;s a <em>really</em> motivated UX expert with a <em>lot</em> of volunteer time to donate. We&rsquo;d basically need an enormous cheque for work that&rsquo;s&hellip; &ldquo;understand Python packaging really well and figure out a path to making it better&rdquo;. That&rsquo;s a difficult thing to tell a funder to throw money at.</p>
+<p>Notably, there are a lot of stakeholders here: the easiest &ldquo;persona&rdquo; to identify is the maintainers of the tools themselves. After that, it starts to become fuzzy quickly. There&rsquo;s redistributors, end users, Linux OS distros, Linux-specific non-OS package managers, cross-platform distributions, direct users, corporate users who have their own internal packaging systems, or like astronomers, students, statisticians, business analysts, and more.</p>
+<p>Breaking the UX problem into a smaller piece, like a single point from the <a href="https://discuss.python.org/t/python-packaging-strategy-discussion-part-1/22420/16?u=pradyunsg">dimensions we could unify</a>, makes this a much more meaningfully sized piece for seeking funding toward. Even then, it&rsquo;ll still probably only be available to be funded by the larger wallets and likely need to be a part of a project that has some other deliverables.</p>
+<h2 id="acknowledgements">Acknowledgements</h2>
+<p>I&rsquo;d like to thank the following people for reviewing drafts of this post at various stages and providing valuable feedback: Donald Stufft, Kushal Das, and Pavithra Eswaramoorthy.</p>
+<p>Also, I would&rsquo;ve appreciated if the discourse on this wasn&rsquo;t moving along at the speed that it&rsquo;s been moving after <a href="https://discuss.python.org/t/python-packaging-strategy-discussion-part-1/22420/16?u=pradyunsg">I publicly committed to writing this</a>. And, yes, I&rsquo;m aware that some of the things I&rsquo;ve said here are conclusions that been reached by the broader group on that thread.</p>
+<p>Finally, I do have more thoughts; especially on how to get to a better place, but ~6k words is about as long as I want to go here.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>I&rsquo;m <em>very</em> happy that we have done this.</p>
+<p>I&rsquo;d initially discussed the idea of surveying users specifically on Python Packaging things to Shamika, <a href="https://pyfound.blogspot.com/2021/04/the-psf-is-hiring-python-packaging.html">the Python Packaging Project Manager</a>, in late 2021, in an video call with her.</p>
+<p>I&rsquo;m very grateful for the work that Shamika and many others have put toward this; the 2021 Python Developer Survey included a <a href="https://lp.jetbrains.com/python-developers-survey-2021/#PythonPackaging">full section on Python Packaging</a> (some are questions that I&rsquo;d suggested!) and there&rsquo;s been a dedicated <a href="https://drive.google.com/file/d/1U5d5SiXLVkzDpS0i1dJIA4Hu5Qg704T9/view">2022 Python Packaging Survey</a> which has some extremely valuable data.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>That&rsquo;s what the cool kids say now &ndash; it&rsquo;s a bit of a mouthful, but it&rsquo;s more accurate than PEP 517, and better than PEP 517/518/621/660-based build systems. ;)&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p>I&rsquo;m referring to distutils2 / setuptools / distribute.&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4">
+<p><a href="https://insights.stackoverflow.com/survey/2015#tech-lang">The 2013/2014/2015 StackOverflow survey results</a> are a fun trip down technology history. PHP is more popular than Python. &ldquo;Node.js and AngularJS are busting out&rdquo;. &ldquo;Java is still the #1 server side language&rdquo;.&#160;<a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:5">
+<p>The PyPA goals should really be updated, once the dust has settled around the whole strategy discussion.&#160;<a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:6">
+<p>Before an individual with a <a href="https://github.com/pypa/pipenv/issues/607#issuecomment-330878876">controlling attitude</a> got involved and made some <a href="https://github.com/pypa/pipfile/pull/138">overzealous marketing claims</a>, and&hellip; <a href="https://vorpus.org/blog/why-im-not-collaborating-with-kenneth-reitz/">then this was published</a>.&#160;<a href="#fnref:6" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:7">
+<p><a href="https://github.com/python/cpython/pull/101039">Setuptools is not gonna installed by default in a <code>venv</code>, starting with Python 3.12</a> and only shipped with Python because it was needed by pip, prior to pyproject.toml-based builds being a thing.&#160;<a href="#fnref:7" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:8">
+<p>Yes, I know about Linux distros that break things. Yes, I know that you have a <code>--without-pip</code> (or equivalent) flag on venv/virtualenv. They&rsquo;re both edge cases in this context, <em>not</em> the norm.&#160;<a href="#fnref:8" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:9">
+<p><a href="https://lp.jetbrains.com/python-developers-survey-2021/#text-530">&ldquo;90% of developers report they use pip to install Python packages&rdquo;</a> and even those who just use Conda/Poetry/PDM etc will end up using pip under the hood.&#160;<a href="#fnref:9" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:10">
+<p>Poetry&rsquo;s dependency resolver and lockfile operates under the assumption that <em>all</em> files for a package + version are going to have the exact same metadata. While it is a choice that Poetry can make, because it&rsquo;s &ldquo;opinionated&rdquo;, it&rsquo;s not something that other tools can do.</p>
+<p>Notably, it&rsquo;s an incorrect assumption; baked in because PyPI&rsquo;s rough-draft-became-production implementation of metadata handling treated metadata from the first wheel uploaded to PyPI as the releases&rsquo; metadata.&#160;<a href="#fnref:10" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:11">
+<p>I <a href="https://pradyunsg.me/about/#flit">may be biased</a> but it&rsquo;s worth noting that Flit is part of <em>why</em> PEP 517 happened.&#160;<a href="#fnref:11" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:12">
+<p>Clarified on the <a href="https://discord.com/channels/803025117553754132/964878415914213436/1063852982459957248">PyPA Discord</a> as:</p>
+<blockquote>
+<p>&ldquo;basically adding a dependency on the PEP 517 library and having a conditional that if the build backend is not Hatchling then use that&rdquo;</p>
+</blockquote>
+<p>That doesn&rsquo;t seem like an &ldquo;extraordinary&rdquo; amount of work to me, but I&rsquo;m not familiar with the Hatch codebase and I am willing to trust @ofek&rsquo;s judgement here.&#160;<a href="#fnref:12" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:13">
+<p>I&rsquo;m absolutely looking at LWN&rsquo;s summary here. More on this later.&#160;<a href="#fnref:13" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:14">
+<p>unintentionally. I don&rsquo;t think anyone came out thinking &ldquo;We should design for a bad UX&rdquo; but here we are.&#160;<a href="#fnref:14" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:15">
+<p>If you clicked the link and think like me: yes, I checked, I did reasonably well in my Data Structures and Algorithms course.&#160;<a href="#fnref:15" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:16">
+<p>In case someone from LWN ends up reading this: I think directing readers toward the post and repeating claims from it were bad editorial choices. Tacking on &ldquo;(opinionated)&rdquo; once is grossly insufficient, given the inaccuracy of claims in the post as well as the one you&rsquo;ve repeated.&#160;<a href="#fnref:16" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:17">
+<p>Those links are in &ldquo;Summary of discussions&rdquo; &ndash; discussions that most participants have already participated in. Plus, I&rsquo;m pretty sure Discourse doesn&rsquo;t count middle-clicks.&#160;<a href="#fnref:17" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded></item><item><title>How the Python Packaging community is organised</title><link>https://pradyunsg.me/blog/2023/01/14/python-packaging-organisation/</link><pubDate>Sat, 14 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/14/python-packaging-organisation/</guid><description>The way the Python packaging community is organised is something that I&amp;rsquo;ve explained in multiple places, in multiple contexts. I figure that it&amp;rsquo;ll be useful to actually write it down in a single place, so that I don&amp;rsquo;t have to repeat myself.
+The Python Packaging Authority The Python Packaging Authority (PyPA) is a fairly loose group of projects that happen to be related to Python packaging. While the PyPA has a formal governance model, there&amp;rsquo;s no &amp;ldquo;oversight&amp;rdquo; or &amp;ldquo;enforcement&amp;rdquo; on projects that are part of the PyPA &amp;ndash; they are only required to adopt the PSF Code of Conduct and to be accepted by the existing members.</description><content:encoded><![CDATA[<p>The way the Python packaging community is organised is something that I&rsquo;ve
+explained in multiple places, in multiple contexts. I figure that it&rsquo;ll be
+useful to actually write it down in a single place, so that I don&rsquo;t have to
+repeat myself.</p>
+<h2 id="the-python-packaging-authority">The Python Packaging Authority</h2>
+<p>The Python Packaging Authority (PyPA) is a fairly loose group of projects that
+happen to be related to Python packaging. While the PyPA has a formal
+<a href="https://peps.python.org/pep-0609/">governance</a> model, there&rsquo;s no &ldquo;oversight&rdquo; or
+&ldquo;enforcement&rdquo; on projects that are part of the PyPA &ndash; they are only required to
+adopt the PSF Code of Conduct and to be accepted by the existing members.</p>
+<p>Functionally, each PyPA project is free to do what it wants. The only real
+benefit of being a PyPA project is the ability to use the PSF as a fiscal
+sponsor and the ability to say that it&rsquo;s a &ldquo;PyPA project&rdquo;.</p>
+<p>Practically, the PyPA serves as <a href="https://discuss.python.org/t/what-is-the-pypa/12297/2?u=pradyunsg">&ldquo;a body to hammer out &amp; maintain
+interoperability specifications&rdquo;</a> for Python packaging. The
+PyPA also includes foundational tools that are used in the Python packaging
+ecosystem, like <code>pip</code> and <code>setuptools</code>.</p>
+<h2 id="relationship-with-core-python">Relationship with &ldquo;Core Python&rdquo;</h2>
+<p>(I&rsquo;m using &ldquo;Core Python&rdquo; to refer to the Python language and standard library,
+as maintained by the CPython Core Developers, also known as <a href="https://peps.python.org/pep-0013/#the-core-team">&ldquo;core
+team&rdquo;</a> for Python)</p>
+<p>As of the time of writing, Core Python&rsquo;s involvement in Python Packaging (in a
+<a href="https://peps.python.org/pep-0632/">post-distutils</a> world) is fairly limited.
+The interpreter and Python standard library provide the following pieces, around
+the packaging ecosystem:</p>
+<ul>
+<li>
+<p>Shipping <code>ensurepip</code> and <code>venv</code> in the standard library.</p>
+<ul>
+<li><code>venv</code> supports creating a virtual environment with pip and
+setuptools<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> installed in it.</li>
+<li><code>ensurepip</code> provides copies of <code>pip</code> and
+<code>setuptools</code><sup id="fnref1:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> that are used by <code>venv</code>, and
+allows bootstrapping the packaging tooling for Python.</li>
+</ul>
+</li>
+<li>
+<p>&ldquo;site-packages&rdquo; directories on the import path.</p>
+<ul>
+<li><code>site</code> adds site-packages (&ldquo;global&rdquo; and &ldquo;user&rdquo;) to the import path.</li>
+<li><code>site</code> respects the presence of a <code>pyvenv.cfg</code> file (used by <code>venv</code>) to mark
+a virtual environment, influencing which site-packages it adds to the import
+path.</li>
+</ul>
+</li>
+<li>
+<p><code>sysconfig</code> provides relevant paths for placing files and build configuration
+for the interpreter.</p>
+</li>
+<li>
+<p>a <a href="https://docs.python.org/3/c-api/stable.html">stable ABI</a> for the C API, for
+building extensions compatible across Python 3.x (x &gt;= 2).</p>
+</li>
+</ul>
+<h3 id="delegation-of-python-packaging-ecosystem-decisions">Delegation of Python packaging ecosystem decisions</h3>
+<p>The Python Steering Council delegates the decision making for the packaging
+ecosystem to the Python Packaging Authority (PyPA). This is done through
+<a href="https://github.com/python/steering-council/blob/main/process/standing-delegations.md#pypa-delegations">standing delegations</a> to specific PyPA members on specific
+aspects of Python Packaging. The PyPA is, like CPython Core Developers, a group
+of volunteers who maintain various bits and pieces of the Python packaging
+ecosystem.</p>
+<p>The CPython Core Developers and the PyPA are not the same group of people, but
+there is meaningful overlap between the two groups. There are 85 &ldquo;active&rdquo;
+CPython Core Developers<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> and 50+ (public) PyPA
+members<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>. Off the top of my head, I can count 5 people who are
+active in both CPython and one or more PyPA projects.</p>
+<h2 id="a-bit-of-history">A bit of history</h2>
+<p>From <a href="https://www.pypa.io/en/latest/history/">https://www.pypa.io/en/latest/history/</a>:</p>
+<blockquote>
+<p>2011-02-28: The Python Packaging Authority (PyPA) is created to take over the
+maintenance of pip and virtualenv from Ian Bicking, led by Carl Meyer, Brian
+Rosner and Jannis Leidel. Other proposed names were “ianb-ng”, “cabal”, “pack”
+and “Ministry of Installation”.</p>
+</blockquote>
+<p>As &ldquo;Ministry of Installation&rdquo; likely implies, these names were <a href="https://discuss.python.org/t/what-is-the-pypa/12297/6?u=pradyunsg">chosen partly in
+jest</a>. The name stuck and, those who started using Python <em>after</em> this
+name was picked, ended up treating the name at face value. PyPA projects
+essentially serves as <em>all</em> of the packaging infrastructure for Python making it
+the de facto authority.</p>
+<p>Over time, &ldquo;Authority&rdquo; in PyPA did end up being backed by real authority: the
+standing delegations from the elected Python Steering Council, ceding control of
+certain kinds of Python Enhancement Proposals (PEPs) to specific PyPA members.
+There&rsquo;s <a href="https://www.pypa.io/en/latest/specifications/">formal processes</a>, <a href="https://peps.python.org/topic/packaging/">formal interoperability
+specifications</a> as Python PEPs and a <a href="https://peps.python.org/pep-0609/">formal governance
+model</a>.</p>
+<p>To quote <a href="https://discuss.python.org/t/what-is-the-pypa/12297/2?u=pradyunsg">Thomas Kluyver</a>:</p>
+<blockquote>
+<p>You don’t get much more authoritative than that without an army.</p>
+</blockquote>
+<h2 id="what-about-non-pypa-projects">What about non-PyPA projects?</h2>
+<p>Since PyPA&rsquo;s inception, there have been non-PyPA projects related to Python
+packaging (eg: buildout is older than pip). By and large, there isn&rsquo;t any sort
+of antagonistic relationship between PyPA and non-PyPA projects. PyPA and
+non-PyPA project maintainers have often worked together on various things, and
+many <a href="https://packaging.python.org/en/latest/key_projects/#non-pypa-projects">non-PyPA projects are listed as &ldquo;key projects&rdquo;</a> for Python
+packaging.</p>
+<p>For example, at the time of writing, the two most popular non-PyPA projects are
+Conda and Poetry. Both of these rely on the interoperability specifications
+and/or tools that the PyPA works on (<a href="https://conda-forge.org/docs/maintainer/adding_pkgs.html#use-pip">conda</a>,
+<a href="https://python-poetry.org/docs/pyproject/#poetry-and-pep-517">poetry</a>) to do what they do.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Setuptools is gonna be removed, starting with Python 3.12.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a>&#160;<a href="#fnref1:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>Based on the number of eligible votes in the last SC election:
+<a href="https://peps.python.org/pep-8104/#results">https://peps.python.org/pep-8104/#results</a>. &ldquo;active&rdquo; is determined as
+described in <a href="https://peps.python.org/pep-0013/#membership">Python Language Governance</a> document.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p>Based on public folks listed in <a href="https://github.com/orgs/pypa/people">https://github.com/orgs/pypa/people</a> (not all
+are active though, and there&rsquo;s active folks who are not members of the
+GitHub org but have access to the various repositories).&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded></item><item><title>Wheels are faster, even for pure Python packages</title><link>https://pradyunsg.me/blog/2022/12/31/wheels-are-faster-pure-python/</link><pubDate>Sat, 31 Dec 2022 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2022/12/31/wheels-are-faster-pure-python/</guid><description>When installing with pip (or from PyPI in general), wheels are much faster than source distributions, even for pure-Python projects.
+Packages with native code are a clearer win, because the wheel file will contain pre-compiled binaries for the platform you&amp;rsquo;re installing on. This means that you don&amp;rsquo;t need to have a compiler and non-Python build dependencies installed, and you don&amp;rsquo;t need to wait for the compiler to do its thing.</description><content:encoded><![CDATA[<p>When installing with pip (or from PyPI in general), wheels are <em>much</em> faster
+than source distributions, <em>even</em> for pure-Python projects.</p>
+<p>Packages with native code are a clearer win, because the wheel file will contain
+pre-compiled binaries for the platform you&rsquo;re installing on. This means that you
+don&rsquo;t need to have a compiler and non-Python build dependencies installed, and
+you don&rsquo;t need to wait for the compiler to do its thing.</p>
+<h2 id="the-quick-answer">The quick answer</h2>
+<p>Installing from a wheel is analogous to unpacking a zip file. When installing
+from a source distribution, pip will actually build a wheel <em>from</em> the source
+distribution and then install using that wheel. It&rsquo;s the same operation at the
+end of the day, but there&rsquo;s a bunch of extra &ldquo;work&rdquo; involved in building a wheel
+from a source distribution (which contributes to making things slower).</p>
+<h2 id="the-picture-answer">The picture answer</h2>
+
+
+
+<div class="goat svg-container ">
+  
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      font-family="Menlo,Lucida Console,monospace"
+      
+        viewBox="0 0 464 777"
+      >
+      <g transform='translate(8,16)'>
+<path d='M 0,0 L 176,0' fill='none' stroke='currentColor'></path>
+<path d='M 176,16 L 336,16' fill='none' stroke='currentColor'></path>
+<path d='M 0,32 L 80,32' fill='none' stroke='currentColor'></path>
+<path d='M 80,32 L 176,32' fill='none' stroke='currentColor'></path>
+<path d='M 256,96 L 432,96' fill='none' stroke='currentColor'></path>
+<path d='M 256,144 L 336,144' fill='none' stroke='currentColor'></path>
+<path d='M 336,144 L 432,144' fill='none' stroke='currentColor'></path>
+<path d='M 256,192 L 448,192' fill='none' stroke='currentColor'></path>
+<path d='M 256,240 L 336,240' fill='none' stroke='currentColor'></path>
+<path d='M 336,240 L 448,240' fill='none' stroke='currentColor'></path>
+<path d='M 256,288 L 448,288' fill='none' stroke='currentColor'></path>
+<path d='M 256,336 L 336,336' fill='none' stroke='currentColor'></path>
+<path d='M 336,336 L 448,336' fill='none' stroke='currentColor'></path>
+<path d='M 256,384 L 432,384' fill='none' stroke='currentColor'></path>
+<path d='M 256,432 L 336,432' fill='none' stroke='currentColor'></path>
+<path d='M 336,432 L 432,432' fill='none' stroke='currentColor'></path>
+<path d='M 256,480 L 432,480' fill='none' stroke='currentColor'></path>
+<path d='M 256,528 L 336,528' fill='none' stroke='currentColor'></path>
+<path d='M 336,528 L 432,528' fill='none' stroke='currentColor'></path>
+<path d='M 0,560 L 216,560' fill='none' stroke='currentColor'></path>
+<path d='M 224,576 L 336,576' fill='none' stroke='currentColor'></path>
+<path d='M 0,592 L 80,592' fill='none' stroke='currentColor'></path>
+<path d='M 80,592 L 216,592' fill='none' stroke='currentColor'></path>
+<path d='M 0,640 L 176,640' fill='none' stroke='currentColor'></path>
+<path d='M 0,672 L 80,672' fill='none' stroke='currentColor'></path>
+<path d='M 80,672 L 176,672' fill='none' stroke='currentColor'></path>
+<path d='M 0,720 L 176,720' fill='none' stroke='currentColor'></path>
+<path d='M 0,752 L 176,752' fill='none' stroke='currentColor'></path>
+<path d='M 0,0 L 0,32' fill='none' stroke='currentColor'></path>
+<path d='M 0,560 L 0,592' fill='none' stroke='currentColor'></path>
+<path d='M 0,640 L 0,672' fill='none' stroke='currentColor'></path>
+<path d='M 0,720 L 0,752' fill='none' stroke='currentColor'></path>
+<path d='M 80,32 L 80,544' fill='none' stroke='currentColor'></path>
+<path d='M 80,592 L 80,624' fill='none' stroke='currentColor'></path>
+<path d='M 80,672 L 80,704' fill='none' stroke='currentColor'></path>
+<path d='M 176,0 L 176,16' fill='none' stroke='currentColor'></path>
+<path d='M 176,16 L 176,32' fill='none' stroke='currentColor'></path>
+<path d='M 176,640 L 176,672' fill='none' stroke='currentColor'></path>
+<path d='M 176,720 L 176,752' fill='none' stroke='currentColor'></path>
+<path d='M 216,560 L 216,592' fill='none' stroke='currentColor'></path>
+<path d='M 256,96 L 256,144' fill='none' stroke='currentColor'></path>
+<path d='M 256,192 L 256,240' fill='none' stroke='currentColor'></path>
+<path d='M 256,288 L 256,336' fill='none' stroke='currentColor'></path>
+<path d='M 256,384 L 256,432' fill='none' stroke='currentColor'></path>
+<path d='M 256,480 L 256,528' fill='none' stroke='currentColor'></path>
+<path d='M 336,16 L 336,80' fill='none' stroke='currentColor'></path>
+<path d='M 336,144 L 336,176' fill='none' stroke='currentColor'></path>
+<path d='M 336,240 L 336,272' fill='none' stroke='currentColor'></path>
+<path d='M 336,336 L 336,368' fill='none' stroke='currentColor'></path>
+<path d='M 336,432 L 336,464' fill='none' stroke='currentColor'></path>
+<path d='M 336,528 L 336,576' fill='none' stroke='currentColor'></path>
+<path d='M 432,96 L 432,144' fill='none' stroke='currentColor'></path>
+<path d='M 432,384 L 432,432' fill='none' stroke='currentColor'></path>
+<path d='M 432,480 L 432,528' fill='none' stroke='currentColor'></path>
+<path d='M 448,192 L 448,240' fill='none' stroke='currentColor'></path>
+<path d='M 448,288 L 448,336' fill='none' stroke='currentColor'></path>
+<path d='M 80,544 L 80,552' fill='none' stroke='currentColor'></path>
+<polygon points='96.000000,544.000000 84.000000,538.400024 84.000000,549.599976' fill='currentColor' transform='rotate(90.000000, 80.000000, 544.000000)'></polygon>
+<path d='M 80,624 L 80,632' fill='none' stroke='currentColor'></path>
+<polygon points='96.000000,624.000000 84.000000,618.400024 84.000000,629.599976' fill='currentColor' transform='rotate(90.000000, 80.000000, 624.000000)'></polygon>
+<path d='M 80,704 L 80,712' fill='none' stroke='currentColor'></path>
+<polygon points='96.000000,704.000000 84.000000,698.400024 84.000000,709.599976' fill='currentColor' transform='rotate(90.000000, 80.000000, 704.000000)'></polygon>
+<polygon points='232.000000,576.000000 220.000000,570.400024 220.000000,581.599976' fill='currentColor' transform='rotate(180.000000, 224.000000, 576.000000)'></polygon>
+<path d='M 336,80 L 336,88' fill='none' stroke='currentColor'></path>
+<polygon points='352.000000,80.000000 340.000000,74.400002 340.000000,85.599998' fill='currentColor' transform='rotate(90.000000, 336.000000, 80.000000)'></polygon>
+<path d='M 336,176 L 336,184' fill='none' stroke='currentColor'></path>
+<polygon points='352.000000,176.000000 340.000000,170.399994 340.000000,181.600006' fill='currentColor' transform='rotate(90.000000, 336.000000, 176.000000)'></polygon>
+<path d='M 336,272 L 336,280' fill='none' stroke='currentColor'></path>
+<polygon points='352.000000,272.000000 340.000000,266.399994 340.000000,277.600006' fill='currentColor' transform='rotate(90.000000, 336.000000, 272.000000)'></polygon>
+<path d='M 336,368 L 336,376' fill='none' stroke='currentColor'></path>
+<polygon points='352.000000,368.000000 340.000000,362.399994 340.000000,373.600006' fill='currentColor' transform='rotate(90.000000, 336.000000, 368.000000)'></polygon>
+<path d='M 336,464 L 336,472' fill='none' stroke='currentColor'></path>
+<polygon points='352.000000,464.000000 340.000000,458.399994 340.000000,469.600006' fill='currentColor' transform='rotate(90.000000, 336.000000, 464.000000)'></polygon>
+<text text-anchor='middle' x='16' y='20' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='16' y='660' fill='currentColor' style='font-size:1em'>U</text>
+<text text-anchor='middle' x='24' y='20' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='24' y='580' fill='currentColor' style='font-size:1em'>I</text>
+<text text-anchor='middle' x='24' y='660' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='24' y='740' fill='currentColor' style='font-size:1em'>I</text>
+<text text-anchor='middle' x='32' y='20' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='32' y='580' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='32' y='660' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='32' y='740' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='40' y='580' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='40' y='660' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='40' y='740' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='48' y='20' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='48' y='580' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='48' y='660' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='48' y='740' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='56' y='20' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='56' y='580' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='56' y='660' fill='currentColor' style='font-size:1em'>k</text>
+<text text-anchor='middle' x='56' y='740' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='64' y='20' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='64' y='580' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='64' y='740' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='72' y='20' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='72' y='580' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='72' y='660' fill='currentColor' style='font-size:1em'>w</text>
+<text text-anchor='middle' x='72' y='740' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='80' y='20' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='80' y='660' fill='currentColor' style='font-size:1em'>h</text>
+<text text-anchor='middle' x='80' y='740' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='88' y='20' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='88' y='580' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='88' y='660' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='88' y='740' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='96' y='20' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='96' y='52' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='96' y='68' fill='currentColor' style='font-size:1em'>w</text>
+<text text-anchor='middle' x='96' y='580' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='96' y='660' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='104' y='52' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='104' y='68' fill='currentColor' style='font-size:1em'>h</text>
+<text text-anchor='middle' x='104' y='580' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='104' y='660' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='104' y='740' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='112' y='20' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='112' y='52' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='112' y='68' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='112' y='580' fill='currentColor' style='font-size:1em'>m</text>
+<text text-anchor='middle' x='112' y='740' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='120' y='20' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='120' y='52' fill='currentColor' style='font-size:1em'>m</text>
+<text text-anchor='middle' x='120' y='68' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='120' y='660' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='120' y='740' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='128' y='20' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='128' y='68' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='128' y='580' fill='currentColor' style='font-size:1em'>w</text>
+<text text-anchor='middle' x='128' y='660' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='128' y='740' fill='currentColor' style='font-size:1em'>k</text>
+<text text-anchor='middle' x='136' y='20' fill='currentColor' style='font-size:1em'>k</text>
+<text text-anchor='middle' x='136' y='580' fill='currentColor' style='font-size:1em'>h</text>
+<text text-anchor='middle' x='136' y='660' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='136' y='740' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='144' y='20' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='144' y='580' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='144' y='660' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='144' y='740' fill='currentColor' style='font-size:1em'>g</text>
+<text text-anchor='middle' x='152' y='20' fill='currentColor' style='font-size:1em'>g</text>
+<text text-anchor='middle' x='152' y='580' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='152' y='740' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='160' y='20' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='160' y='580' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='176' y='580' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='184' y='580' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='192' y='580' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='200' y='580' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='272' y='212' fill='currentColor' style='font-size:1em'>(</text>
+<text text-anchor='middle' x='272' y='308' fill='currentColor' style='font-size:1em'>(</text>
+<text text-anchor='middle' x='280' y='116' fill='currentColor' style='font-size:1em'>U</text>
+<text text-anchor='middle' x='280' y='132' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='280' y='212' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='280' y='308' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='280' y='404' fill='currentColor' style='font-size:1em'>C</text>
+<text text-anchor='middle' x='280' y='420' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='280' y='500' fill='currentColor' style='font-size:1em'>D</text>
+<text text-anchor='middle' x='280' y='516' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='288' y='116' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='288' y='132' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='288' y='212' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='288' y='228' fill='currentColor' style='font-size:1em'>C</text>
+<text text-anchor='middle' x='288' y='308' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='288' y='324' fill='currentColor' style='font-size:1em'>P</text>
+<text text-anchor='middle' x='288' y='404' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='288' y='420' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='288' y='500' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='288' y='516' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='296' y='116' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='296' y='212' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='296' y='228' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='296' y='308' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='296' y='324' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='296' y='404' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='296' y='500' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='296' y='516' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='304' y='116' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='304' y='132' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='304' y='228' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='304' y='324' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='304' y='404' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='304' y='420' fill='currentColor' style='font-size:1em'>g</text>
+<text text-anchor='middle' x='304' y='500' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='312' y='116' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='312' y='132' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='312' y='212' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='312' y='228' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='312' y='308' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='312' y='324' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='312' y='420' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='312' y='500' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='312' y='516' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='320' y='116' fill='currentColor' style='font-size:1em'>k</text>
+<text text-anchor='middle' x='320' y='132' fill='currentColor' style='font-size:1em'>m</text>
+<text text-anchor='middle' x='320' y='212' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='320' y='228' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='320' y='308' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='320' y='324' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='320' y='404' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='320' y='420' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='320' y='500' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='320' y='516' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='328' y='132' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='328' y='212' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='328' y='228' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='328' y='308' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='328' y='324' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='328' y='404' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='328' y='420' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='328' y='516' fill='currentColor' style='font-size:1em'>p</text>
+<text text-anchor='middle' x='336' y='116' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='336' y='132' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='336' y='212' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='336' y='308' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='336' y='324' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='336' y='404' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='336' y='420' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='336' y='500' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='336' y='516' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='344' y='116' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='344' y='132' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='344' y='212' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='344' y='228' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='344' y='308' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='344' y='324' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='344' y='404' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='344' y='420' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='344' y='500' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='344' y='516' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='352' y='52' fill='currentColor' style='font-size:1em'>f</text>
+<text text-anchor='middle' x='352' y='68' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='352' y='116' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='352' y='132' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='352' y='212' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='352' y='228' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='352' y='308' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='352' y='404' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='352' y='420' fill='currentColor' style='font-size:1em'>t</text>
+<text text-anchor='middle' x='352' y='500' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='352' y='516' fill='currentColor' style='font-size:1em'>k</text>
+<text text-anchor='middle' x='360' y='52' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='360' y='68' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='360' y='116' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='360' y='132' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='360' y='212' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='360' y='228' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='360' y='308' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='360' y='324' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='360' y='404' fill='currentColor' style='font-size:1em'>-</text>
+<text text-anchor='middle' x='360' y='420' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='360' y='500' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='360' y='516' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='368' y='52' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='368' y='68' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='368' y='116' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='368' y='132' fill='currentColor' style='font-size:1em'>y</text>
+<text text-anchor='middle' x='368' y='212' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='368' y='228' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='368' y='308' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='368' y='324' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='368' y='404' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='368' y='500' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='368' y='516' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='376' y='52' fill='currentColor' style='font-size:1em'>m</text>
+<text text-anchor='middle' x='376' y='68' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='376' y='116' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='376' y='228' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='376' y='324' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='376' y='404' fill='currentColor' style='font-size:1em'>a</text>
+<text text-anchor='middle' x='376' y='420' fill='currentColor' style='font-size:1em'>w</text>
+<text text-anchor='middle' x='384' y='68' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='384' y='132' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='384' y='212' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='384' y='308' fill='currentColor' style='font-size:1em'>b</text>
+<text text-anchor='middle' x='384' y='324' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='384' y='404' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='384' y='420' fill='currentColor' style='font-size:1em'>h</text>
+<text text-anchor='middle' x='384' y='500' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='384' y='516' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='392' y='68' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='392' y='116' fill='currentColor' style='font-size:1em'>c</text>
+<text text-anchor='middle' x='392' y='132' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='392' y='212' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='392' y='228' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='392' y='308' fill='currentColor' style='font-size:1em'>u</text>
+<text text-anchor='middle' x='392' y='324' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='392' y='404' fill='currentColor' style='font-size:1em'>k</text>
+<text text-anchor='middle' x='392' y='420' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='392' y='500' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='392' y='516' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='400' y='116' fill='currentColor' style='font-size:1em'>o</text>
+<text text-anchor='middle' x='400' y='132' fill='currentColor' style='font-size:1em'>r</text>
+<text text-anchor='middle' x='400' y='212' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='400' y='228' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='400' y='308' fill='currentColor' style='font-size:1em'>i</text>
+<text text-anchor='middle' x='400' y='404' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='400' y='420' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='400' y='500' fill='currentColor' style='font-size:1em'>v</text>
+<text text-anchor='middle' x='400' y='516' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='408' y='116' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='408' y='212' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='408' y='228' fill='currentColor' style='font-size:1em'>v</text>
+<text text-anchor='middle' x='408' y='308' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='408' y='324' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='408' y='404' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='408' y='420' fill='currentColor' style='font-size:1em'>l</text>
+<text text-anchor='middle' x='408' y='516' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='416' y='116' fill='currentColor' style='font-size:1em'>e</text>
+<text text-anchor='middle' x='416' y='212' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='416' y='308' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='416' y='324' fill='currentColor' style='font-size:1em'>n</text>
+<text text-anchor='middle' x='416' y='404' fill='currentColor' style='font-size:1em'>d</text>
+<text text-anchor='middle' x='424' y='212' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='424' y='308' fill='currentColor' style='font-size:1em'>s</text>
+<text text-anchor='middle' x='424' y='324' fill='currentColor' style='font-size:1em'>v</text>
+<text text-anchor='middle' x='432' y='212' fill='currentColor' style='font-size:1em'>)</text>
+<text text-anchor='middle' x='432' y='308' fill='currentColor' style='font-size:1em'>)</text>
+</g>
+
+    </svg>
+  
+</div>
+<h2 id="the-wordy-answer">The wordy answer</h2>
+<p>When installing from a wheel, pip will fetch the wheel file, and then unpack it.
+That&rsquo;s it. There&rsquo;s nothing else to do.</p>
+<p>When installing from a source distribution, pip will fetch the source
+distribution, unpack it to a temporary directory, (potentially) create a build
+environment and install build-dependencies in that environment, make a
+subprocess call (or multiple) to the build-backend to get it to generate a wheel
+file. The build environment and unpacked sources are then deleted. We now have a
+wheel file which will then be handled like any other wheel file.</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li><a href="https://pip.pypa.io/en/stable/reference/build-system/">How pip builds packages from source</a></li>
+<li><a href="https://packaging.python.org/en/latest/specifications/binary-distribution-format/">Specification of the wheel format</a></li>
+<li><a href="https://installer.pypa.io/">Installer</a>&rsquo;s <a href="https://github.com/pypa/installer/blob/0.6.0/src/installer/_core.py#L64">installation logic</a> code, if you&rsquo;re inclined that way</li>
+<li><a href="https://pypackaging-native.github.io/">pypackaging-native</a>: &ldquo;a collection of content about key Python packaging
+topics and issues for projects using native code&rdquo; (which is what made me write
+this post)</li>
+</ul>
+]]></content:encoded></item></channel></rss>

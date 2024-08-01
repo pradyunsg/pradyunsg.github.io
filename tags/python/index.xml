@@ -1,4 +1,214 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Python on Pradyun Gedam</title><link>https://pradyunsg.me/tags/python/</link><description>Recent content in Python on Pradyun Gedam</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 31 May 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/tags/python/index.xml" rel="self" type="application/rss+xml"/><item><title>Improving my dotfiles manager with pipx and inline dependency metadata</title><link>https://pradyunsg.me/blog/2024/05/31/python-scripts-with-pipx-bash/</link><pubDate>Fri, 31 May 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/05/31/python-scripts-with-pipx-bash/</guid><description>I have a (somewhat unnecessarily) custom setup for managing my dotfiles and I made a nice improvement to it today.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Python on Pradyun Gedam</title><link>https://pradyunsg.me/tags/python/</link><description>Recent content in Python on Pradyun Gedam</description><generator>Hugo -- 0.122.0</generator><language>en</language><lastBuildDate>Mon, 01 Jan 0001 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/tags/python/index.xml" rel="self" type="application/rss+xml"/><item><title>Improving my dotfiles manager with pipx and inline dependency metadata</title><link>https://pradyunsg.me/blog/2024/05/31/python-scripts-with-pipx-bash/</link><pubDate>Fri, 31 May 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/05/31/python-scripts-with-pipx-bash/</guid><description>I have a (somewhat unnecessarily) custom setup for managing my dotfiles and I made a nice improvement to it today.
 How it works The dotfiles are managed by a Python script. In broad strokes, the script will:
-read a TOML file locate the configured paths create symlinks, based on custom marker text in the filenames, for files in subdirectories under the configured paths1 If there&amp;rsquo;s a conflict (i.e. two configured paths provide the same symlink target location), the TOML file contains the resolution for it (i.</description></item><item><title>How the Python Packaging community is organised</title><link>https://pradyunsg.me/blog/2023/01/14/python-packaging-organisation/</link><pubDate>Sat, 14 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/14/python-packaging-organisation/</guid><description>The way the Python packaging community is organised is something that I&amp;rsquo;ve explained in multiple places, in multiple contexts. I figure that it&amp;rsquo;ll be useful to actually write it down in a single place, so that I don&amp;rsquo;t have to repeat myself.
-The Python Packaging Authority The Python Packaging Authority (PyPA) is a fairly loose group of projects that happen to be related to Python packaging. While the PyPA has a formal governance model, there&amp;rsquo;s no &amp;ldquo;oversight&amp;rdquo; or &amp;ldquo;enforcement&amp;rdquo; on projects that are part of the PyPA &amp;ndash; they are only required to adopt the PSF Code of Conduct and to be accepted by the existing members.</description></item></channel></rss>
+read a TOML file locate the configured paths create symlinks, based on custom marker text in the filenames, for files in subdirectories under the configured paths1 If there&amp;rsquo;s a conflict (i.e. two configured paths provide the same symlink target location), the TOML file contains the resolution for it (i.</description><content:encoded><![CDATA[<p>I have a (somewhat unnecessarily) custom setup for managing my dotfiles and I made a nice improvement to it today.</p>
+<h2 id="how-it-works">How it works</h2>
+<p>The dotfiles are managed by a Python script. In broad strokes, the script will:</p>
+<ul>
+<li>read a TOML file</li>
+<li>locate the configured paths</li>
+<li>create symlinks, based on custom marker text in the filenames, for files in subdirectories under the configured paths<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></li>
+</ul>
+<p>If there&rsquo;s a conflict (i.e. two configured paths provide the same symlink target location), the TOML file contains the resolution for it (i.e. specifies one of the paths as the &ldquo;winner&rdquo; for that file). If a resolution doesn&rsquo;t exist, the script errors out.</p>
+<p>This setup exists mainly to allow me to have work-only dotfiles managed in work&rsquo;s VCS with all their corporate stuff while keeping them separate yet cooperative with my dotfiles managed publicly on GitHub.</p>
+<h2 id="the-problem">The problem</h2>
+<p>Now, this effectively means that my dotfiles manager is a Python script. It also has a bunch of dependencies (specifically, <code>rich</code> because I like colors and <code>tomli</code> because it should probably run on all supported Python versions).</p>
+<p>This usually means that you need to create a virtual environment to run it. That&rsquo;s gotten a bit tedious and fragile given how frequently I keep changing my Python installations (gotta keep up with the latest and greatest!).</p>
+<h2 id="the-solution">The solution</h2>
+<h3 id="the-implementation">The implementation</h3>
+<p>I figured out a way to ensure that the script can be run without needing to manage a virtual environment myself. Now, it can be run on any machine with a working <code>curl</code>, <code>bash</code>, <code>python3</code> and the ability to download from <a href="https://github.com">https://github.com</a>. It also gracefully triggers MacOS&rsquo; prompt for &ldquo;Hey, do you want to install our developer tooling stuff?&rdquo; (XCode Command Line Tools, via the <code>python3</code> shim they install on a new Mac).</p>
+<p>This is made possible by <code>pipx</code>, inline dependency metadata and Python&rsquo;s zipapps. There are also a few shenanigans to make this script a valid Bash script and a valid Python script. A <code>&quot;&quot;&quot;&quot;true</code> serves as our little gem of polyglot magic to make that possible.<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
+<h3 id="how-it-works-bash">How it works: Bash</h3>
+<p>Let me show you the script first, with Bash&rsquo;s syntax highlighting:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># /// script</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># requires-python = &#34;&gt;=3.8&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># dependencies = [</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#34;rich&#34;,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#34;tomli&#34;,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ///</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;&#34;</span>true
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> ! -f <span style="color:#e6db74">&#39;/tmp/pipx-dotfiles.pyz&#39;</span> <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>  echo <span style="color:#e6db74">&#34;Downloading pipx...&#34;</span>
+</span></span><span style="display:flex;"><span>  curl --proto <span style="color:#e6db74">&#39;=https&#39;</span> --tlsv1.2 -sSLf https://github.com/pypa/pipx/releases/latest/download/pipx.pyz -o /tmp/pipx-dotfiles.pyz
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>python3 /tmp/pipx-dotfiles.pyz run <span style="color:#e6db74">&#34;</span>$0<span style="color:#e6db74">&#34;</span> -- <span style="color:#e6db74">&#34;</span>$@<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>exit
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">import rich
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">print(rich.__version__)
+</span></span></span></code></pre></div><p>From Bash&rsquo;s perspective, this script has a bunch of comments, then a few commands, and then an <code>exit</code>.</p>
+<p>The way Bash processes a script is by reading it as a buffer and executing it before moving on. This allows Bash scripts containing syntax issues to be run, as long as the syntax issue is somewhere that isn&rsquo;t being read by Bash (i.e. after the point of exit). We&rsquo;re definitely using that since the Python code (which is not valid Bash syntax) is present after the <code>exit</code>.</p>
+<p>To Bash, our little gem of magic (<code>&quot;&quot;&quot;&quot;true</code>) is the same as a <code>true</code> command since it&rsquo;s a bunch of empty strings concatenated together with <code>true</code>. And, <code>true</code> is used as a no-op command (it exits with code 0 and does nothing else).<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup> It is treated the same as a <code>true</code> on its own line and Bash proceeds with the rest of the logic as a regular Bash script.</p>
+<p>The rest of the logic in the Bash script is to download <code>pipx</code>&rsquo;s zipapp (if it&rsquo;s not already downloaded) and then run the script itself with <code>python3 &lt;pipx-zipapp&gt; run &lt;script&gt; -- &lt;any arguments passed to the script&gt;</code>.</p>
+<h3 id="how-it-works-zipapp">How it works: zipapp</h3>
+<p>Wait, a zipapp?</p>
+<p>So, that&rsquo;s a fun Python feature: it can execute a zip file as if it were a script. Python will look for a <code>__main__.py</code> in the zip file and, if it&rsquo;s there, the <code>__main__.py</code> as if it were a script. See <a href="https://docs.python.org/3/library/zipapp.html">the documentation</a> if you want to learn more about this.</p>
+<p>In this case, the <code>pipx</code> maintainers create a maintain a zipapp and attach it to their GitHub releases. By using GitHub&rsquo;s <code>latest</code> release URL, we can fetch the zipapp for the latest release (with a redirect, hence the <code>-L</code> to <code>curl</code>) without much additional complexity.</p>
+<h3 id="how-it-works-pipx-run">How it works: pipx run</h3>
+<p><code>pipx run</code> enables running a script with the dependencies being installed by <code>pipx</code> in a cached virtual environment that is managed by <code>pipx</code>.</p>
+<p>Notably, it supports <a href="https://peps.python.org/pep-0723/">PEP 723</a> (inline script metadata) which enables declaring dependency information inline. This is what the <code>/// script</code> and <code>///</code> are serving as markers for. The <code>requires-python</code> and <code>dependencies</code> are bits of metadata that <code>pipx</code> will use to determine what needs to be present for running the script.</p>
+<p>Assuming you&rsquo;re on a compatible Python, <code>pipx</code> will parse that chunk, install the dependencies in a cached virtual environment and then run the script within that virtual environment. This means that the dependencies are installed by <code>pipx</code> and can/will be reused across multiple runs of the script by <code>pipx</code>.</p>
+<h3 id="how-it-works-python">How it works: Python</h3>
+<p>Let&rsquo;s look at the script again, this time with Python&rsquo;s syntax highlighting:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># /// script</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># requires-python = &#34;&gt;=3.8&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># dependencies = [</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#34;rich&#34;,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#34;tomli&#34;,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ///</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;&#34;true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">if [[ ! -f &#39;/tmp/pipx-dotfiles.pyz&#39; ]]; then
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  echo &#34;Downloading pipx...&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  curl --proto &#39;=https&#39; --tlsv1.2 -sSLf https://github.com/pypa/pipx/releases/latest/download/pipx.pyz -o /tmp/pipx-dotfiles.pyz
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">fi
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">python3 /tmp/pipx-dotfiles.pyz run &#34;$0&#34; -- &#34;$@&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">exit
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> rich
+</span></span><span style="display:flex;"><span>print(rich<span style="color:#f92672">.</span>__version__)
+</span></span></code></pre></div><p>From Python&rsquo;s perspective, this script has a bunch of comments, then a docstring, and then the whole Python script.</p>
+<p>To Python, our little gem of magic (<code>&quot;&quot;&quot;&quot;true</code>) is the start of a multiline string which starts with the content <code>&quot;true\n</code>. This is valid Python syntax, and Python will happily treat it as the start of the string literal. The end of the string literal is the next <code>&quot;&quot;&quot;</code> it encounters, which is the one at the end of the Bash parts of the script.</p>
+<p>This means that the Bash script is treated as a multiline string by Python. It&rsquo;s treated as the docstring of the Python script. I am not too concerned about that since this is a script that doesn&rsquo;t need a docstring.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p><code>symlink</code> with periods around it based on where in the file it shows up&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>I learned about this approach from <a href="https://stackoverflow.com/q/15190055/1931274">this StackOverflow question</a>.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p>It is possible to put almost any valid Bash syntax after the 4 double quotes (like, you can start an <code>if</code> statement, or something else) as long as you don&rsquo;t have whitespace between the 4th double quote and the keyword/CLI tool name. I just didn&rsquo;t like how that stuff looked so I went with <code>true</code> on that line.&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded></item><item><title>How the Python Packaging community is organised</title><link>https://pradyunsg.me/blog/2023/01/14/python-packaging-organisation/</link><pubDate>Sat, 14 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/14/python-packaging-organisation/</guid><description>The way the Python packaging community is organised is something that I&amp;rsquo;ve explained in multiple places, in multiple contexts. I figure that it&amp;rsquo;ll be useful to actually write it down in a single place, so that I don&amp;rsquo;t have to repeat myself.
+The Python Packaging Authority The Python Packaging Authority (PyPA) is a fairly loose group of projects that happen to be related to Python packaging. While the PyPA has a formal governance model, there&amp;rsquo;s no &amp;ldquo;oversight&amp;rdquo; or &amp;ldquo;enforcement&amp;rdquo; on projects that are part of the PyPA &amp;ndash; they are only required to adopt the PSF Code of Conduct and to be accepted by the existing members.</description><content:encoded><![CDATA[<p>The way the Python packaging community is organised is something that I&rsquo;ve
+explained in multiple places, in multiple contexts. I figure that it&rsquo;ll be
+useful to actually write it down in a single place, so that I don&rsquo;t have to
+repeat myself.</p>
+<h2 id="the-python-packaging-authority">The Python Packaging Authority</h2>
+<p>The Python Packaging Authority (PyPA) is a fairly loose group of projects that
+happen to be related to Python packaging. While the PyPA has a formal
+<a href="https://peps.python.org/pep-0609/">governance</a> model, there&rsquo;s no &ldquo;oversight&rdquo; or
+&ldquo;enforcement&rdquo; on projects that are part of the PyPA &ndash; they are only required to
+adopt the PSF Code of Conduct and to be accepted by the existing members.</p>
+<p>Functionally, each PyPA project is free to do what it wants. The only real
+benefit of being a PyPA project is the ability to use the PSF as a fiscal
+sponsor and the ability to say that it&rsquo;s a &ldquo;PyPA project&rdquo;.</p>
+<p>Practically, the PyPA serves as <a href="https://discuss.python.org/t/what-is-the-pypa/12297/2?u=pradyunsg">&ldquo;a body to hammer out &amp; maintain
+interoperability specifications&rdquo;</a> for Python packaging. The
+PyPA also includes foundational tools that are used in the Python packaging
+ecosystem, like <code>pip</code> and <code>setuptools</code>.</p>
+<h2 id="relationship-with-core-python">Relationship with &ldquo;Core Python&rdquo;</h2>
+<p>(I&rsquo;m using &ldquo;Core Python&rdquo; to refer to the Python language and standard library,
+as maintained by the CPython Core Developers, also known as <a href="https://peps.python.org/pep-0013/#the-core-team">&ldquo;core
+team&rdquo;</a> for Python)</p>
+<p>As of the time of writing, Core Python&rsquo;s involvement in Python Packaging (in a
+<a href="https://peps.python.org/pep-0632/">post-distutils</a> world) is fairly limited.
+The interpreter and Python standard library provide the following pieces, around
+the packaging ecosystem:</p>
+<ul>
+<li>
+<p>Shipping <code>ensurepip</code> and <code>venv</code> in the standard library.</p>
+<ul>
+<li><code>venv</code> supports creating a virtual environment with pip and
+setuptools<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> installed in it.</li>
+<li><code>ensurepip</code> provides copies of <code>pip</code> and
+<code>setuptools</code><sup id="fnref1:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> that are used by <code>venv</code>, and
+allows bootstrapping the packaging tooling for Python.</li>
+</ul>
+</li>
+<li>
+<p>&ldquo;site-packages&rdquo; directories on the import path.</p>
+<ul>
+<li><code>site</code> adds site-packages (&ldquo;global&rdquo; and &ldquo;user&rdquo;) to the import path.</li>
+<li><code>site</code> respects the presence of a <code>pyvenv.cfg</code> file (used by <code>venv</code>) to mark
+a virtual environment, influencing which site-packages it adds to the import
+path.</li>
+</ul>
+</li>
+<li>
+<p><code>sysconfig</code> provides relevant paths for placing files and build configuration
+for the interpreter.</p>
+</li>
+<li>
+<p>a <a href="https://docs.python.org/3/c-api/stable.html">stable ABI</a> for the C API, for
+building extensions compatible across Python 3.x (x &gt;= 2).</p>
+</li>
+</ul>
+<h3 id="delegation-of-python-packaging-ecosystem-decisions">Delegation of Python packaging ecosystem decisions</h3>
+<p>The Python Steering Council delegates the decision making for the packaging
+ecosystem to the Python Packaging Authority (PyPA). This is done through
+<a href="https://github.com/python/steering-council/blob/main/process/standing-delegations.md#pypa-delegations">standing delegations</a> to specific PyPA members on specific
+aspects of Python Packaging. The PyPA is, like CPython Core Developers, a group
+of volunteers who maintain various bits and pieces of the Python packaging
+ecosystem.</p>
+<p>The CPython Core Developers and the PyPA are not the same group of people, but
+there is meaningful overlap between the two groups. There are 85 &ldquo;active&rdquo;
+CPython Core Developers<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> and 50+ (public) PyPA
+members<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>. Off the top of my head, I can count 5 people who are
+active in both CPython and one or more PyPA projects.</p>
+<h2 id="a-bit-of-history">A bit of history</h2>
+<p>From <a href="https://www.pypa.io/en/latest/history/">https://www.pypa.io/en/latest/history/</a>:</p>
+<blockquote>
+<p>2011-02-28: The Python Packaging Authority (PyPA) is created to take over the
+maintenance of pip and virtualenv from Ian Bicking, led by Carl Meyer, Brian
+Rosner and Jannis Leidel. Other proposed names were “ianb-ng”, “cabal”, “pack”
+and “Ministry of Installation”.</p>
+</blockquote>
+<p>As &ldquo;Ministry of Installation&rdquo; likely implies, these names were <a href="https://discuss.python.org/t/what-is-the-pypa/12297/6?u=pradyunsg">chosen partly in
+jest</a>. The name stuck and, those who started using Python <em>after</em> this
+name was picked, ended up treating the name at face value. PyPA projects
+essentially serves as <em>all</em> of the packaging infrastructure for Python making it
+the de facto authority.</p>
+<p>Over time, &ldquo;Authority&rdquo; in PyPA did end up being backed by real authority: the
+standing delegations from the elected Python Steering Council, ceding control of
+certain kinds of Python Enhancement Proposals (PEPs) to specific PyPA members.
+There&rsquo;s <a href="https://www.pypa.io/en/latest/specifications/">formal processes</a>, <a href="https://peps.python.org/topic/packaging/">formal interoperability
+specifications</a> as Python PEPs and a <a href="https://peps.python.org/pep-0609/">formal governance
+model</a>.</p>
+<p>To quote <a href="https://discuss.python.org/t/what-is-the-pypa/12297/2?u=pradyunsg">Thomas Kluyver</a>:</p>
+<blockquote>
+<p>You don’t get much more authoritative than that without an army.</p>
+</blockquote>
+<h2 id="what-about-non-pypa-projects">What about non-PyPA projects?</h2>
+<p>Since PyPA&rsquo;s inception, there have been non-PyPA projects related to Python
+packaging (eg: buildout is older than pip). By and large, there isn&rsquo;t any sort
+of antagonistic relationship between PyPA and non-PyPA projects. PyPA and
+non-PyPA project maintainers have often worked together on various things, and
+many <a href="https://packaging.python.org/en/latest/key_projects/#non-pypa-projects">non-PyPA projects are listed as &ldquo;key projects&rdquo;</a> for Python
+packaging.</p>
+<p>For example, at the time of writing, the two most popular non-PyPA projects are
+Conda and Poetry. Both of these rely on the interoperability specifications
+and/or tools that the PyPA works on (<a href="https://conda-forge.org/docs/maintainer/adding_pkgs.html#use-pip">conda</a>,
+<a href="https://python-poetry.org/docs/pyproject/#poetry-and-pep-517">poetry</a>) to do what they do.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Setuptools is gonna be removed, starting with Python 3.12.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a>&#160;<a href="#fnref1:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>Based on the number of eligible votes in the last SC election:
+<a href="https://peps.python.org/pep-8104/#results">https://peps.python.org/pep-8104/#results</a>. &ldquo;active&rdquo; is determined as
+described in <a href="https://peps.python.org/pep-0013/#membership">Python Language Governance</a> document.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p>Based on public folks listed in <a href="https://github.com/orgs/pypa/people">https://github.com/orgs/pypa/people</a> (not all
+are active though, and there&rsquo;s active folks who are not members of the
+GitHub org but have access to the various repositories).&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded></item></channel></rss>

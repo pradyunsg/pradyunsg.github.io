@@ -1,21 +1,988 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Open Source Updates on Pradyun Gedam</title><link>https://pradyunsg.me/tags/open-source-updates/</link><description>Recent content in Open Source Updates on Pradyun Gedam</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 30 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/tags/open-source-updates/index.xml" rel="self" type="application/rss+xml"/><item><title>OSS Work update #18</title><link>https://pradyunsg.me/blog/2022/09/30/oss-update-18/</link><pubDate>Fri, 30 Sep 2022 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2022/09/30/oss-update-18/</guid><description>Oh hey, backfilling is fun.</description></item><item><title>OSS Work update #17</title><link>https://pradyunsg.me/blog/2022/07/29/oss-update-17/</link><pubDate>Fri, 29 Jul 2022 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2022/07/29/oss-update-17/</guid><description>Oh hey, backfilling is fun.</description></item><item><title>OSS Work update #16</title><link>https://pradyunsg.me/blog/2022/07/28/oss-update-16/</link><pubDate>Thu, 28 Jul 2022 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2022/07/28/oss-update-16/</guid><description>April was a somewhat relaxed month.</description></item><item><title>OSS Work update #15</title><link>https://pradyunsg.me/blog/2022/04/08/oss-update-15/</link><pubDate>Fri, 08 Apr 2022 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2022/04/08/oss-update-15/</guid><description>Woah, time flies!</description></item><item><title>OSS Work update #14</title><link>https://pradyunsg.me/blog/2021/12/12/oss-update-14/</link><pubDate>Sun, 12 Dec 2021 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2021/12/12/oss-update-14/</guid><description>Making things look better and work better!</description></item><item><title>OSS Work update #13</title><link>https://pradyunsg.me/blog/2021/10/09/oss-update-13/</link><pubDate>Sat, 09 Oct 2021 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2021/10/09/oss-update-13/</guid><description>New hardware + more time = more stuff done!</description></item><item><title>OSS Work update #12</title><link>https://pradyunsg.me/blog/2021/07/03/oss-update-12/</link><pubDate>Sat, 03 Jul 2021 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2021/07/03/oss-update-12/</guid><description>A whole lot of logistics.</description></item><item><title>OSS Work update #11</title><link>https://pradyunsg.me/blog/2021/05/07/oss-update-11/</link><pubDate>Fri, 07 May 2021 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2021/05/07/oss-update-11/</guid><description>Release all the things!</description></item><item><title>OSS Work update #10</title><link>https://pradyunsg.me/blog/2021/04/03/oss-update-10/</link><pubDate>Sat, 03 Apr 2021 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2021/04/03/oss-update-10/</guid><description>More (new) Sphinx stuff and rewriting other things.</description></item><item><title>OSS Work update #9</title><link>https://pradyunsg.me/blog/2021/02/27/oss-update-9/</link><pubDate>Sat, 27 Feb 2021 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2021/02/27/oss-update-9/</guid><description>&lt;p>Alrighty! Let&amp;rsquo;s start doing this again.&lt;/p></description></item><item><title>OSS Work update #8</title><link>https://pradyunsg.me/blog/2020/02/19/oss-update-8/</link><pubDate>Wed, 19 Feb 2020 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2020/02/19/oss-update-8/</guid><description>I&amp;rsquo;m trying to post these roughly once a month. Here&amp;rsquo;s the January post.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Open Source Updates on Pradyun Gedam</title><link>https://pradyunsg.me/tags/open-source-updates/</link><description>Recent content in Open Source Updates on Pradyun Gedam</description><generator>Hugo -- 0.122.0</generator><language>en</language><lastBuildDate>Mon, 01 Jan 0001 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/tags/open-source-updates/index.xml" rel="self" type="application/rss+xml"/><item><title>OSS Work update #18</title><link>https://pradyunsg.me/blog/2022/09/30/oss-update-18/</link><pubDate>Fri, 30 Sep 2022 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2022/09/30/oss-update-18/</guid><description>Oh hey, backfilling is fun.</description><content:encoded><![CDATA[<h2 id="work-i-did-jun-2022">Work I did (Jun 2022)</h2>
+<h3 id="software">Software</h3>
+<ul>
+<li>sphinx-theme-builder: 0.2.0a15 release.</li>
+<li>sphinx-basic-ng: 0.0.1a12 release.</li>
+<li>Furo: 2022.06.04 and 2022.06.21 releases.</li>
+<li>Documentation improvements to pip.</li>
+<li>Made progress on moving pip away from distutils usage, unblocking Python
+3.12&rsquo;s distutils removal.</li>
+<li><code>sphinx-theme-builder</code> got a bunch of updates.</li>
+<li><code>sphinx-basic-ng</code> got a bunch of updates.</li>
+<li>Improve <code>sphinx-theme-builder</code> usability for downstream redistributors.</li>
+<li>Significantly simplified the default configuration file template in Sphinx,
+which eventually got released in Sphinx 5.1.</li>
+<li>Worked on getting pip&rsquo;s test isolation to behave correctly without virtualenv
+&lt;= 16 (from ~2019).</li>
+<li>Worked on Sphinx 5 compatibility for various bits of the Sphinx ecosystem that
+I maintain.</li>
+<li>Spent a decent amount of time working on Lutra.</li>
+<li>Built CPython documentation with Lutra.</li>
+</ul>
+<h3 id="community">Community</h3>
+<ul>
+<li>Getting the Packaging PEPs into a consistent state.</li>
+<li>Start moving Python Packaging standards to packaging.python.org.</li>
+<li>Engage in a discussion about Bokeh moving off of <code>setup.py</code>.</li>
+<li>Get PEP 668 over the line and&hellip; it&rsquo;s accepted!</li>
+<li>Start poking at PEP 625, to get the ball rolling on that again.</li>
+<li>General contributions to executable books and Sphinx.</li>
+<li>Gather a first round of feedback, on CPython documentation built with Lutra.</li>
+</ul>
+<h2 id="general-notes">General Notes</h2>
+<p>This was backfilled in Sept 2022.</p>
+]]></content:encoded></item><item><title>OSS Work update #17</title><link>https://pradyunsg.me/blog/2022/07/29/oss-update-17/</link><pubDate>Fri, 29 Jul 2022 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2022/07/29/oss-update-17/</guid><description>Oh hey, backfilling is fun.</description><content:encoded><![CDATA[<h2 id="work-i-did-may-2022">Work I did (May 2022)</h2>
+<h3 id="software">Software</h3>
+<ul>
+<li>Release pip 22.1!</li>
+<li>Lots of bugfixes for pip 22.1!</li>
+<li>Make some progress on improving pip&rsquo;s build system logic.</li>
+<li>Make improvements to Furo, switching it to use <code>sphinx-basic-ng</code>.</li>
+</ul>
+<h3 id="community">Community</h3>
+<ul>
+<li>Remotely attend PyCon US Sprints.</li>
+<li>Attend and engage in the Python Documentation Community meeting.</li>
+<li>Collaborate on setting up a &ldquo;Packaging PEPs&rdquo; pages on
+<a href="https://peps.python.org/">https://peps.python.org/</a>.</li>
+<li>PEP 691 (adding a JSON-based API to Python Package Indexes) went through its
+initial round of discussions. I co-authored this PEP.</li>
+<li>More work on getting PEP 668 (externally managed environments) ready for a
+decision. I co-authored this PEP.</li>
+</ul>
+<h2 id="general-notes">General notes</h2>
+<p>This month was a vacation month, and it shows! I got to meet family and friends,
+and had a generally relaxed few weeks.</p>
+]]></content:encoded></item><item><title>OSS Work update #16</title><link>https://pradyunsg.me/blog/2022/07/28/oss-update-16/</link><pubDate>Thu, 28 Jul 2022 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2022/07/28/oss-update-16/</guid><description>April was a somewhat relaxed month.</description><content:encoded><![CDATA[<h2 id="work-i-did-april-2022">Work I did (April 2022)</h2>
+<h3 id="technical">Technical</h3>
+<ul>
+<li>Release pip 22.1.b1</li>
+<li>Release Furo 2022.04.07</li>
+<li>Release release-helper 1.0.0</li>
+<li>Improve the presentation of upgrade prompts from pip.</li>
+<li>Some exploratory work for how much effort it would be, to remove
+<code>setup.py install</code> calls from pip&rsquo;s codebase.</li>
+<li>Some exploratory work for adding a &ldquo;Track: Packaging&rdquo; to Python PEPs.</li>
+<li>Some exploratory work for automating adding maintainers/committers to PyPA,
+with the information being stored in a Git repository with history.</li>
+<li>Did an &ldquo;open source responsibility audit&rdquo;, to check what I&rsquo;ve committed to
+responsibility for and for what things I should step down.</li>
+</ul>
+<h3 id="communication">Communication</h3>
+<ul>
+<li>PyCon US Packaging Summit planning.</li>
+<li>Poke a few more people about PEP 668 (externally managed environments).</li>
+<li>Started writing a PEP for &ldquo;default&rdquo; extras (i.e. optional dependencies that
+get installed by default).</li>
+<li>Interviewed as part of a post about
+<a href="https://builtin.com/software-engineering-perspectives/package-managers">Package Managers</a></li>
+</ul>
+<h2 id="general-notes">General notes</h2>
+<p>My plans for attending PyCon US changed very close to the event date, since
+PyCon announced that there will be <a href="https://pycon.blogspot.com/2022/04/important-venue-information-update.html">a co-located event does not have any
+published masking or vaccination requirements</a>. I&rsquo;m pretty
+bummed out about that. Thankfully, everyone involved in the trip
+planning/booking has been understanding.</p>
+<p>PyCon US is wrapping up, as I write this. I imagine there&rsquo;s gonna be a bunch of
+folks with a bunch of energy contributing to various projects, something I look
+forward to!</p>
+]]></content:encoded></item><item><title>OSS Work update #15</title><link>https://pradyunsg.me/blog/2022/04/08/oss-update-15/</link><pubDate>Fri, 08 Apr 2022 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2022/04/08/oss-update-15/</guid><description>Woah, time flies!</description><content:encoded><![CDATA[<h2 id="work-i-did">Work I did</h2>
+<p>Things have been fairly bumpy over the last little while.</p>
+<h3 id="dec-2021">Dec 2021</h3>
+<h4 id="technical">Technical</h4>
+<ul>
+<li>sphinx-basic-ng: release alpha 8</li>
+<li>sphinx-theme-builder: release alpha 12</li>
+<li>pip: Significant usability improvements
+<ul>
+<li>Much better cleaner error presentation style, providing additional context
+in build-time error messages.</li>
+<li>Abort immediately on metadata generation failure instead of backtracking.</li>
+</ul>
+</li>
+<li>installer: Preserve executable bits, bringing it closer to behaving
+appropriately.</li>
+<li>installer: Improve the documentation.</li>
+<li>pip: Start rewriting the build isolation logic.</li>
+<li>oldest-supported-numpy: Improve testing setup for dependency declarations.</li>
+<li>pydata-sphinx-theme: Rework the theme&rsquo;s build system, to use
+<code>sphinx-theme-builder</code>.</li>
+<li>pyproject-hooks: Create and scaffold the project, as a migration path for
+<code>pep517</code>.</li>
+<li>Started working on a tool to make writing these easier for me.</li>
+</ul>
+<h4 id="communication">Communication</h4>
+<ul>
+<li>Initiated the conversation for starting the Python packaging summit at PyCon.</li>
+<li>Nudged Discourse
+<a href="https://meta.discourse.org/t/move-footnotes-to-a-standard-plugin/210112">to enable the footnotes plugin on all hosted instances</a>.</li>
+<li>Reworked PyPI support&rsquo;s limit request templates.</li>
+<li>Became a maintainer on <a href="https://github.com/pypa/flit">Flit</a>.</li>
+</ul>
+<h3 id="jan-2022">Jan 2022</h3>
+<h4 id="technical-1">Technical</h4>
+<ul>
+<li>pip: Release 22.0.</li>
+<li>Furo: Immaculate Indigo release.</li>
+<li>sphinx-inline-tabs: Release beta 11.</li>
+<li>sphinx-basic-ng: Release alpha 9.</li>
+<li>sphinx-theme-builder: Release alpha 13.</li>
+<li>pip: Significantly improve how errors in subprocesses are presented.</li>
+<li>Sphinx: change &ldquo;permalink to this headline&rdquo; to &ldquo;permalink to this heading&rdquo;.</li>
+<li>pydata-sphinx-theme: Improve presentation and styling of the scaffolding.</li>
+</ul>
+<h4 id="communication-1">Communication</h4>
+<ul>
+<li>Release management and change management for pip 22.0.</li>
+<li>Discussion with the Packaging Project manager about rolling out changes.</li>
+<li>Moving externally managed environments PEP forward.</li>
+</ul>
+<h3 id="feb-2022">Feb 2022</h3>
+<h4 id="technical-2">Technical</h4>
+<ul>
+<li>✨ Furo: Jazzy Jasmine and Keen Kobi releases, with major improvements.</li>
+<li>pip: Release 22.0 bugfixes.</li>
+<li>installer: Release 0.5.0</li>
+<li>pip: Make more improvements to pip&rsquo;s documentation.</li>
+<li>pip: Get the fix for Windows upgrade protection logic landed.</li>
+<li>sphinx-themes.org: Rework the &ldquo;Kitchen Sink&rdquo;.</li>
+</ul>
+<h4 id="communication-2">Communication</h4>
+<ul>
+<li>Poke at PEP 668, to check that there&rsquo;s still interest.</li>
+<li>Get the ball rolling for the Packaging Summit at PyCon US 2022.</li>
+<li>Move <code>installer</code> into the PyPA umbrella.</li>
+</ul>
+<h3 id="mar-2022">Mar 2022</h3>
+<h4 id="technical-3">Technical</h4>
+<ul>
+<li>sphinx-theme-builder: Release alpha 14.</li>
+<li>installer: Release 0.5.1.</li>
+<li>Python: Upgrade the pip version that&rsquo;s bundled with latest bugfix releases-</li>
+<li>Lutra: Publicly release the source code under MIT.</li>
+<li>pip: Explore changing wheel installation logic to use <code>installer</code>.</li>
+<li>pip: Explore changing pyproject.toml build system to use <code>build</code>.</li>
+<li>pip: Make progress on the broader build logic refactor.</li>
+<li>pip: Make more improvements to pip&rsquo;s documentation.</li>
+<li>pip: Improve the pip upgrade prompt presentation.</li>
+<li>dotfiles: Completely rework my dotfiles setup, allowing &ldquo;merging&rdquo; multiple
+repositories.</li>
+</ul>
+<h4 id="communication-3">Communication</h4>
+<ul>
+<li>Update the PyPA recommendations around pipenv, to better reflect the current
+state of the project.</li>
+<li>Make a public proposal about adopting the concept of &ldquo;Teams&rdquo; (from PEP 8015).</li>
+<li>Ask publicly about blockers for dropping pip&rsquo;s legacy resolver.</li>
+</ul>
+<h2 id="what-next">What next?</h2>
+<p>There&rsquo;s PyCon US close to the end of the month! That&rsquo;s the first in-person event
+that I&rsquo;ve bought tickets for since 2020!</p>
+<p>There&rsquo;s going to be a Python Packaging Summit, at PyCon US this year &ndash; I&rsquo;m one
+of the organisers. I am also going to be at the event for sprints.</p>
+<h2 id="other-commitments">Other commitments</h2>
+<p>A full time job that pays my bills. :)</p>
+]]></content:encoded></item><item><title>OSS Work update #14</title><link>https://pradyunsg.me/blog/2021/12/12/oss-update-14/</link><pubDate>Sun, 12 Dec 2021 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2021/12/12/oss-update-14/</guid><description>Making things look better and work better!</description><content:encoded><![CDATA[<h2 id="work-i-did">Work I did</h2>
+<p>These last two months have been fairly dense!</p>
+<h3 id="oct-2021">Oct 2021</h3>
+<h4 id="technical">Technical</h4>
+<ul>
+<li>pip: 21.3 release.</li>
+<li>packaging: 21.1 release.</li>
+<li>sphinx-basic-ng: alpha7 release.</li>
+<li>resolvelib: 0.8.0 release.</li>
+<li>installer: 0.4.0 release.</li>
+<li>installer: 0.3.0 release.</li>
+<li>pip: Some benchmarking to see get a better idea of how stuff performs.</li>
+<li>pip: Start working on adding diagnostic details to pip&rsquo;s error messages.</li>
+<li>pip: Documentation improvements.</li>
+<li>vendoring: Rework the license fetching mechanism, to utilise wheels whenever
+possible.</li>
+<li>installer: Modernise the project, and add Python 3.10 support.</li>
+<li>sphinx-basic-ng: Make some tweaks and improvements.</li>
+<li>sphinx-themes.org: Some TLC for the site.</li>
+<li>sphinx-design: Contribute improvements to tab presentation.</li>
+<li>Lutra: settle down on a name for my second Sphinx theme.</li>
+</ul>
+<h4 id="communication">Communication</h4>
+<ul>
+<li>PEP 655: More discussions. :)</li>
+<li>Help psf/black settle down on a stability policy.</li>
+<li>Build consensus on adopting rich in pip, amongst maintainers and various
+community members.</li>
+</ul>
+<h3 id="november-2021">November 2021</h3>
+<h4 id="technical-1">Technical</h4>
+<ul>
+<li>sphinx-theme-builder is now a thing! 🎉
+<ul>
+<li>Furo and <code>pydata-sphinx-theme</code> have adopted it!</li>
+</ul>
+</li>
+<li>pip: Adopt rich! 🎉
+<ul>
+<li>pip will now use rich&rsquo;s progress bar!</li>
+</ul>
+</li>
+<li>Lutra: More progress on the Sphinx theme.</li>
+<li>sphinx-basic-ng: Adapt as I learn things from implementing Lutra.</li>
+<li>Sphinx: Start working on dropping vendored jQuery and underscore.js.</li>
+<li>pyproject-hooks: New project!</li>
+</ul>
+<h4 id="communication-1">Communication</h4>
+<ul>
+<li>Be the <a href="https://www.blog.pythonlibrary.org/2021/11/29/pydev-of-the-week-pradyun-gedam/">PyDev of the week</a>! 🎉</li>
+<li>PEP 655: More discussions. :)</li>
+<li>Ensure that pygments and rich are OK with being vendored in pip.</li>
+<li>Discuss and explore how pip should behave in environments without setuptools.</li>
+<li>Start moving away from packages using PEP numbers, as their name.</li>
+</ul>
+<h2 id="general-notes">General notes</h2>
+<p>The work for improving error messages in pip is coming along really nicely! This
+has been a great mix of frustratingly-difficult and visually-pleasing work that
+I&rsquo;m glad I&rsquo;m able to do.</p>
+<p><img loading="lazy" src="https://user-images.githubusercontent.com/3275593/141511663-e41a6e7c-162c-435d-b271-7b36aed21024.png" alt=""  />
+</p>
+<p>As a reminder, the next <a href="https://www.volunteeramnestyday.net">Volunteer Responsibility Amnesty Day</a> is <em>almost</em> here!
+If you are someone who volunteers for things, consider participating and
+checking in with yourself on December 21, 2021.</p>
+<h2 id="what-next">What next?</h2>
+<p>Well, I&rsquo;m gonna take a break from OSS during the holidays.</p>
+<ul>
+<li>pip: Continue working on the diagnostic errors effort.</li>
+<li>Sphinx: More progress on $theme-I-am-writing.</li>
+<li>Sphinx: Make some progress on the jQuery / UnderscoreJS rewrite.</li>
+</ul>
+<h2 id="other-commitments">Other commitments</h2>
+<p>A full time job that pays my bills. :)</p>
+]]></content:encoded></item><item><title>OSS Work update #13</title><link>https://pradyunsg.me/blog/2021/10/09/oss-update-13/</link><pubDate>Sat, 09 Oct 2021 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2021/10/09/oss-update-13/</guid><description>New hardware + more time = more stuff done!</description><content:encoded><![CDATA[<p>It&rsquo;s been a while since I posted one of these!</p>
+<h2 id="work-i-did">Work I did</h2>
+<p>This has been a fairly productive few months, despite all the things that have
+been happening outside of my open-source-related responsibilities.</p>
+<h3 id="july-2021">July 2021</h3>
+<h4 id="technical">Technical</h4>
+<ul>
+<li>installer: 0.2.3 release!</li>
+<li>packaging: 21.0 release!</li>
+<li>sphinx-basic-ng: Alpha 6 release.</li>
+<li>pip: Make progress on the documentation revamp project.</li>
+<li>pip: Make progress on adopting black.</li>
+<li>Furo: More Sphinx 4 compatibility stuff.</li>
+<li>Furo: Refactored most of the stylesheets.</li>
+<li>Furo: Implemented and released dark mode toggle, which was a heavily requested
+feature.</li>
+<li>Furo: Improve accessibility by adding appropriate labels across the site,
+improving constrast ratios across the board and validating the keyboard-only
+navigation story.</li>
+</ul>
+<h4 id="communication">Communication</h4>
+<ul>
+<li>Lots of PR reviews across all of GitHub!</li>
+<li>Onboard a new contributor (<a href="https://github.com/DiddiLeija">@DiddiLeija</a>) to pip.</li>
+<li>Collaborate on the lockfile standardisation effort (became PEP 655).</li>
+<li>Help with ComputeCanada&rsquo;s setup for providing optimised wheels to their users.</li>
+<li>Sphinx: experiment with improving the documentation site.</li>
+</ul>
+<h3 id="august-2021">August 2021</h3>
+<h4 id="technical-1">Technical</h4>
+<ul>
+<li>Furo: First stable release!</li>
+<li>sphinx-inline-tabs: Release beta10!</li>
+<li>pip: More progress on the documentation revamp project.</li>
+<li>pip: Migrate automatic merge conflict label mechanisms.</li>
+<li>pip: Improve deprecation helpers.</li>
+<li>pip: Improve issue filing experience.</li>
+<li>Furo: Add support for sphinx-design elements.</li>
+</ul>
+<h4 id="communication-1">Communication</h4>
+<ul>
+<li>Poke at the PEP 655 discussion.</li>
+<li>Poke at the GPU-optimised wheels discussion.</li>
+<li>sphinx-design: Provide feedback on the initial iteration.</li>
+<li>TOML: newline normalisation discussion.</li>
+<li>pip: Drive discussion and resolve the black adoption story.</li>
+<li>Furo: user support, helping out with their usage and docs.</li>
+</ul>
+<h3 id="sept-2021">Sept 2021</h3>
+<h4 id="technical-2">Technical</h4>
+<ul>
+<li>pip: Lots of PR reviews and issue tracker trimming.</li>
+<li>pip: More progress on documentation revamp.</li>
+<li>Furo: Rework presentation of API documentation.</li>
+<li>Furo: General polishing, based on issues reported by users.</li>
+<li>installer: Work on modernising the codebase.</li>
+<li>installer: Land the PRs that users have filed for this.</li>
+<li>vendoring: Improve behaviours, for patching and import rewriting.</li>
+</ul>
+<h4 id="communication-2">Communication</h4>
+<ul>
+<li>pip: Discussion and kickoff of the effort to improve error messages.</li>
+<li>pip: Pick up the release manager duties for 21.3 (Oct 2021).</li>
+<li>installer: Communicate around the support promises for EoL Python.</li>
+<li>Furo: user support, helping out with their usage and docs.</li>
+<li>Executable Books: Get involved in the governance discussions.</li>
+</ul>
+<h2 id="general-notes">General notes</h2>
+<p>I&rsquo;m really excited about the progress on the pip documentation revamp. I&rsquo;m
+particularly happy with how the <a href="https://pip.pypa.io/en/latest/reference/build-system/">Build System Interface</a> section has come
+together.</p>
+<p><a href="https://www.volunteeramnestyday.net">Volunteer Responsibility Amnesty Day</a> is on the next solstice: December
+21, 2021. If you volunteer for things, consider participating and checking in
+with yourself.</p>
+<h2 id="what-next">What next?</h2>
+<ul>
+<li>PEP 655: Help out with the rewrite.</li>
+<li>pip: 21.3 release!</li>
+<li>pip: Wind down the documentation rewrite effort.</li>
+<li>pip: Make progress on the diagnostic errors effort.</li>
+<li>installer: Make last EoL Python release.</li>
+<li>Sphinx: More progress on $theme-I-am-writing.</li>
+<li>Poke and check what&rsquo;s up with the Python Documentation Workgroup.</li>
+</ul>
+<h2 id="other-commitments">Other commitments</h2>
+<p>A full time job that pays my bills. :)</p>
+]]></content:encoded></item><item><title>OSS Work update #12</title><link>https://pradyunsg.me/blog/2021/07/03/oss-update-12/</link><pubDate>Sat, 03 Jul 2021 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2021/07/03/oss-update-12/</guid><description>A whole lot of logistics.</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month.
+<a href="/blog/2021/05/07/oss-update-11/">Here&rsquo;s the April post</a>.</p>
+<h2 id="work-i-did-1-may-2021---30-jun-2021">Work I did (1 May 2021 - 30 Jun 2021)</h2>
+<h3 id="technical">Technical</h3>
+<ul>
+<li>Made significant progress on pip&rsquo;s documentation rewrite.</li>
+<li>More progress on <a href="https://github.com/pradyunsg/installer">installer</a>&rsquo;s usability.</li>
+<li>Finally completed the restructuring of pip&rsquo;s distribution via <a href="https://bootstrap.pypa.io/">https://bootstrap.pypa.io/</a>. Shoutout to @ewdurbin who did most of the magic here. :)</li>
+<li>A lot of issue tracker triage (and mostly saying no) for <a href="https://pradyunsg.me/furo">Furo</a>.</li>
+<li>Sphinx 4 compatibility for <a href="https://pradyunsg.me/furo">Furo</a>.</li>
+<li>Wrote my own VS Code editor UI theme, finally.</li>
+<li>Sphinx: More progress on $theme-I-am-writing.</li>
+</ul>
+<h3 id="communication">Communication</h3>
+<ul>
+<li>PyPA logistics for moving pipx and cibuildwheel.</li>
+<li>Passively involved in the editable installs standardisation process.</li>
+</ul>
+<p>If you wanna talk to me on a weekend, I&rsquo;m still doing open <a href="https://calendly.com/pradyunsg/weekend-time">social weekends</a>. :)</p>
+<h2 id="general-notes">General notes</h2>
+<p>Nothing to say here this time.</p>
+<h2 id="what-next">What next?</h2>
+<p>Some more wrapping up of ongoing projects, since I actually didn&rsquo;t really do
+that as much as I&rsquo;d hoped for.</p>
+<h3 id="technical-1">Technical</h3>
+<ul>
+<li>Make further progress on pip&rsquo;s documentation rewrite.</li>
+<li>installer: Finalise and make a stable release.</li>
+<li>Sphinx: Continue iterating on <code>sphinx-basic-ng</code>.</li>
+<li>Sphinx: Continue iterating on $theme-I-am-writing.</li>
+<li>Sphinx: Continue iterating on the PEP 517 backend.</li>
+</ul>
+<h3 id="communication-1">Communication</h3>
+<ul>
+<li>Spend time on the Python lockfile standardisation effort.</li>
+<li>Help with the July pip release.</li>
+</ul>
+<h2 id="other-commitments">Other commitments</h2>
+<p>A full time job, that pays my bills. :)</p>
+]]></content:encoded></item><item><title>OSS Work update #11</title><link>https://pradyunsg.me/blog/2021/05/07/oss-update-11/</link><pubDate>Fri, 07 May 2021 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2021/05/07/oss-update-11/</guid><description>Release all the things!</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month.
+<a href="/blog/2021/04/03/oss-update-10/">Here&rsquo;s the March post</a>.</p>
+<h2 id="work-i-did-1-apr-2021---30-apr-2021">Work I did (1 Apr 2021 - 30 Apr 2021)</h2>
+<h3 id="technical">Technical</h3>
+<ul>
+<li>Initial release of <a href="https://github.com/pradyunsg/sphinx-basic-ng/">sphinx-basic-ng</a> is out!</li>
+<li>Initial release of <a href="https://github.com/pradyunsg/installer">installer</a> is out!</li>
+<li>Revamped <a href="https://sphinx-themes.org/">sphinx-themes.org</a>!</li>
+<li>Made progress on the &ldquo;sister theme&rdquo; for <a href="https://pradyunsg.me/furo">Furo</a>. Picked a name for it too!</li>
+<li>Made progress on a PEP 517 build backend for Sphinx themes, and told a
+few relevant folks about it.</li>
+</ul>
+<h3 id="communication">Communication</h3>
+<ul>
+<li>My <a href="https://calendly.com/pradyunsg/weekend-time">social weekends</a> are still a thing, and have been great so far! If
+you wanna talk to me on a weekend, click that link. :)
+<ul>
+<li>Continuing to collaborate on designing a lockfile format for Python.</li>
+</ul>
+</li>
+<li>Got involved in discussions about modernising the Python documentation theme.</li>
+<li>Got involved in discussions about new tutorial in the Sphinx documentation.</li>
+<li>Did some post-pip-release fire fighting. :)</li>
+</ul>
+<h2 id="general-notes">General notes</h2>
+<p>Nothing to say here this time.</p>
+<h2 id="what-next">What next?</h2>
+<p>I&rsquo;m going to try to wrap up the big things I started over the last few months.</p>
+<h3 id="technical-1">Technical</h3>
+<ul>
+<li>installer: Finalise and make a stable release.</li>
+<li>Sphinx: Continue iterating on <code>sphinx-basic-ng</code>.</li>
+<li>Sphinx: Continue iterating on $theme-I-am-writing.</li>
+<li>Sphinx: Continue iterating on the PEP 517 backend.</li>
+</ul>
+<h3 id="communication-1">Communication</h3>
+<ul>
+<li>Speak at a few local meetups, remotely.</li>
+<li>Spend time on the Python lockfile standardisation effort.</li>
+<li>Spend time on the Python documentation improvement effort.</li>
+<li>Spend time on the Sphinx tutorial and documentation improvement effort.</li>
+</ul>
+<h2 id="other-commitments">Other commitments</h2>
+<p>A full time job, that pays my bills. :)</p>
+]]></content:encoded></item><item><title>OSS Work update #10</title><link>https://pradyunsg.me/blog/2021/04/03/oss-update-10/</link><pubDate>Sat, 03 Apr 2021 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2021/04/03/oss-update-10/</guid><description>More (new) Sphinx stuff and rewriting other things.</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month.
+<a href="/blog/2021/02/27/oss-update-9/">Here&rsquo;s the Feb post</a>.</p>
+<h2 id="work-i-did-1-mar-2021---31-mar-2021">Work I did (1 Mar 2021 - 31 Mar 2021)</h2>
+<h3 id="technical">Technical</h3>
+<ul>
+<li>Started writing a PEP 517 build backend for Sphinx themes.</li>
+<li>Started writing <a href="https://github.com/pradyunsg/sphinx-basic-ng/">sphinx-basic-ng</a>, an attempt at modernising the
+Sphinx theme ecosystem.</li>
+<li>Released new versions of <a href="https://pypi.org/project/sphinx-autobuild">sphinx-autobuild</a>.</li>
+<li>More updates to <a href="https://pradyunsg.me/furo">Furo</a>.</li>
+<li>Made progress on <a href="https://github.com/pradyunsg/installer">installer</a>&rsquo;s implementation.</li>
+<li>Made progress on pip&rsquo;s <a href="https://github.com/pypa/pip/issues/9475">documentation rewrite</a>.</li>
+<li>Started work on rewriting <a href="https://pypi.org/project/scripttest">ScriptTest</a>, to pay down pip&rsquo;s technical debt.</li>
+</ul>
+<h3 id="communication">Communication</h3>
+<ul>
+<li>Talking to relevant folks about <code>toml</code> on PyPI (and moving it to&hellip; a specific GitHub repository).</li>
+<li>Finally sat down and did an &ldquo;open source responsibility audit&rdquo;.</li>
+<li>My [social weekends] are still a thing, and has been great so far!</li>
+<li>Still collaborating on designing a lockfile format for Python.</li>
+<li>Added to <a href="https://executablebooks.org/en/latest/">The Executable Book Project</a>&rsquo;s GitHub organisation! ^&gt;^</li>
+<li>Chatted with a few people about the state of Python and pip on Debian.</li>
+</ul>
+<h2 id="general-notes">General notes</h2>
+<p>Looking back, I think I picked up a couple of new projects based on
+random brain waves I had! That&rsquo;s perfectly timed, because I&rsquo;ve decided
+to pivot away from my earlier approach of &ldquo;yay, more responsibility!&rdquo;.</p>
+<h2 id="what-next">What next?</h2>
+<p>This is getting increasingly harder to decide on, as my free time
+chunks are becoming smaller and I&rsquo;m picking up bigger projects. :)</p>
+<h3 id="technical-1">Technical</h3>
+<ul>
+<li>Sphinx Theme PEP 517 stuff: Make the initial release.</li>
+<li>sphinx-basic-ng: Make the first usable release.</li>
+<li>pip: Clear some of the backlog on the pull request front.</li>
+<li>pip: More progress on the documentation rewrite.</li>
+</ul>
+<h3 id="communication-1">Communication</h3>
+<ul>
+<li>Spend more time looking into the Python lockfile standardisation effort.</li>
+<li>Write a blog post, on automated code formatting.</li>
+<li>Find more speaking opportunities, to talk about things that aren&rsquo;t Python packaging!</li>
+</ul>
+<h2 id="other-commitments">Other commitments</h2>
+<p>A full time job, that pays my bills. :)</p>
+]]></content:encoded></item><item><title>OSS Work update #9</title><link>https://pradyunsg.me/blog/2021/02/27/oss-update-9/</link><pubDate>Sat, 27 Feb 2021 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2021/02/27/oss-update-9/</guid><description>&lt;p>Alrighty! Let&amp;rsquo;s start doing this again.&lt;/p></description><content:encoded><![CDATA[<p>Alrighty! Let&rsquo;s start doing this again.</p>
+<p>The plan is to get
+back to doing these roughly once a month again.</p>
+<h2 id="work-i-did-1-jan-2021---26-feb-2021">Work I did (1 Jan 2021 - 26 Feb 2021)</h2>
+<h3 id="technical">Technical</h3>
+<ul>
+<li>Published the last version of pip that supports Python 2! 🎉</li>
+<li>Published a few releases of <a href="https://pradyunsg.me/furo">Furo</a> &ndash; a Sphinx theme I wrote.</li>
+<li>Made some (unreleased) changes to <a href="https://pypi.org/p/sphinx-autobuild">sphinx-autobuild</a>.</li>
+<li>Made some more progress on <a href="https://github.com/pradyunsg/installer">installer</a> &ndash; a reusable library for Python (wheel) package installation.</li>
+<li>Rewrote <a href="https://github.com/pypa/get-pip"><code>get-pip.py</code></a> and the generation pipeline for it.</li>
+<li>Started a rewrite of pip&rsquo;s documentation.
+<a href="https://github.com/pypa/pip/pull/9474">I&rsquo;d love to get some feedback on this.</a></li>
+</ul>
+<h3 id="communication">Communication</h3>
+<ul>
+<li>I&rsquo;m experimenting with a new thing: <a href="http://calendly.com/pradyunsg">social weekends</a>!</li>
+<li>I presented 2 talks at FOSDEM: in the <a href="https://fosdem.org/2021/schedule/track/python/">Python devroom</a> and
+<a href="https://fosdem.org/2021/schedule/track/open_source_design/">Open Source Design devroom</a>. Shout-out to Bernard Tyers, for all the help and
+the bazillion reminders to make sure I do all the things on time. :)</li>
+<li>Collaborating on designing a lockfile format for Python, that can hopefully
+be standardised for interoperability.</li>
+</ul>
+<h2 id="general-notes">General notes</h2>
+<p>Onboarding in a new company, relocating internationally, settling into a new
+space has been&hellip; well, it&rsquo;s all been a very interesting learning experience.</p>
+<p>Given the fairly strict lockdown and the percentage of people wearing masks
+in my locality, I&rsquo;ve spent a <em>lots</em> of time indoors. Looking forward to the
+social weekends experiment I&rsquo;m doing.</p>
+<h2 id="what-next">What next?</h2>
+<h3 id="technical-1">Technical</h3>
+<ul>
+<li>pip: Work on the documentation rewrite, hopefully to get it ready in time for
+the next release.</li>
+<li>pip: Clear some of the backlog on the pull request front.</li>
+<li>pip: General discussions for new features and enhancements.</li>
+<li>TOML: Work on writing that the compliance test suite.</li>
+<li>TOML: Bring <code>toml</code> for Python back from the dead.</li>
+<li>Furo: Make the first stable release.</li>
+<li>Start work on the other Sphinx theme I have in mind.</li>
+</ul>
+<h3 id="communication-1">Communication</h3>
+<ul>
+<li>Spend more time looking into the Python lockfile standardisation effort.</li>
+<li>Catch up on the Python-on-Debian saga, and see how I can contribute
+constructively.</li>
+</ul>
+<h2 id="other-commitments">Other commitments</h2>
+<p>Oh, I have a full time job at Bloomberg now. :)</p>]]></content:encoded></item><item><title>OSS Work update #8</title><link>https://pradyunsg.me/blog/2020/02/19/oss-update-8/</link><pubDate>Wed, 19 Feb 2020 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2020/02/19/oss-update-8/</guid><description>I&amp;rsquo;m trying to post these roughly once a month. Here&amp;rsquo;s the January post.
 I am working on open source projects, as part of an internship at FOSSEE and as a part of grant-funded work on pip&amp;rsquo;s dependency resolver.
-Work I did (Jan 6 - Feb 5) Technical Co-worked with another developer, in person, for 1 week, on pip! Triaged pip&amp;rsquo;s issue tracker (a lot). Spend some time improving pip&amp;rsquo;s test suite infrastructure.</description></item><item><title>OSS Work update #7</title><link>https://pradyunsg.me/blog/2020/01/10/oss-update-7/</link><pubDate>Fri, 10 Jan 2020 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2020/01/10/oss-update-7/</guid><description>I&amp;rsquo;m trying to post these roughly once a month. Here&amp;rsquo;s the December post.
+Work I did (Jan 6 - Feb 5) Technical Co-worked with another developer, in person, for 1 week, on pip! Triaged pip&amp;rsquo;s issue tracker (a lot). Spend some time improving pip&amp;rsquo;s test suite infrastructure.</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month. <a href="/blog/2020/01/10/oss-update-7/">Here&rsquo;s the January post</a>.</p>
+<p>I am working on open source projects, as part of an internship at <a href="https://fossee.in/">FOSSEE</a> and as a part of <a href="https://wiki.python.org/psf/Pip2020DonorFundedRoadmap">grant-funded work on pip&rsquo;s dependency resolver</a>.</p>
+<h2 id="work-i-did-jan-6---feb-5">Work I did (Jan 6 - Feb 5)</h2>
+<h3 id="technical">Technical</h3>
+<ul>
+<li>Co-worked with another developer, in person, for 1 week, on pip!</li>
+<li>Triaged pip&rsquo;s issue tracker (a lot).</li>
+<li>Spend some time improving pip&rsquo;s test suite infrastructure.</li>
+<li>Investigated Python 2 usage, to identify anomalies.</li>
+<li>Helped with virtualenv 20.0 release (kinda!).</li>
+<li>Invested effort to improve pip&rsquo;s test suite</li>
+<li>Helped aggregate test cases for pip&rsquo;s next generation resolver.</li>
+</ul>
+<h3 id="communication">Communication</h3>
+<ul>
+<li>Managed the pip 20.0 release fiasco.</li>
+<li>Helped the UX folks get started with working on pip.</li>
+</ul>
+<h2 id="additional-notes-on-challenges">Additional notes on challenges</h2>
+<p>January has been a very productive month.</p>
+<p>Most of the challenges have been the logistics around work, not the work as
+such.</p>
+<p>My health has been pretty good and there&rsquo;s a certain flow to my work that I&rsquo;m
+enjoying now. Turns out, if you like what you&rsquo;re doing, you tend to be pretty
+productive! :)</p>
+<p>As long as I remember to push my blog posts to the repository, they&rsquo;ll actually
+go live on the day they&rsquo;re supposed to.</p>
+<h2 id="goals-for-february-2020">Goals for February 2020</h2>
+<h3 id="technical-1">Technical</h3>
+<ul>
+<li>Internal Cleansing: AKA Technical debt down payment.</li>
+<li>Issue triage: Triage a fair number of issues on pip&rsquo;s issue tracker.</li>
+<li>Technical Documentation: improving pip&rsquo;s technical documentation, for contributors and developers</li>
+</ul>
+<h3 id="communication-1">Communication</h3>
+<ul>
+<li>Help all the other contractors to get up to &ldquo;full speed&rdquo; for working on pip</li>
+<li>Get PyPA to participate in GSoC 2020</li>
+<li>Python Packaging Summit at PyCon US 2020: help organization.</li>
+<li>Move forward on Python Packaging Governance</li>
+</ul>
+<h2 id="other-commitments">Other commitments</h2>
+<p>None.</p>
+<h2 id="help-us">Help us</h2>
+<p>How can you help us?</p>
+<ul>
+<li>provide test cases where the latest released version of pip (19.3.1, at the time of writing) fails to resolve dependencies properly (on <a href="https://github.com/pradyunsg/zazo/issues">zazo&rsquo;s issue tracker</a>). They will help us design and test the new resolver.</li>
+<li>talk with your company about becoming a PSF sponsor. The <a href="https://wiki.python.org/psf/Fundable%20Packaging%20Improvements">Fundable Packaging Improvements page</a> lists fairly well-scoped projects that would happen much faster if we get funding to achieve them.</li>
+<li>Have an <a href="https://python.zulipchat.com/#narrow/stream/218659-pip-development/topic/Talk.20to.20Bernard!">interview with our UX expert</a>, who is working to improve usability of Python Packaging tooling.</li>
+</ul>
+]]></content:encoded></item><item><title>OSS Work update #7</title><link>https://pradyunsg.me/blog/2020/01/10/oss-update-7/</link><pubDate>Fri, 10 Jan 2020 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2020/01/10/oss-update-7/</guid><description>I&amp;rsquo;m trying to post these roughly once a month. Here&amp;rsquo;s the December post.
 I am working on open source projects, as part of an internship at FOSSEE and as a part of grant-funded work on pip&amp;rsquo;s dependency resolver.
-Work I did (Dec 11 - Jan 5) Technical Wrore and adopted vendoring for use in pip. Initiated conversation for pipenv to switch to it too. Made progress toward TOML 1.0, via useful clarifications in the specification Continued tackling pip’s build logic refactoring.</description></item><item><title>OSS Work update #6</title><link>https://pradyunsg.me/blog/2019/12/11/oss-update-6/</link><pubDate>Wed, 11 Dec 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/12/11/oss-update-6/</guid><description>I&amp;rsquo;m trying to post these roughly once a month. Here&amp;rsquo;s the November post.
+Work I did (Dec 11 - Jan 5) Technical Wrore and adopted vendoring for use in pip. Initiated conversation for pipenv to switch to it too. Made progress toward TOML 1.0, via useful clarifications in the specification Continued tackling pip’s build logic refactoring.</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month. <a href="/blog/2019/12/11/oss-update-6/">Here&rsquo;s the December post</a>.</p>
+<p>I am working on open source projects, as part of an internship at <a href="https://fossee.in/">FOSSEE</a> and as a part of grant-funded work on pip&rsquo;s dependency resolver.</p>
+<h2 id="work-i-did-dec-11---jan-5">Work I did (Dec 11 - Jan 5)</h2>
+<h3 id="technical">Technical</h3>
+<ul>
+<li>Wrore and adopted <code>vendoring</code> for use in pip.
+<ul>
+<li>Initiated conversation for pipenv to switch to it too.</li>
+</ul>
+</li>
+<li>Made progress toward TOML 1.0, via useful clarifications in the specification</li>
+<li>Continued tackling pip’s build logic refactoring.
+<ul>
+<li>Refactoring of pip&rsquo;s wheel building logic.</li>
+<li>Designing a &ldquo;package builder&rdquo; library &ndash; figuring out what Python Packaging&rsquo;s &ldquo;build&rdquo; step should look like to end users.</li>
+</ul>
+</li>
+<li>Started reviewing virtualenv’s rewrite.</li>
+<li>PR Reviews: ~25, including improvements to pip’s installation logic, better wheel-related error messages and more.</li>
+</ul>
+<h3 id="communication">Communication</h3>
+<ul>
+<li>A few release manager-y things:
+<ul>
+<li>(I&rsquo;ll be the release manager for pip 20.0)</li>
+<li>Identified tasks that need to happen prior to pip&rsquo;s release.</li>
+</ul>
+</li>
+<li>Discussions on discuss.python.org:
+<ul>
+<li>Giving pip an API
+<a href="https://discuss.python.org/t/2833">https://discuss.python.org/t/2833</a></li>
+<li>Python Packaging in GSoC 2020
+<a href="https://discuss.python.org/t/2830">https://discuss.python.org/t/2830</a></li>
+<li>PyPA governance PEP
+<a href="https://discuss.python.org/t/2619">https://discuss.python.org/t/2619</a></li>
+</ul>
+</li>
+<li>Discussions on issue trackers:
+<ul>
+<li>New Resolver: technical choices
+<a href="https://github.com/pypa/pip/issues/7406">https://github.com/pypa/pip/issues/7406</a></li>
+<li>Switch to a dedicated tool for vendoring pip&rsquo;s dependencies
+<a href="https://github.com/pypa/pip/pull/7485">https://github.com/pypa/pip/pull/7485</a></li>
+</ul>
+</li>
+<li>Provided helper/starter for pip&rsquo;s UX review work.</li>
+<li>Onboarded a new triager to pip: Welcome Stéphane Bidoul! :)</li>
+</ul>
+<h2 id="additional-notes-on-challenges">Additional notes on challenges</h2>
+<p>December was fairly productive, until the end of the month, when the holidays
+came in and I also wasn&rsquo;t in the best of health.</p>
+<p>I couldn&rsquo;t come up with a good talk topic for PyCon US 2020. :/</p>
+<h2 id="goals-for-january-2020">Goals for January 2020</h2>
+<h3 id="technical-1">Technical</h3>
+<ul>
+<li>Onboard and co-work with a developer, on pip.</li>
+<li>Triage pip&rsquo;s issue tracker. A lot.</li>
+<li>Spend some time improving pip&rsquo;s test suite infrastructure.</li>
+<li>Investigate Python 2 usage from PyPI, to identify anomalies.</li>
+</ul>
+<h3 id="communication-1">Communication</h3>
+<ul>
+<li>Ensure pip 20.0&rsquo;s release goes well (I&rsquo;m the release manager).
+<ul>
+<li>Yay automation that I worked on a little while back!</li>
+</ul>
+</li>
+<li>I&rsquo;ll be very active on PSF&rsquo;s Zulip instance, as part of the grant-funded work on pip&rsquo;s resolver.</li>
+</ul>
+<h2 id="other-commitments">Other commitments</h2>
+<p>None.</p>
+<h2 id="help-us">Help us</h2>
+<p>How can you help us?</p>
+<ul>
+<li>provide test cases where the latest released version of pip (19.3.1, at the time of writing) fails to resolve dependencies properly (on <a href="https://github.com/pradyunsg/zazo/issues">zazo&rsquo;s issue tracker</a>). They will help us design and test the new resolver.</li>
+<li>talk with your company about becoming a PSF sponsor. The <a href="https://wiki.python.org/psf/Fundable%20Packaging%20Improvements">Fundable Packaging Improvements page</a> lists fairly well-scoped projects that would happen much faster if we get funding to achieve them.</li>
+</ul>
+]]></content:encoded></item><item><title>OSS Work update #6</title><link>https://pradyunsg.me/blog/2019/12/11/oss-update-6/</link><pubDate>Wed, 11 Dec 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/12/11/oss-update-6/</guid><description>I&amp;rsquo;m trying to post these roughly once a month. Here&amp;rsquo;s the November post.
 This update has been a little late, since I have been traveling and recovering from an illness.
 I also have good news: I will be working on open source projects related to Python Packaging (full time) starting early Dec 2019 till May/Jun 2020.
-Work I did (Nov 6 - Dec 10) Technical Worked to separate pip&amp;rsquo;s dependency vendoring logic from rest of pip This would enable other projects that use similar mechanisms (eg.</description></item><item><title>OSS Work update #5</title><link>https://pradyunsg.me/blog/2019/11/06/oss-update-5/</link><pubDate>Wed, 06 Nov 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/11/06/oss-update-5/</guid><description>I&amp;rsquo;m trying to post these roughly once a month. Here&amp;rsquo;s the October post.
+Work I did (Nov 6 - Dec 10) Technical Worked to separate pip&amp;rsquo;s dependency vendoring logic from rest of pip This would enable other projects that use similar mechanisms (eg.</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month. <a href="/blog/2019/11/06/oss-update-5/">Here&rsquo;s the November post</a>.</p>
+<p>This update has been a little late, since I have been traveling and recovering from an illness.</p>
+<p>I also have good news: I will be working on open source projects related to Python Packaging (full time) starting early Dec 2019 till May/Jun 2020.</p>
+<h2 id="work-i-did-nov-6---dec-10">Work I did (Nov 6 - Dec 10)</h2>
+<h3 id="technical">Technical</h3>
+<ul>
+<li>Worked to separate pip&rsquo;s dependency vendoring logic from rest of pip
+<ul>
+<li>This would enable other projects that use similar mechanisms (eg. pipenv)</li>
+</ul>
+</li>
+<li>Made some progress for preparing for TOML&rsquo;s 1.0 release</li>
+</ul>
+<h3 id="communication">Communication</h3>
+<ul>
+<li>Finalized my internship, and got the necessary approvals at college</li>
+<li>PyConf Hyderabad 2019! (yay!)
+<ul>
+<li>I gave a talk: Rethinking Python Packaging &ndash; a thought experiment.</li>
+<li>I ran a sprint! ~5 new contributors worked on pip!</li>
+</ul>
+</li>
+<li>Initiated a [discussion for Python Packaging <a href="https://discuss.python.org/t/2603">at PyCon US</a> and <a href="https://discuss.python.org/t/2830">in GSoC 2020</a>.</li>
+</ul>
+<h2 id="additional-notes-on-challenges">Additional notes on challenges</h2>
+<p>As I&rsquo;d anticipated, November has been low productivity. I didn&rsquo;t have much time to put toward working on &ldquo;Open Source stuff&rdquo;, due to various other commitments &ndash; broadly: exam preparation, attending a family wedding and talk preparation for PyConf Hyderabad.</p>
+<h2 id="goals-for-december">Goals for December</h2>
+<h3 id="technical-1">Technical</h3>
+<ul>
+<li>Finish decoupling pip&rsquo;s dependency vendoring logic to a dedicated tool</li>
+<li>Resume work on pip&rsquo;s build logic refactor
+<ul>
+<li>Shout out to Chris Hunt (<a href="github.com/chrahunt/">@chrahunt</a>) for keeping
+things moving while I was away.</li>
+</ul>
+</li>
+<li>Check for pip 20.0 preparedness (due Jan 2020)</li>
+<li>Do issue triage on pip&rsquo;s issue tracker</li>
+<li>(stretch goal) Look into further reducing fragile manual steps in pip&rsquo;s release process</li>
+</ul>
+<h3 id="communication-1">Communication</h3>
+<ul>
+<li>Catch up on November&rsquo;s discussions</li>
+<li>Propose a talk at PyCon US 2020</li>
+<li>Make progress on discussions related to PyCon US and GSoC 2020</li>
+<li>Identify areas which (in my opinion) would be of interest in pip&rsquo;s UX review</li>
+</ul>
+<h2 id="other-commitments">Other commitments</h2>
+<p>There is likely some travel in late December and early January, with family. And that&rsquo;s about it in terms of planned commitments.</p>
+<h2 id="help-us">Help us</h2>
+<p>How can you help us?</p>
+<ul>
+<li>talk with your company about becoming a PSF sponsor. The <a href="https://wiki.python.org/psf/Fundable%20Packaging%20Improvements">Fundable Packaging Improvements page</a> lists fairly well-scoped projects that would happen much faster if we get funding to achieve them.</li>
+<li>volunteer to <a href="https://github.com/pypa/integration-test/issues">help us build robust testing infrastructure</a></li>
+<li>provide test cases where the latest released version of pip (19.3.1, at the time of writing) fails to resolve dependencies properly (on <a href="https://github.com/pradyunsg/zazo/issues">zazo&rsquo;s issue tracker</a>). They will help us design and test the new resolver.</li>
+<li>help <a href="https://pip.pypa.io/en/latest/development/issue-triage/">triage pip&rsquo;s issue tracker</a>!</li>
+</ul>
+]]></content:encoded></item><item><title>OSS Work update #5</title><link>https://pradyunsg.me/blog/2019/11/06/oss-update-5/</link><pubDate>Wed, 06 Nov 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/11/06/oss-update-5/</guid><description>I&amp;rsquo;m trying to post these roughly once a month. Here&amp;rsquo;s the October post.
 Work I did (Oct 6 - Nov 5) Technical
-Wrapped up refactoring metadata generation within pip. (yay!) Started refactoring wheel building logic within pip. A few minor fixes/cleanup within pip. Helped out with pip 19.3&amp;rsquo;s release. Significantly simplified pip&amp;rsquo;s release processes. Reviewed &amp;gt;50 PRs. Fixed a &amp;ldquo;major&amp;rdquo; regression in pip&amp;rsquo;s detection of virtual environments. Got some work done, progressing closer to TOML 1.</description></item><item><title>OSS Work update #4</title><link>https://pradyunsg.me/blog/2019/10/06/oss-update-4/</link><pubDate>Sun, 06 Oct 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/10/06/oss-update-4/</guid><description>I&amp;rsquo;m trying to post these roughly once a month. Here&amp;rsquo;s the September post.
+Wrapped up refactoring metadata generation within pip. (yay!) Started refactoring wheel building logic within pip. A few minor fixes/cleanup within pip. Helped out with pip 19.3&amp;rsquo;s release. Significantly simplified pip&amp;rsquo;s release processes. Reviewed &amp;gt;50 PRs. Fixed a &amp;ldquo;major&amp;rdquo; regression in pip&amp;rsquo;s detection of virtual environments. Got some work done, progressing closer to TOML 1.</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month. <a href="/blog/2019/10/06/oss-update-4/">Here&rsquo;s the October post</a>.</p>
+<h2 id="work-i-did-oct-6---nov-5">Work I did (Oct 6 - Nov 5)</h2>
+<p><strong>Technical</strong></p>
+<ul>
+<li>Wrapped up refactoring metadata generation within pip. (yay!)</li>
+<li>Started refactoring wheel building logic within pip.</li>
+<li>A few minor fixes/cleanup within pip.</li>
+<li>Helped out with pip 19.3&rsquo;s release.</li>
+<li>Significantly simplified pip&rsquo;s release processes.</li>
+<li>Reviewed &gt;50 PRs.</li>
+<li>Fixed a &ldquo;major&rdquo; regression in pip&rsquo;s detection of virtual environments.</li>
+<li>Got some work done, progressing closer to TOML 1.0.0.</li>
+</ul>
+<p><strong>Communication</strong></p>
+<ul>
+<li>Summarized the progress on the build logic refactoring.</li>
+<li>PyCon India 2019! (yay!)
+<ul>
+<li>I gave a talk!</li>
+<li>I ran a sprint! ~20 contributors and just me as a mentor. (This was fun!)</li>
+</ul>
+</li>
+<li>Figured out a lot of the details around my semster-long internship.</li>
+<li>Had a chat with b.p.o. maintainers, and published a <a href="https://pradyunsg.me/blog/2019/11/02/state-of-bpo/">blog post</a> describing their plans going forward.</li>
+<li>My proposed governance model for PyPA, is <a href="https://github.com/python/peps/pull/1221/">becoming a PEP</a>.</li>
+</ul>
+<h2 id="additional-notes-on-challenges">Additional notes on challenges</h2>
+<p>Oh boi, pip&rsquo;s test suite doesn&rsquo;t like venv. The initial draft for
+<a href="https://github.com/pypa/pip/pull/7155/commits/8981895b5e34de1be2a73e5fff77879c45908700">this commit message</a> was about 4x as long, and a lot less&hellip;
+nice. I sunk quite a few hours across two days, into that one commit, trying
+to make things work before realizing that it&rsquo;d be better to tackle fixing
+the test isolation separately.</p>
+<p>A <em>lot</em> of my time over the last two weeks has gone into handling a big mess,
+in my hostel room caused by fungi. Even though I didn&rsquo;t cause this mess, I
+have to deal with it (allergic bronchitis isn&rsquo;t making it easier).</p>
+<p>Other than that though, I think everything went as I had anticipated. During
+PyCon India + Diwali, I made the exact amount of progress on the &ldquo;code&rdquo;
+problems as I&rsquo;d expected &ndash; None. Back in college, there was enough academic
+workload to drain me by the end of the day. :)</p>
+<p>Basically, I think almost all of my &ldquo;write code&rdquo;, happened on 2 or 3 days total, in this past month.</p>
+<h2 id="goals-for-november">Goals for November</h2>
+<p><strong>Technical</strong></p>
+<ul>
+<li>Figure out a plan for refactoring pip&rsquo;s wheel building logic.</li>
+<li>Make more progress on the TOML&rsquo;s compliance suite.</li>
+</ul>
+<p><strong>Communication</strong></p>
+<ul>
+<li>Wrap up final-semester internship search.</li>
+<li>(stretch) Write a blog post using all the material that was trimmed out of my PyCon India talk &ndash; &ldquo;A checkin on Python Packaging&rdquo;.</li>
+</ul>
+<h2 id="other-commitments">Other commitments</h2>
+<p>I have my end-sem examinations all of November (there&rsquo;s one tomorrow).</p>
+<p>Overall, November is gonna be fairly &ldquo;low&rdquo; productivity. Hopefully, I would be able to make some progress in early December (I&rsquo;ll be back home!).</p>
+<h2 id="help-us">Help us</h2>
+<p>How can you help us?</p>
+<ul>
+<li>talk with your company about becoming a PSF sponsor. The <a href="https://wiki.python.org/psf/Fundable%20Packaging%20Improvements">Fundable Packaging Improvements page</a> now summarizes what bugfixes/features/projects within and outside PyPA are blocked on the new resolver, some background context, and how funding would help us get it finished faster.</li>
+<li>provide test cases where the latest released version of pip (19.2.3, at the time of writing) fails to resolve dependencies properly (on <a href="https://github.com/pradyunsg/zazo/issues">zazo&rsquo;s issue tracker</a>). They will help us design and test the new resolver.</li>
+<li>volunteer to <a href="https://github.com/pypa/integration-test/issues">help us build robust testing infrastructure</a></li>
+<li>triage pip bugs! Around 10% of pip&rsquo;s issues have not been triaged yet and many others need of action/review.</li>
+</ul>
+]]></content:encoded></item><item><title>OSS Work update #4</title><link>https://pradyunsg.me/blog/2019/10/06/oss-update-4/</link><pubDate>Sun, 06 Oct 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/10/06/oss-update-4/</guid><description>I&amp;rsquo;m trying to post these roughly once a month. Here&amp;rsquo;s the September post.
 Work I did (Sept 6 - Oct 5) Technical
-Figured out a rough structure for approaching pip&amp;rsquo;s build logic refactor. Discussed and sketched a rough &amp;ldquo;goal&amp;rdquo; model for pip&amp;rsquo;s build logic, to adopt after initial cleanups and decoupling refactor work. Made significant progress on refactoring pip&amp;rsquo;s metadata handling and generation logic. (yay!) Identified a quirk in how pip&amp;rsquo;s current resolution logic, which makes it conceptually intertwined with pip&amp;rsquo;s index interaction logic (sigh).</description></item><item><title>OSS Work update #3</title><link>https://pradyunsg.me/blog/2019/09/06/oss-update-3/</link><pubDate>Fri, 06 Sep 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/09/06/oss-update-3/</guid><description>I&amp;rsquo;m trying to post these roughly once a month. Here&amp;rsquo;s the August post which includes the work I was planning to do this month.
+Figured out a rough structure for approaching pip&amp;rsquo;s build logic refactor. Discussed and sketched a rough &amp;ldquo;goal&amp;rdquo; model for pip&amp;rsquo;s build logic, to adopt after initial cleanups and decoupling refactor work. Made significant progress on refactoring pip&amp;rsquo;s metadata handling and generation logic. (yay!) Identified a quirk in how pip&amp;rsquo;s current resolution logic, which makes it conceptually intertwined with pip&amp;rsquo;s index interaction logic (sigh).</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month. <a href="/blog/2019/09/06/oss-update-3/">Here&rsquo;s the September post</a>.</p>
+<h2 id="work-i-did-sept-6---oct-5">Work I did (Sept 6 - Oct 5)</h2>
+<p><strong>Technical</strong></p>
+<ul>
+<li>Figured out a rough structure for approaching pip&rsquo;s build logic refactor.</li>
+<li>Discussed and sketched a rough &ldquo;goal&rdquo; model for pip&rsquo;s build logic, to adopt after initial cleanups and decoupling refactor work.</li>
+<li>Made significant progress on refactoring pip&rsquo;s metadata handling and generation logic. (yay!)</li>
+<li>Identified a quirk in how pip&rsquo;s current resolution logic, which makes it conceptually intertwined with pip&rsquo;s index interaction logic (<em>sigh</em>).
+<ul>
+<li>out-of-scope for the ongoing &ldquo;build logic refactor&rdquo;, but we do need to resolve this at some point.</li>
+</ul>
+</li>
+<li>Revamped pip&rsquo;s linting pipeline to be&hellip; simpler (i.e. better).</li>
+<li>Multiple miscellaneous fixes/cleanup to pip.</li>
+<li>A lots of PRs reviewed (&gt;80).</li>
+<li>Reviewed and merged ABNF-related PRs, for TOML.</li>
+<li>Sunk a good day to debugging 500s on GitHub (it was due to emojis). :(</li>
+</ul>
+<p><strong>Communication</strong></p>
+<ul>
+<li>Reached out to quite a few folks regarding my <a href="https://twitter.com/pradyunsg/status/1174186350389661696">semester-long internship</a>.</li>
+<li>Discuss goals and approaches, for pip&rsquo;s build logic refactor, with fellow pip maintainers across multiple issues on the issue tracker.</li>
+<li>Had a chat w/ a pipenv maintainer, discussing the resolver code reuse situation, and some design discussion about the ongoing build logic refactoring.</li>
+<li>Had multiple chats with fellow pip maintainers, discussing a rough plan and target, for the build logic refactor as well as our development workflow.</li>
+<li>Polished up my proposed &ldquo;Status-Quo&rdquo; PyPA governance model.</li>
+<li>Reviewed a proposal for better licensing metadata for Python Packages.</li>
+</ul>
+<h2 id="additional-notes-on-challenges">Additional notes on challenges</h2>
+<p>I had more exams! I&rsquo;d hoped to get more work done but I hadn&rsquo;t realize that I&rsquo;d have exams over 2 weekends &ndash; Sunday, 29 Sept to Sunday, 6 Oct. (yay college)</p>
+<p>In addition, I realized that my <a href="https://github.com/pypa/pip/pull/6990">initial approach</a> toward reworking pip&rsquo;s &ldquo;prepare distribution&rdquo; logic was fatally flawed because I forgot about a usecase. My discussions with pipenv and pip maintainers were very fruitful and we pooled our combined knowledge of the tooling into text documents and diagrams. We&rsquo;ve come up with a more feasible (and much better) plan than the one I had come up with on my own.</p>
+<p>Recently, I read something on discuss.python.org, that just perfectly encapsulates how I feel about this stuff:</p>
+<blockquote>
+  <p>
+    all of this stuff is really hard and there’s a lot of knowledge scattered around in people’s heads that could really do with being captured somewhere
+  </p>
+  <footer><cite title="Paul Moore">Paul Moore (regarding a different topic)</cite></footer>
+</blockquote>
+<p>Overall, I made time to work on pip this month, and made significant progress on cleaning up pip&rsquo;s metadata generation and handling logic.</p>
+<h2 id="goals-for-october">Goals for October</h2>
+<p><strong>Technical</strong></p>
+<ul>
+<li>Wrap up refactoring metadata generation and handling in pip.</li>
+<li>Work on a &ldquo;blessed&rdquo; TOML&rsquo;s compliance suite, as we prepare for TOML 1.0.</li>
+<li>(stretch goal) Begin refactoring the next component &ndash; installation.</li>
+</ul>
+<p><strong>Communication</strong></p>
+<ul>
+<li>Update the GitHub Project board for pip&rsquo;s build logic refactor, based on the mental model built over the past few discussions.</li>
+<li>Attend PyCon India:
+<ul>
+<li><a href="https://in.pycon.org/cfp/2019/proposals/python-packaging-where-we-are-and-where-were-headed~dGV8b/">Give a talk</a> about the state of Python Packaging.</li>
+<li>Run a <a href="https://in.pycon.org/cfp/devsprint-2019/proposals/python-packaging-pip-and-more~e35nb/">sprint</a> on pip, packaging and pypa-bot (and more?).</li>
+</ul>
+</li>
+<li>Figure out my internship situation and getting approval from my HoD for the internship I&rsquo;d be doing.</li>
+</ul>
+<h2 id="other-commitments">Other commitments</h2>
+<p>I expect to have some time to work on pip in October, though not as much as September.</p>
+<p>In mid-October, I&rsquo;ll be speaking at PyCon India 2019 (noted above) and I expect from today until my talk, almost all of my free time would be going towards that talk preparation. After that, I am expecting that I&rsquo;ll spend a few days going through the processes for approvals, at college, related to my final semester internship.</p>
+<h2 id="help-us">Help us</h2>
+<p>How can you help us?</p>
+<ul>
+<li>provide test cases where the latest released version of pip (19.2.3, at the time of writing) fails to resolve dependencies properly (on <a href="https://github.com/pradyunsg/zazo/issues">zazo&rsquo;s issue tracker</a>). They will help us design and test the new resolver.</li>
+<li>talk with your company about becoming a PSF sponsor. The <a href="https://wiki.python.org/psf/Fundable%20Packaging%20Improvements">Fundable Packaging Improvements page</a> now summarizes what bugfixes/features/projects within and outside PyPA are blocked on the new resolver, some background context, and how funding would help us get it finished faster.</li>
+<li>triage pip bugs! Around 10% of pip&rsquo;s issues have not been triaged yet and many others need of action/review.</li>
+<li>help improve our <a href="https://pip.pypa.io/en/latest/development/issue-triage/">&ldquo;how to triage pip bugs&rdquo; guide</a>.</li>
+<li>volunteer to <a href="https://github.com/pypa/integration-test/issues">help us build robust testing infrastructure</a></li>
+</ul>
+]]></content:encoded></item><item><title>OSS Work update #3</title><link>https://pradyunsg.me/blog/2019/09/06/oss-update-3/</link><pubDate>Fri, 06 Sep 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/09/06/oss-update-3/</guid><description>I&amp;rsquo;m trying to post these roughly once a month. Here&amp;rsquo;s the August post which includes the work I was planning to do this month.
 Work I did (Aug 6 - Sept 5) Technical
-Began working on splitting the code for handling of the two kinds of source distributions. Wrap up pip 19.2, with pip 19.2.3 release, unblocking Python 3.8&amp;rsquo;s final beta. Hooray! Fix documentation builds for pip, on ReadTheDocs &amp;ndash; this took way longer to figure out than I&amp;rsquo;d expected.</description></item><item><title>OSS Work update #2</title><link>https://pradyunsg.me/blog/2019/08/06/oss-update-2/</link><pubDate>Tue, 06 Aug 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/08/06/oss-update-2/</guid><description>I&amp;rsquo;m going to try to post these roughly once a month. Here&amp;rsquo;s the late June post.
+Began working on splitting the code for handling of the two kinds of source distributions. Wrap up pip 19.2, with pip 19.2.3 release, unblocking Python 3.8&amp;rsquo;s final beta. Hooray! Fix documentation builds for pip, on ReadTheDocs &amp;ndash; this took way longer to figure out than I&amp;rsquo;d expected.</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month. <a href="/blog/2019/08/06/pip-update-2/">Here&rsquo;s the August post</a> which includes the work I was planning to do this month.</p>
+<h2 id="work-i-did-aug-6---sept-5">Work I did (Aug 6 - Sept 5)</h2>
+<p><strong>Technical</strong></p>
+<ul>
+<li>Began working on splitting the code for handling of the two kinds of source distributions.</li>
+<li>Wrap up pip 19.2, with <a href="https://github.com/pypa/pip/issues/6630">pip 19.2.3 release</a>, unblocking Python 3.8&rsquo;s final beta. Hooray!</li>
+<li>Fix documentation builds for pip, <a href="https://pip.pypa.io/">on ReadTheDocs</a> &ndash; this took way longer to figure out than I&rsquo;d expected.</li>
+<li>Multiple miscellaneous fixes that I could do in gaps between classes.</li>
+<li>Lots of PRs reviewed (30+)</li>
+</ul>
+<p>In August, I wanted to get further on separating &ldquo;prepare distribution&rdquo; logic from the resolution logic and on turning distribution-type-specific build code into dedicated modules within the new &ldquo;distributions&rdquo; sub-package in pip. I didn&rsquo;t get there.</p>
+<p><strong>Communication</strong></p>
+<ul>
+<li>Gave a keynote at PyCon Korea! (no video links yet &ndash; will probably be <a href="https://pyvideo.org/events/pycon-korea-2019.html">here</a>)</li>
+<li>The details and requirements for my final semester internship have been clarified.</li>
+<li>OKed the MOSS funding proposal</li>
+<li>Contributed to <a href="https://discuss.python.org/u/pradyunsg/activity">several discussions</a> on the Python discussion forum, including on better licensing metadata and PyPA governance.</li>
+</ul>
+<p>During this <a href="https://github.com/pradyunsg?tab=overview&amp;from=2019-07-01&amp;to=2019-07-31">month</a>, I also proposed an improvement to <code>twine check</code> (motivated by confusing output when making a pip release), made some more progress toward TOML 1.0, and worked on some of my personal tooling which broke due to a VS Code update. :)</p>
+<h2 id="additional-notes-on-challenges">Additional notes on challenges</h2>
+<p>Lack of time. Outside of my talk at PyCon Korea and mid-semester examinations at college, I could not find much time to work on the goals I had set for myself.
+In the time that I could make, the urgency of the pip release, broken documentation build, and code review left very little time for me to make progress on foundational improvements to pip&rsquo;s codebase.</p>
+<h2 id="goals-for-september">Goals for September</h2>
+<p><strong>Technical</strong></p>
+<ul>
+<li>Wrap up the goals I&rsquo;d set for August:
+<ul>
+<li>Finish splitting logic for handling on source distributions in the new &ldquo;distributions&rdquo; sub-package in pip.</li>
+<li>Separate &ldquo;prepare distribution&rdquo; logic from the resolution logic.</li>
+</ul>
+</li>
+<li>Develop a clearer mental model for pip&rsquo;s handling of distribution metadata.</li>
+<li>Investigate how to adapt pip&rsquo;s distribution preparation logic to provide distribution metadata as an independent object.</li>
+</ul>
+<p><strong>Communication</strong></p>
+<ul>
+<li>(rolled over from August) Reach out to maintainers of pipenv, pip-tools and poetry, to have a conversation about code reuse.</li>
+<li>Break down tasks, and discuss the priorities for future items for work in pip&rsquo;s build logic refactor.</li>
+</ul>
+<h2 id="other-commitments">Other commitments</h2>
+<p>I expect to have more time to work on pip in September. There will be less academic workload (read: no exams) and I&rsquo;m not travelling this month. In mid-October, I&rsquo;ll be speaking at PyCon India 2019 <a href="https://in.pycon.org/cfp/2019/proposals/python-packaging-where-we-are-and-where-were-headed~dGV8b/">(yay!)</a> on the state of Python packaging, so I&rsquo;ll also be working on that talk this month.</p>
+<h2 id="help-us">Help us</h2>
+<p>I’m currently looking for 20+ week internships, for my final semester credits in college, starting in December 2019 or early January 2020. If you reckon I’d be a good addition to your team, please reach out.</p>
+<p>And if you are reviewing funding requests for the Chan Zuckerberg Initiative or for Mozilla&rsquo;s Open Source Support program, I hope you&rsquo;ll approve our proposals. :)</p>
+<p>Also, if you care about how Python Packaging is governed, please respond to my <a href="https://discuss.python.org/t/pypa-governance-a-status-quo-model/2221">PyPA governance proposal</a>.</p>
+<p>Other than that, I have <a href="https://pradyunsg.me/blog/2019/06/23/pip-update/#help-us">the same list as in June</a>. Thanks!</p>
+<p>Also, thanks to Sumana Harihareswara for help in editing.</p>
+]]></content:encoded></item><item><title>OSS Work update #2</title><link>https://pradyunsg.me/blog/2019/08/06/oss-update-2/</link><pubDate>Tue, 06 Aug 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/08/06/oss-update-2/</guid><description>I&amp;rsquo;m going to try to post these roughly once a month. Here&amp;rsquo;s the late June post.
 Work I was planning to do Technical
 Clearly determine what parts of the build system are intertwined with pip&amp;rsquo;s resolution logic. Communication
 Get confirmation from my college about required dates/duration of internships in final semester. Work I did (24 June - 6 Aug) Technical
 Identified portion of build system intertwined with pip&amp;rsquo;s resolver:
-&amp;ldquo;Get abstract distribution&amp;rdquo;: building installable artifacts is intertwined with pip&amp;rsquo;s resolver.</description></item><item><title>What's happening with that pip dependency resolver?</title><link>https://pradyunsg.me/blog/2019/06/23/oss-update-1/</link><pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/06/23/oss-update-1/</guid><description>I&amp;rsquo;m glad you asked.
+&amp;ldquo;Get abstract distribution&amp;rdquo;: building installable artifacts is intertwined with pip&amp;rsquo;s resolver.</description><content:encoded><![CDATA[<p>I&rsquo;m going to try to post these roughly once a month. <a href="/blog/2019/06/23/pip-update/">Here&rsquo;s the late June post.</a></p>
+<h2 id="work-i-was-planning-to-do">Work I was planning to do</h2>
+<p><strong>Technical</strong></p>
+<ul>
+<li>Clearly determine what parts of the build system are intertwined with pip&rsquo;s resolution logic.</li>
+</ul>
+<p><strong>Communication</strong></p>
+<ul>
+<li>Get confirmation from my college about required dates/duration of internships in final semester.</li>
+</ul>
+<h2 id="work-i-did-24-june---6-aug">Work I did (24 June - 6 Aug)</h2>
+<p><strong>Technical</strong></p>
+<ul>
+<li>
+<p>Identified portion of build system intertwined with pip&rsquo;s resolver:</p>
+<ul>
+<li>&ldquo;Get abstract distribution&rdquo;:
+<ul>
+<li>building installable artifacts is intertwined with pip&rsquo;s resolver.</li>
+<li>Specifically, the resolver currently passes information about how it would handle a distribution, to the &ldquo;preparer&rdquo; that fetches and builds it.</li>
+</ul>
+</li>
+<li>Marker evaluation and handling is done by &ldquo;RequirementSet&rdquo; and not the resolver.</li>
+</ul>
+</li>
+<li>
+<p>Started moving code for pip&rsquo;s handling of installable artifacts into a <code>pip._internal.distributions</code> package.</p>
+</li>
+</ul>
+<p><strong>Communication</strong></p>
+<ul>
+<li>Still working on getting requirements for my final semester internship. Other students have told me that it has to be longer than 15 weeks and should start in early December, but I am seeking official word on that. I&rsquo;m working on options that would let me work on the pip resolver during the internship.</li>
+</ul>
+<h2 id="additional-notes-on-challenges">Additional notes on challenges</h2>
+<p>No technical challenges. But I didn&rsquo;t have much time to work on this, because of college and visa paperwork (because PyCon Korea invited me to give a keynote!), and because of illness.</p>
+<h2 id="goals-for-august">Goals for August</h2>
+<p><strong>Technical</strong></p>
+<ul>
+<li>Separate &ldquo;prepare distribution&rdquo; logic from the resolution logic.</li>
+<li>Split code for building various kinds of source distributions into dedicated modules within the new &ldquo;distributions&rdquo; sub-package in pip. (related cleanup)</li>
+</ul>
+<p><strong>Communication</strong></p>
+<ul>
+<li>Reach out to maintainers of pipenv, pip-tools and poetry, to have a conversation about code reuse.
+<ul>
+<li>I know pipenv maintainers have work that can be reused.</li>
+<li>Need to identify the overlapping area between the tools, since they may require a slightly different results after resolution than pip.</li>
+</ul>
+</li>
+<li>Work with PSF&rsquo;s Packaging Working Group on <a href="https://wiki.python.org/psf/Fundable%20Packaging%20Improvements">funding proposals</a> to get more help on the resolver testing, UX and rollout.</li>
+</ul>
+<h2 id="other-commitments">Other commitments</h2>
+<p>I am travelling to South Korea this month, for keynoting at PyCon Korea. Immediately after that, I have college examinations from 18th-25th August, and right after that, project reviews for this semester&rsquo;s courses. So my time is pretty limited in August, but should get freer in September.</p>
+<h2 id="help-us">Help us</h2>
+<p>I have <a href="https://pradyunsg.me/blog/2019/06/23/pip-update/#help-us">the same list as last time</a>. Thanks!</p>
+<p>Also, thanks to Sumana Harihareswara for adapting this from a separate update I&rsquo;d shared.</p>
+]]></content:encoded></item><item><title>What's happening with that pip dependency resolver?</title><link>https://pradyunsg.me/blog/2019/06/23/oss-update-1/</link><pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/06/23/oss-update-1/</guid><description>I&amp;rsquo;m glad you asked.
 What&amp;rsquo;s up? Over the past few months, I&amp;rsquo;ve worked on a prototype for a resolver in pip, spent some time planning what rolling out a new dependency resolver in pip might look like, and continue to work on pip&amp;rsquo;s build logic to decouple it from the dependency resolution logic.
-The prototype has helped me better understand the relationships and contracts between various portions of the codebase. This understanding has led me to conclude that it is a worthwhile investment to better decouple the build logic from the resolution logic, then introduce the abstractions defined in resolvelib/zazo, and then proceed to adopting better dependency resolution.</description></item></channel></rss>
+The prototype has helped me better understand the relationships and contracts between various portions of the codebase. This understanding has led me to conclude that it is a worthwhile investment to better decouple the build logic from the resolution logic, then introduce the abstractions defined in resolvelib/zazo, and then proceed to adopting better dependency resolution.</description><content:encoded><![CDATA[<p>I&rsquo;m glad you asked.</p>
+<h2 id="whats-up">What&rsquo;s up?</h2>
+<p>Over the past few months, I&rsquo;ve worked on <a href="https://github.com/pradyunsg/pip/tree/resolver/make-it-inside">a prototype for a resolver in pip</a>, spent some time <a href="https://github.com/pypa/pip/issues/6536">planning</a> what rolling out a new dependency resolver in pip might look like, and continue to <a href="https://github.com/pypa/pip/projects/3">work on pip&rsquo;s build logic</a> to decouple it from the dependency resolution logic.</p>
+<p>The prototype has helped me better understand the relationships and contracts between various portions of the codebase. This understanding has led me to conclude that it is a worthwhile investment to better decouple the build logic from the resolution logic, <em>then</em> introduce the abstractions defined in <a href="https://pypi.org/project/resolvelib/">resolvelib</a>/<a href="https://github.com/pradyunsg/zazo/">zazo</a>, and <em>then</em> proceed to adopting better dependency resolution.</p>
+<h2 id="whats-next">What&rsquo;s next?</h2>
+<p>The work on refactoring pip&rsquo;s build logic is in progress and we&rsquo;re tracking it on <a href="https://github.com/pypa/pip/projects/3">GitHub</a>. Significant technical debt has been accumulated in this part of pip&rsquo;s codebase over the years, so this is a big project that will likely take multiple months. This would/will also make it easier to <a href="https://github.com/pypa/pip/milestone/25">provide more user-friendly error messaging</a>, though that is not something that I will pursue in this project.</p>
+<p>This investment will enable us to untangle pip&rsquo;s internals from the resolver, enabling pip to share code for dependency resolution with other packaging tooling (like <a href="https://github.com/pypa/pipenv/">pipenv</a> and <a href="https://github.com/ofek/hatch/">hatch</a>) and reuse the work they have done (e.g., work done on pipenv&rsquo;s resolver). This also makes a softer rollout possible, one that allows us to iterate based on feedback from users and minimize disruption.</p>
+<h2 id="help-us">Help us</h2>
+<p>How you can help us?</p>
+<ul>
+<li>
+<p>triage pip bugs! Around 20% of pip&rsquo;s issues have not been triaged yet.</p>
+</li>
+<li>
+<p><a href="https://github.com/pypa/pip/issues/6583">draft a &ldquo;how to triage pip bugs&rdquo; guide</a>.</p>
+</li>
+<li>
+<p>provide test cases where the latest released version of pip (19.1.1, at the time of writing) fails to resolve dependencies properly (on <a href="https://github.com/pradyunsg/zazo/issues">zazo&rsquo;s issue tracker</a>). They will help us test the new resolver.</p>
+</li>
+<li>
+<p>look at <a href="https://github.com/pypa/pip/issues/6536">New Resolver: Rollout, Feedback Loops and Development Flow</a> and help us decide: Is the feature flag approach a good idea? Is it a good idea to get rollout feedback via some mechanism other than the pip GitHub issues? Any other thoughts to help us smooth out the rollout?</p>
+</li>
+<li>
+<p>talk with your company about becoming a PSF sponsor. The <a href="https://wiki.python.org/psf/Fundable%20Packaging%20Improvements">Fundable Packaging Improvements page</a> now summarizes what bugfixes/features/projects within and outside PyPA are blocked on the new resolver, some background context, and how funding would help us get it finished faster.</p>
+</li>
+<li>
+<p>volunteer to <a href="https://github.com/pypa/integration-test/issues">help us build robust testing infrastructure</a></p>
+</li>
+</ul>
+<p>Thanks to Sumana Harihareswara for (a lot of) help in writing this, and Dan Ryan for reviewing the content!</p>
+]]></content:encoded></item></channel></rss>

@@ -1,3 +1,60 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>GitHub on Pradyun Gedam</title><link>https://pradyunsg.me/tags/github/</link><description>Recent content in GitHub on Pradyun Gedam</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 17 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/tags/github/index.xml" rel="self" type="application/rss+xml"/><item><title>Making GitHub Notifications UI slightly nicer for bulk triage</title><link>https://pradyunsg.me/blog/2024/03/17/github-notifications-userstyles/</link><pubDate>Sun, 17 Mar 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/03/17/github-notifications-userstyles/</guid><description>I&amp;rsquo;m someone who gets a lot of GitHub notifications &amp;ndash; this week had &amp;gt;100 individual notifications.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>GitHub on Pradyun Gedam</title><link>https://pradyunsg.me/tags/github/</link><description>Recent content in GitHub on Pradyun Gedam</description><generator>Hugo -- 0.122.0</generator><language>en</language><lastBuildDate>Mon, 01 Jan 0001 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/tags/github/index.xml" rel="self" type="application/rss+xml"/><item><title>Making GitHub Notifications UI slightly nicer for bulk triage</title><link>https://pradyunsg.me/blog/2024/03/17/github-notifications-userstyles/</link><pubDate>Sun, 17 Mar 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/03/17/github-notifications-userstyles/</guid><description>I&amp;rsquo;m someone who gets a lot of GitHub notifications &amp;ndash; this week had &amp;gt;100 individual notifications.
 The problem The &amp;ldquo;new&amp;rdquo; GitHub Notifications UI1 was based on Octobox. It was a step in the right direction to help with my notification &amp;ldquo;workload&amp;rdquo;, although I recognise that it was not perceived as such by many others.
-That said, they copied over the exact same design issue I had with Octobox: the action buttons are on the completely opposite side from where my attention is.</description></item></channel></rss>
+That said, they copied over the exact same design issue I had with Octobox: the action buttons are on the completely opposite side from where my attention is.</description><content:encoded><![CDATA[<p>I&rsquo;m someone who gets a <em>lot</em> of GitHub notifications &ndash; this week had &gt;100 individual notifications.</p>
+<h2 id="the-problem">The problem</h2>
+<p>The &ldquo;new&rdquo; GitHub Notifications UI<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> was based on <a href="https://octobox.io/">Octobox</a>. It was a step in the right direction to help with my notification &ldquo;workload&rdquo;, although I recognise that it was not perceived as such by many others.</p>
+<p>That said, they copied over the exact same design issue I had with Octobox: the action buttons are on the completely opposite side from where my attention is.</p>
+<p><img loading="lazy" src="/media/github-notifications-2024-vanilla.png" alt="Vanilla GitHub Notification UI entry, showing the action icons in their default location"  />
+</p>
+<p>I am going to scan and read the content of the notification, which is left aligned and very close to the <em>left</em> edge. All the action buttons are on the <em>right</em> edge. This makes it difficult when trying to triage notifications, especially when I&rsquo;m trying to do so in bulk where stuff like &ldquo;oh, this is not gonna need my attention&rdquo; requires me to drag my cursor over to the other side of the page.</p>
+<p>If there&rsquo;s a keyboard shortcut for this, I don&rsquo;t know it and I don&rsquo;t want to learn it anyway. I want to be able to use the mouse to do what I need here because that&rsquo;s how I use a computer.</p>
+<h2 id="the-solution">The solution</h2>
+<p>I wrote a blurb of CSS to remove this annoyance.</p>
+<p><img loading="lazy" src="/media/github-notifications-2024-modified.png" alt="Modified GitHub Notification UI row, showing the moved action icons"  />
+</p>
+<p>It moves the action buttons toward the left side, so that I can quickly triage notifications without having to move my cursor across the screen. It also moves the text describing the content that the notification is for (repository and notification subject) to accommodate for the buttons.</p>
+<p>If you know me, you know that I will animate moving text to different locations. In the end, this was fairly easy to achieve in this case.</p>
+<p><img loading="lazy" src="/media/github-notifications-2024-modified.gif" alt="Three rows in the modified GitHub Notification UI row, showcasing the animation associated with hovering over a specific notification"  />
+</p>
+<p>I&rsquo;ve been using this for quite a few months now.</p>
+<h2 id="the-stylesheet">The stylesheet</h2>
+<p>Recently, while screen sharing with a friend, they asked me about my GitHub notifications doing this really cool thing. That&rsquo;s when I realised that I had completely forgotten that this was something I had been injecting into the page. I shared it with them and realised that some other people might find this useful too.</p>
+<p>If you also find this change to be an improvement, the CSS blurb that needs to be injected is provided below. You can add this via <a href="https://github.com/refined-github/refined-github">Refined GitHub</a>&rsquo;s preferences page or use a more generic extension like <a href="https://add0n.com/stylus.html">Stylus</a> to inject this into the GitHub Notifications page.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-css" data-lang="css"><span style="display:flex;"><span>.<span style="color:#a6e22e">notification-list-item-actions</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">right</span>: <span style="color:#66d9ef">unset</span> <span style="color:#75715e">!important</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">left</span>: <span style="color:#ae81ff">4</span><span style="color:#66d9ef">rem</span> <span style="color:#75715e">!important</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">padding</span>: <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">8</span><span style="color:#66d9ef">px</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">notifications-list-item</span>:<span style="color:#a6e22e">hover</span> .<span style="color:#a6e22e">note</span>.<span style="color:#a6e22e">notification-list-item-hide-on-hover</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">visibility</span>: <span style="color:#66d9ef">visible</span> <span style="color:#75715e">!important</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">notifications-list-item</span> .<span style="color:#a6e22e">notification-list-item-link</span> <span style="color:#f92672">[</span><span style="color:#f92672">id</span><span style="color:#f92672">^=</span><span style="color:#e6db74">&#34;notification&#34;</span><span style="color:#f92672">]</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">margin-left</span>: <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">transition</span>: <span style="color:#66d9ef">margin-left</span> <span style="color:#ae81ff">100</span><span style="color:#66d9ef">ms</span> cubic-bezier(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.8</span>, <span style="color:#ae81ff">0.2</span>, <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">notifications-list-item</span>:<span style="color:#a6e22e">hover</span>
+</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">notification-list-item-link</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">[</span><span style="color:#f92672">id</span><span style="color:#f92672">^=</span><span style="color:#e6db74">&#34;notification&#34;</span><span style="color:#f92672">]</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">margin-left</span>: <span style="color:#ae81ff">8</span><span style="color:#66d9ef">rem</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">notification-list-item-link</span> <span style="color:#f92672">&gt;</span> :<span style="color:#a6e22e">nth-child</span><span style="color:#f92672">(</span><span style="color:#f92672">1</span><span style="color:#f92672">)</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">align-self</span>: <span style="color:#66d9ef">unset</span> <span style="color:#75715e">!important</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">notifications-list-item</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&gt;</span> <span style="color:#f92672">div</span>:<span style="color:#a6e22e">nth-child</span><span style="color:#f92672">(</span><span style="color:#f92672">1</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&gt;</span> <span style="color:#f92672">div</span>:<span style="color:#a6e22e">nth-child</span><span style="color:#f92672">(</span><span style="color:#f92672">1</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&gt;</span> <span style="color:#f92672">div</span>:<span style="color:#a6e22e">nth-child</span><span style="color:#f92672">(</span><span style="color:#f92672">1</span><span style="color:#f92672">)</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">align-self</span>: <span style="color:#66d9ef">unset</span> <span style="color:#75715e">!important</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Does it count as new if it&rsquo;s been around since <a href="https://github.blog/2020-02-25-your-new-web-notifications-experience-is-here/">2020</a>?&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded></item></channel></rss>

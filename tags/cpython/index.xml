@@ -1,2 +1,44 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CPython on Pradyun Gedam</title><link>https://pradyunsg.me/tags/cpython/</link><description>Recent content in CPython on Pradyun Gedam</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 02 Nov 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/tags/cpython/index.xml" rel="self" type="application/rss+xml"/><item><title>What's up with bugs.python.org?</title><link>https://pradyunsg.me/blog/2019/11/02/state-of-bpo/</link><pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/11/02/state-of-bpo/</guid><description>bugs.python.org is the issue tracker for CPython. &amp;ldquo;bpo&amp;rdquo;, as it is commonly referenced, is where implementation bugs, smaller feature requests, and documentation issues are tracked as part of Python&amp;rsquo;s development.
-PEP 581 proposes sunsetting bugs.python.org, in favor of GitHub issues. &amp;ldquo;Why not focus on improving Roundup / bpo?&amp;rdquo; section made me wonder: What is needed to improve Roundup / bpo? This blog post is my attempt at summarizing the state of bpo and how it could be improving in the future, based on a discussion with folks maintaining bpo.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>CPython on Pradyun Gedam</title><link>https://pradyunsg.me/tags/cpython/</link><description>Recent content in CPython on Pradyun Gedam</description><generator>Hugo -- 0.122.0</generator><language>en</language><lastBuildDate>Mon, 01 Jan 0001 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/tags/cpython/index.xml" rel="self" type="application/rss+xml"/><item><title>What's up with bugs.python.org?</title><link>https://pradyunsg.me/blog/2019/11/02/state-of-bpo/</link><pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/11/02/state-of-bpo/</guid><description>bugs.python.org is the issue tracker for CPython. &amp;ldquo;bpo&amp;rdquo;, as it is commonly referenced, is where implementation bugs, smaller feature requests, and documentation issues are tracked as part of Python&amp;rsquo;s development.
+PEP 581 proposes sunsetting bugs.python.org, in favor of GitHub issues. &amp;ldquo;Why not focus on improving Roundup / bpo?&amp;rdquo; section made me wonder: What is needed to improve Roundup / bpo? This blog post is my attempt at summarizing the state of bpo and how it could be improving in the future, based on a discussion with folks maintaining bpo.</description><content:encoded><![CDATA[<p>bugs.python.org is the issue tracker for CPython. &ldquo;bpo&rdquo;, as it is commonly referenced, is where implementation bugs, smaller feature requests, and documentation issues are tracked as part of Python&rsquo;s development.</p>
+<p><a href="https://www.python.org/dev/peps/pep-0581/">PEP 581</a> proposes sunsetting bugs.python.org, in favor of GitHub issues. &ldquo;Why not focus on improving Roundup / bpo?&rdquo; section made me wonder: What is needed to improve Roundup / bpo? This blog post is my attempt at summarizing the state of bpo and how it could be improving in the future, based on a discussion with folks maintaining bpo.</p>
+<p>I won&rsquo;t go into whether PEP 581 or PEP 595 is a better idea &ndash; that&rsquo;s something for the CPython core developers to decide on.</p>
+<h2 id="what-is-that-tracker">What is that tracker?</h2>
+<p>Broadly, bpo is an instance of <a href="https://roundup-tracker.org/">Roundup</a>, that is hosted by the PSF.</p>
+<blockquote>
+<p>Roundup is a simple-to-use and -install issue-tracking system with command-line, web and e-mail interfaces. It is based on the winning design from Ka-Ping Yee in the Software Carpentry “Track” design competition.</p>
+</blockquote>
+<p>By design, it is an extremely customizable platform. Roundup has a &ldquo;core&rdquo; that can run multiple issue trackers. Each of these issue trackers can contain customizations in the HTML/CSS and extensions for functionality that are specific to them.</p>
+<p>When CPython moved to using Roundup, both projects were using subversion for version control. Since then, CPython moved to Mercurial (Roundup followed soon) and now CPython is on Git.</p>
+<h2 id="how-is-it-all-working">How is it all working?</h2>
+<p>The PSF-hosted Roundup, is actually a fork of Roundup maintained by a few folks. The fork was created for adding functionality that made it better for bpo, when the initial transition what made. There are still some functionality improvement patches today (more on this further below).</p>
+<p>PSF-hosted Roundup, runs 3 issue trackers:</p>
+<ul>
+<li><a href="https://bugs.python.org">https://bugs.python.org</a> (or b.p.o)</li>
+<li><a href="https://bugs.jython.org">https://bugs.jython.org</a></li>
+<li><a href="https://issues.roundup-tracker.org">https://issues.roundup-tracker.org</a></li>
+</ul>
+<p><a href="https://bitbucket.org/account/user/python/projects/BPO">All the relevant repositories of the PSF</a> are in Mercurial, and hosted on BitBucket currently.</p>
+<h2 id="where-are-we-headed">Where are we headed?</h2>
+<p>The maintainers of bpo want to switch to using upstream Roundup, instead of our PSF fork. To that end, most of the functionality improvement patches made in the fork have been ported upstream. There is only one major thing that&rsquo;s not been integrated upstream (yet!) &ndash; GitHub integrations built as part of the GitHub migration of CPython source code.</p>
+<p>There&rsquo;s an upcoming Roundup 2 release (<em>maybe</em> Q1 2020) &ndash; adding a new REST API, Python 3 support, a responsive UI and more. These would address some of the major concerns with Roundup powering bpo today. There is a plan to host a read-only test instance of Roundup 2 alpha/beta/rcs &ldquo;soon&rdquo;, for exploring new functionality and usability.</p>
+<p>Broadly, from what I can tell, the plan of action is:</p>
+<ol>
+<li>Finalize the GitHub login patch for Roundup.</li>
+<li>Port the GitHub integrations to upstream Roundup.</li>
+<li>Set up the test tracker, for bugs.python.org on Roundup 2.</li>
+<li>Wait for Roundup 2 release.</li>
+<li>Start running bpo on a regular Roundup 2. (AKA get rid of the PSF&rsquo;s fork)</li>
+<li>Move the instance code and templates, to GitHub.</li>
+</ol>
+<p>Steps 3 and 6 aren&rsquo;t strictly blocked on the steps before them, but this is probably the easiest order if we&rsquo;re doing things sequentially. Given that Step 6 has to happen before 1 June 2020 <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>, it is reasonable to assume this would all get done by then.</p>
+<p>Once the Roundup 2 transition is completed, the documentation of the bpo instance would be improved (how it works, what the various files/folders in the repository do and so on). Along with Roundup 2&rsquo;s REST API, this should significantly reduce the barrier to contribute to bpo or to build enhancements around it.</p>
+<p>Many thanks to Ezio Melotti for indulging in a very insightful conversation and for helping me write this post.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>BitBucket will <a href="https://bitbucket.org/blog/sunsetting-mercurial-support-in-bitbucket">sunset Mercurial support</a> and remove Mercurial repositories on June 1, 2020.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded></item></channel></rss>

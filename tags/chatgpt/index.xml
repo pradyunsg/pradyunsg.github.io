@@ -1,4 +1,69 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ChatGPT on Pradyun Gedam</title><link>https://pradyunsg.me/tags/chatgpt/</link><description>Recent content in ChatGPT on Pradyun Gedam</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 02 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/tags/chatgpt/index.xml" rel="self" type="application/rss+xml"/><item><title>Excellent error messages from command line tools, according to ChatGPT</title><link>https://pradyunsg.me/blog/2023/01/02/chatgpt-fun-with-error-messages/</link><pubDate>Mon, 02 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/02/chatgpt-fun-with-error-messages/</guid><description>In late Dec 2022, I played around with ChatGPT in an evening.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>ChatGPT on Pradyun Gedam</title><link>https://pradyunsg.me/tags/chatgpt/</link><description>Recent content in ChatGPT on Pradyun Gedam</description><generator>Hugo -- 0.122.0</generator><language>en</language><lastBuildDate>Mon, 01 Jan 0001 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/tags/chatgpt/index.xml" rel="self" type="application/rss+xml"/><item><title>Excellent error messages from command line tools, according to ChatGPT</title><link>https://pradyunsg.me/blog/2023/01/02/chatgpt-fun-with-error-messages/</link><pubDate>Mon, 02 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/02/chatgpt-fun-with-error-messages/</guid><description>In late Dec 2022, I played around with ChatGPT in an evening.
 Since it was on the top of my mind1, I decided try to nudge ChatGPT into the direction of giving me a useful answer about error message design for command line tools.2
 Now, tell me what an excellent error message from a command line tool should contain.
-An excellent error message from a command line tool should contain the following elements:</description></item></channel></rss>
+An excellent error message from a command line tool should contain the following elements:</description><content:encoded><![CDATA[<p>In late Dec 2022, I played around with <a href="https://openai.com/blog/chatgpt/">ChatGPT</a> in an evening.</p>
+<p>Since it was on the top of my mind<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>, I decided try to
+nudge ChatGPT into the direction of giving me a useful answer about error
+message design for command line tools.<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
+<blockquote>
+<p><strong>Now, tell me what an excellent error message from a command line tool should
+contain.</strong></p>
+<p>An excellent error message from a command line tool should contain the
+following elements:</p>
+<ol>
+<li>
+<p>A clear and concise description of the error: The error message should
+explain what went wrong and why the command failed.</p>
+</li>
+<li>
+<p>A suggestion for how to fix the error: If possible, the error message
+should provide a suggestion for how the user can fix the error and try the
+command again.</p>
+</li>
+<li>
+<p>The error code: It can be helpful to include an error code or other
+identifier that can be used to look up more information about the error.</p>
+</li>
+<li>
+<p>The context in which the error occurred: Providing information about the
+context in which the error occurred (e.g., the command that was being run,
+the arguments that were provided) can help the user understand the root
+cause of the error and how to fix it.</p>
+</li>
+<li>
+<p>A link to additional resources: If there are additional resources that can
+help the user understand and fix the error (e.g., documentation, forums),
+it can be helpful to include a link to these resources in the error
+message.</p>
+</li>
+</ol>
+</blockquote>
+<p>I&rsquo;ll admit this was mildly impressive on the first skim-read. Looking closer, it
+became clear that the response is actually flawed in multiple ways and the model
+made some assumptions that are not <em>completely</em> accurate.</p>
+<p>Overall, this is amusing enough to me that I decided to document it here.</p>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li><a href="https://abnormalsecurity.com/blog/double-edged-sword-of-chatgpt">https://abnormalsecurity.com/blog/double-edged-sword-of-chatgpt</a></li>
+<li><a href="https://stackoverflow.com/help/gpt-policy">https://stackoverflow.com/help/gpt-policy</a></li>
+<li><a href="https://twitter.com/emilymbender/status/1603039301864157184">https://twitter.com/emilymbender/status/1603039301864157184</a></li>
+<li><a href="https://mastodon.social/@Gargron/109469945447325370">https://mastodon.social/@Gargron/109469945447325370</a> ;)</li>
+</ul>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>I am currently working on a library to help achieve a great UX around errors
+(with a focus on command line tools), based off of my work around <a href="https://github.com/pypa/pip/issues/10421"><code>pip</code>&rsquo;s
+error message improvements</a>, <a href="https://sphinx-theme-builder.readthedocs.io/en/latest/errors/"><code>sphinx-theme-builder</code> error
+message design</a> and all the reading/research I&rsquo;ve been doing on
+this topic&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>I&rsquo;m intentionally <em>not</em> publishing the full context of the conversation &ndash;
+you&rsquo;ll have to wait until I release the library to read the final form of
+the blurb I used with ChatGPT as a prompt here. :)&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded></item></channel></rss>

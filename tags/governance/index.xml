@@ -1,2 +1,120 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Governance on Pradyun Gedam</title><link>https://pradyunsg.me/tags/governance/</link><description>Recent content in Governance on Pradyun Gedam</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 14 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/tags/governance/index.xml" rel="self" type="application/rss+xml"/><item><title>How the Python Packaging community is organised</title><link>https://pradyunsg.me/blog/2023/01/14/python-packaging-organisation/</link><pubDate>Sat, 14 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/14/python-packaging-organisation/</guid><description>The way the Python packaging community is organised is something that I&amp;rsquo;ve explained in multiple places, in multiple contexts. I figure that it&amp;rsquo;ll be useful to actually write it down in a single place, so that I don&amp;rsquo;t have to repeat myself.
-The Python Packaging Authority The Python Packaging Authority (PyPA) is a fairly loose group of projects that happen to be related to Python packaging. While the PyPA has a formal governance model, there&amp;rsquo;s no &amp;ldquo;oversight&amp;rdquo; or &amp;ldquo;enforcement&amp;rdquo; on projects that are part of the PyPA &amp;ndash; they are only required to adopt the PSF Code of Conduct and to be accepted by the existing members.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Governance on Pradyun Gedam</title><link>https://pradyunsg.me/tags/governance/</link><description>Recent content in Governance on Pradyun Gedam</description><generator>Hugo -- 0.122.0</generator><language>en</language><lastBuildDate>Mon, 01 Jan 0001 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/tags/governance/index.xml" rel="self" type="application/rss+xml"/><item><title>How the Python Packaging community is organised</title><link>https://pradyunsg.me/blog/2023/01/14/python-packaging-organisation/</link><pubDate>Sat, 14 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/14/python-packaging-organisation/</guid><description>The way the Python packaging community is organised is something that I&amp;rsquo;ve explained in multiple places, in multiple contexts. I figure that it&amp;rsquo;ll be useful to actually write it down in a single place, so that I don&amp;rsquo;t have to repeat myself.
+The Python Packaging Authority The Python Packaging Authority (PyPA) is a fairly loose group of projects that happen to be related to Python packaging. While the PyPA has a formal governance model, there&amp;rsquo;s no &amp;ldquo;oversight&amp;rdquo; or &amp;ldquo;enforcement&amp;rdquo; on projects that are part of the PyPA &amp;ndash; they are only required to adopt the PSF Code of Conduct and to be accepted by the existing members.</description><content:encoded><![CDATA[<p>The way the Python packaging community is organised is something that I&rsquo;ve
+explained in multiple places, in multiple contexts. I figure that it&rsquo;ll be
+useful to actually write it down in a single place, so that I don&rsquo;t have to
+repeat myself.</p>
+<h2 id="the-python-packaging-authority">The Python Packaging Authority</h2>
+<p>The Python Packaging Authority (PyPA) is a fairly loose group of projects that
+happen to be related to Python packaging. While the PyPA has a formal
+<a href="https://peps.python.org/pep-0609/">governance</a> model, there&rsquo;s no &ldquo;oversight&rdquo; or
+&ldquo;enforcement&rdquo; on projects that are part of the PyPA &ndash; they are only required to
+adopt the PSF Code of Conduct and to be accepted by the existing members.</p>
+<p>Functionally, each PyPA project is free to do what it wants. The only real
+benefit of being a PyPA project is the ability to use the PSF as a fiscal
+sponsor and the ability to say that it&rsquo;s a &ldquo;PyPA project&rdquo;.</p>
+<p>Practically, the PyPA serves as <a href="https://discuss.python.org/t/what-is-the-pypa/12297/2?u=pradyunsg">&ldquo;a body to hammer out &amp; maintain
+interoperability specifications&rdquo;</a> for Python packaging. The
+PyPA also includes foundational tools that are used in the Python packaging
+ecosystem, like <code>pip</code> and <code>setuptools</code>.</p>
+<h2 id="relationship-with-core-python">Relationship with &ldquo;Core Python&rdquo;</h2>
+<p>(I&rsquo;m using &ldquo;Core Python&rdquo; to refer to the Python language and standard library,
+as maintained by the CPython Core Developers, also known as <a href="https://peps.python.org/pep-0013/#the-core-team">&ldquo;core
+team&rdquo;</a> for Python)</p>
+<p>As of the time of writing, Core Python&rsquo;s involvement in Python Packaging (in a
+<a href="https://peps.python.org/pep-0632/">post-distutils</a> world) is fairly limited.
+The interpreter and Python standard library provide the following pieces, around
+the packaging ecosystem:</p>
+<ul>
+<li>
+<p>Shipping <code>ensurepip</code> and <code>venv</code> in the standard library.</p>
+<ul>
+<li><code>venv</code> supports creating a virtual environment with pip and
+setuptools<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> installed in it.</li>
+<li><code>ensurepip</code> provides copies of <code>pip</code> and
+<code>setuptools</code><sup id="fnref1:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> that are used by <code>venv</code>, and
+allows bootstrapping the packaging tooling for Python.</li>
+</ul>
+</li>
+<li>
+<p>&ldquo;site-packages&rdquo; directories on the import path.</p>
+<ul>
+<li><code>site</code> adds site-packages (&ldquo;global&rdquo; and &ldquo;user&rdquo;) to the import path.</li>
+<li><code>site</code> respects the presence of a <code>pyvenv.cfg</code> file (used by <code>venv</code>) to mark
+a virtual environment, influencing which site-packages it adds to the import
+path.</li>
+</ul>
+</li>
+<li>
+<p><code>sysconfig</code> provides relevant paths for placing files and build configuration
+for the interpreter.</p>
+</li>
+<li>
+<p>a <a href="https://docs.python.org/3/c-api/stable.html">stable ABI</a> for the C API, for
+building extensions compatible across Python 3.x (x &gt;= 2).</p>
+</li>
+</ul>
+<h3 id="delegation-of-python-packaging-ecosystem-decisions">Delegation of Python packaging ecosystem decisions</h3>
+<p>The Python Steering Council delegates the decision making for the packaging
+ecosystem to the Python Packaging Authority (PyPA). This is done through
+<a href="https://github.com/python/steering-council/blob/main/process/standing-delegations.md#pypa-delegations">standing delegations</a> to specific PyPA members on specific
+aspects of Python Packaging. The PyPA is, like CPython Core Developers, a group
+of volunteers who maintain various bits and pieces of the Python packaging
+ecosystem.</p>
+<p>The CPython Core Developers and the PyPA are not the same group of people, but
+there is meaningful overlap between the two groups. There are 85 &ldquo;active&rdquo;
+CPython Core Developers<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> and 50+ (public) PyPA
+members<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>. Off the top of my head, I can count 5 people who are
+active in both CPython and one or more PyPA projects.</p>
+<h2 id="a-bit-of-history">A bit of history</h2>
+<p>From <a href="https://www.pypa.io/en/latest/history/">https://www.pypa.io/en/latest/history/</a>:</p>
+<blockquote>
+<p>2011-02-28: The Python Packaging Authority (PyPA) is created to take over the
+maintenance of pip and virtualenv from Ian Bicking, led by Carl Meyer, Brian
+Rosner and Jannis Leidel. Other proposed names were “ianb-ng”, “cabal”, “pack”
+and “Ministry of Installation”.</p>
+</blockquote>
+<p>As &ldquo;Ministry of Installation&rdquo; likely implies, these names were <a href="https://discuss.python.org/t/what-is-the-pypa/12297/6?u=pradyunsg">chosen partly in
+jest</a>. The name stuck and, those who started using Python <em>after</em> this
+name was picked, ended up treating the name at face value. PyPA projects
+essentially serves as <em>all</em> of the packaging infrastructure for Python making it
+the de facto authority.</p>
+<p>Over time, &ldquo;Authority&rdquo; in PyPA did end up being backed by real authority: the
+standing delegations from the elected Python Steering Council, ceding control of
+certain kinds of Python Enhancement Proposals (PEPs) to specific PyPA members.
+There&rsquo;s <a href="https://www.pypa.io/en/latest/specifications/">formal processes</a>, <a href="https://peps.python.org/topic/packaging/">formal interoperability
+specifications</a> as Python PEPs and a <a href="https://peps.python.org/pep-0609/">formal governance
+model</a>.</p>
+<p>To quote <a href="https://discuss.python.org/t/what-is-the-pypa/12297/2?u=pradyunsg">Thomas Kluyver</a>:</p>
+<blockquote>
+<p>You don’t get much more authoritative than that without an army.</p>
+</blockquote>
+<h2 id="what-about-non-pypa-projects">What about non-PyPA projects?</h2>
+<p>Since PyPA&rsquo;s inception, there have been non-PyPA projects related to Python
+packaging (eg: buildout is older than pip). By and large, there isn&rsquo;t any sort
+of antagonistic relationship between PyPA and non-PyPA projects. PyPA and
+non-PyPA project maintainers have often worked together on various things, and
+many <a href="https://packaging.python.org/en/latest/key_projects/#non-pypa-projects">non-PyPA projects are listed as &ldquo;key projects&rdquo;</a> for Python
+packaging.</p>
+<p>For example, at the time of writing, the two most popular non-PyPA projects are
+Conda and Poetry. Both of these rely on the interoperability specifications
+and/or tools that the PyPA works on (<a href="https://conda-forge.org/docs/maintainer/adding_pkgs.html#use-pip">conda</a>,
+<a href="https://python-poetry.org/docs/pyproject/#poetry-and-pep-517">poetry</a>) to do what they do.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Setuptools is gonna be removed, starting with Python 3.12.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a>&#160;<a href="#fnref1:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>Based on the number of eligible votes in the last SC election:
+<a href="https://peps.python.org/pep-8104/#results">https://peps.python.org/pep-8104/#results</a>. &ldquo;active&rdquo; is determined as
+described in <a href="https://peps.python.org/pep-0013/#membership">Python Language Governance</a> document.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p>Based on public folks listed in <a href="https://github.com/orgs/pypa/people">https://github.com/orgs/pypa/people</a> (not all
+are active though, and there&rsquo;s active folks who are not members of the
+GitHub org but have access to the various repositories).&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded></item></channel></rss>
