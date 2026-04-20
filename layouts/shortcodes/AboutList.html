@@ -34,7 +34,7 @@ The variants are:
 <div class="about-list">
   {{ $position := .Position }}
   {{ $key := .Get 0 }}
-  {{ $list := index .Site.Data.about $key }}
+  {{ $list := index hugo.Data.about $key }}
   {{ range $index, $mapping := $list }}
   <div class="about-item">
 
