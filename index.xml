@@ -1,6 +1,12 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Pradyun Gedam</title><link>https://pradyunsg.me/</link><description>Recent content on Pradyun Gedam</description><generator>Hugo -- 0.122.0</generator><language>en</language><lastBuildDate>Sat, 27 Jan 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/index.xml" rel="self" type="application/rss+xml"/><item><title>Improving my dotfiles manager with pipx and inline dependency metadata</title><link>https://pradyunsg.me/blog/2024/05/31/python-scripts-with-pipx-bash/</link><pubDate>Fri, 31 May 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/05/31/python-scripts-with-pipx-bash/</guid><description>I have a (somewhat unnecessarily) custom setup for managing my dotfiles and I made a nice improvement to it today.
-How it works The dotfiles are managed by a Python script. In broad strokes, the script will:
-read a TOML file locate the configured paths create symlinks, based on custom marker text in the filenames, for files in subdirectories under the configured paths1 If there&amp;rsquo;s a conflict (i.e. two configured paths provide the same symlink target location), the TOML file contains the resolution for it (i.</description><content:encoded><![CDATA[<p>I have a (somewhat unnecessarily) custom setup for managing my dotfiles and I made a nice improvement to it today.</p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Pradyun Gedam</title><link>https://pradyunsg.me/</link><description>Recent content on Pradyun Gedam</description><generator>Hugo</generator><language>en</language><lastBuildDate>Fri, 31 May 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/index.xml" rel="self" type="application/rss+xml"/><item><title>Improving my dotfiles manager with pipx and inline dependency metadata</title><link>https://pradyunsg.me/blog/2024/05/31/python-scripts-with-pipx-bash/</link><pubDate>Fri, 31 May 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/05/31/python-scripts-with-pipx-bash/</guid><description>&lt;p&gt;I have a (somewhat unnecessarily) custom setup for managing my dotfiles and I made a nice improvement to it today.&lt;/p&gt;
+&lt;h2 id="how-it-works"&gt;How it works&lt;/h2&gt;
+&lt;p&gt;The dotfiles are managed by a Python script. In broad strokes, the script will:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;read a TOML file&lt;/li&gt;
+&lt;li&gt;locate the configured paths&lt;/li&gt;
+&lt;li&gt;create symlinks, based on custom marker text in the filenames, for files in subdirectories under the configured paths&lt;sup id="fnref:1"&gt;&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref"&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If there&amp;rsquo;s a conflict (i.e. two configured paths provide the same symlink target location), the TOML file contains the resolution for it (i.e. specifies one of the paths as the &amp;ldquo;winner&amp;rdquo; for that file). If a resolution doesn&amp;rsquo;t exist, the script errors out.&lt;/p&gt;</description><content:encoded><![CDATA[<p>I have a (somewhat unnecessarily) custom setup for managing my dotfiles and I made a nice improvement to it today.</p>
 <h2 id="how-it-works">How it works</h2>
 <p>The dotfiles are managed by a Python script. In broad strokes, the script will:</p>
 <ul>
@@ -19,8 +25,8 @@ read a TOML file locate the configured paths create symlinks, based on custom ma
 <p>This is made possible by <code>pipx</code>, inline dependency metadata and Python&rsquo;s zipapps. There are also a few shenanigans to make this script a valid Bash script and a valid Python script. A <code>&quot;&quot;&quot;&quot;true</code> serves as our little gem of polyglot magic to make that possible.<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
 <h3 id="how-it-works-bash">How it works: Bash</h3>
 <p>Let me show you the script first, with Bash&rsquo;s syntax highlighting:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># /// script</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># requires-python = &#34;&gt;=3.8&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># dependencies = [</span>
@@ -54,7 +60,7 @@ read a TOML file locate the configured paths create symlinks, based on custom ma
 <p>Assuming you&rsquo;re on a compatible Python, <code>pipx</code> will parse that chunk, install the dependencies in a cached virtual environment and then run the script within that virtual environment. This means that the dependencies are installed by <code>pipx</code> and can/will be reused across multiple runs of the script by <code>pipx</code>.</p>
 <h3 id="how-it-works-python">How it works: Python</h3>
 <p>Let&rsquo;s look at the script again, this time with Python&rsquo;s syntax highlighting:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># /// script</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># requires-python = &#34;&gt;=3.8&#34;</span>
@@ -92,24 +98,25 @@ read a TOML file locate the configured paths create symlinks, based on custom ma
 </li>
 </ol>
 </div>
-]]></content:encoded></item><item><title>pip 24.1 betas -- help us test a major upcoming change!</title><link>https://pradyunsg.me/blog/2024/05/13/pip-24-1-betas/</link><pubDate>Mon, 13 May 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/05/13/pip-24-1-betas/</guid><description>The pip team has released pip 24.1b1 which contains a lot of significant improvements and bug fixes.
-I&amp;rsquo;d like to highlight a major change in this blog post: the removal of support for &amp;ldquo;legacy&amp;rdquo; versions and dependency specification, or as I like to call it, nonsensical versions and dependencies. We&amp;rsquo;re releasing this as a beta to get feedback from the community on how this change affects their workflows.
-Nonsensical versions and dependencies For a bunch of historical reasons, pip has allowed many arbitrary strings as versions and dependency specification.</description><content:encoded><![CDATA[<p>The pip team has released <a href="https://pypi.org/project/pip/24.1b1/">pip 24.1b1</a> which contains a <a href="https://pip.pypa.io/en/latest/news/#b1-2024-05-06">lot of significant improvements and bug fixes</a>.</p>
+]]></content:encoded></item><item><title>pip 24.1 betas -- help us test a major upcoming change!</title><link>https://pradyunsg.me/blog/2024/05/13/pip-24-1-betas/</link><pubDate>Mon, 13 May 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/05/13/pip-24-1-betas/</guid><description>&lt;p&gt;The pip team has released &lt;a href="https://pypi.org/project/pip/24.1b1/"&gt;pip 24.1b1&lt;/a&gt; which contains a &lt;a href="https://pip.pypa.io/en/latest/news/#b1-2024-05-06"&gt;lot of significant improvements and bug fixes&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;d like to highlight a major change in this blog post: the removal of support for &amp;ldquo;legacy&amp;rdquo; versions and dependency specification, or as I like to call it, nonsensical versions and dependencies. We&amp;rsquo;re releasing this as a beta to get feedback from the community on how this change affects their workflows.&lt;/p&gt;
+&lt;h2 id="nonsensical-versions-and-dependencies"&gt;Nonsensical versions and dependencies&lt;/h2&gt;
+&lt;p&gt;For a bunch of historical reasons, pip has allowed many arbitrary strings as versions and dependency specification. There&amp;rsquo;s so many kinds of bad behaviours that this &amp;ldquo;feature&amp;rdquo; has enabled.&lt;/p&gt;</description><content:encoded><![CDATA[<p>The pip team has released <a href="https://pypi.org/project/pip/24.1b1/">pip 24.1b1</a> which contains a <a href="https://pip.pypa.io/en/latest/news/#b1-2024-05-06">lot of significant improvements and bug fixes</a>.</p>
 <p>I&rsquo;d like to highlight a major change in this blog post: the removal of support for &ldquo;legacy&rdquo; versions and dependency specification, or as I like to call it, nonsensical versions and dependencies. We&rsquo;re releasing this as a beta to get feedback from the community on how this change affects their workflows.</p>
 <h2 id="nonsensical-versions-and-dependencies">Nonsensical versions and dependencies</h2>
 <p>For a bunch of historical reasons, pip has allowed many arbitrary strings as versions and dependency specification. There&rsquo;s so many kinds of bad behaviours that this &ldquo;feature&rdquo; has enabled.</p>
 <p>My favourite example is <a href="https://github.com/pypa/packaging/issues/530">one I wrote back in 2022</a> on the <code>packaging</code><sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> project&rsquo;s issue tracker:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;This is a completely random string&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;This is a completely random string&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>LegacyVersion(<span style="color:#e6db74">&#39;This is a completely random string&#39;</span>)<span style="color:#f92672">&gt;</span>
 </span></span></code></pre></div><p>Or providing weird version comparisons:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;1.0&#34;</span>) <span style="color:#f92672">&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;99999.0.whatever&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;1.0&#34;</span>) <span style="color:#f92672">&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;99999.0.whatever&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">True</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;1.0&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>Version(<span style="color:#e6db74">&#39;1.0&#39;</span>)<span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;99999.0.whatever&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>LegacyVersion(<span style="color:#e6db74">&#39;99999.0.whatever&#39;</span>)<span style="color:#f92672">&gt;</span>
 </span></span></code></pre></div><p>Or hiding mistakes in dependency declarations:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> all_dependencies <span style="color:#f92672">=</span> [
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> all_dependencies <span style="color:#f92672">=</span> [
 </span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>     <span style="color:#e6db74">&#34;package == 1&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>     <span style="color:#e6db74">&#34;another-package&#34;</span>,
 </span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>     <span style="color:#e6db74">&#34;yet-another-package&#34;</span>,
@@ -138,29 +145,27 @@ Nonsensical versions and dependencies For a bunch of historical reasons, pip has
 </li>
 </ol>
 </div>
-]]></content:encoded></item><item><title>Making GitHub Notifications UI slightly nicer for bulk triage</title><link>https://pradyunsg.me/blog/2024/03/17/github-notifications-userstyles/</link><pubDate>Sun, 17 Mar 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/03/17/github-notifications-userstyles/</guid><description>I&amp;rsquo;m someone who gets a lot of GitHub notifications &amp;ndash; this week had &amp;gt;100 individual notifications.
-The problem The &amp;ldquo;new&amp;rdquo; GitHub Notifications UI1 was based on Octobox. It was a step in the right direction to help with my notification &amp;ldquo;workload&amp;rdquo;, although I recognise that it was not perceived as such by many others.
-That said, they copied over the exact same design issue I had with Octobox: the action buttons are on the completely opposite side from where my attention is.</description><content:encoded><![CDATA[<p>I&rsquo;m someone who gets a <em>lot</em> of GitHub notifications &ndash; this week had &gt;100 individual notifications.</p>
+]]></content:encoded></item><item><title>Making GitHub Notifications UI slightly nicer for bulk triage</title><link>https://pradyunsg.me/blog/2024/03/17/github-notifications-userstyles/</link><pubDate>Sun, 17 Mar 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/03/17/github-notifications-userstyles/</guid><description>&lt;p&gt;I&amp;rsquo;m someone who gets a &lt;em&gt;lot&lt;/em&gt; of GitHub notifications &amp;ndash; this week had &amp;gt;100 individual notifications.&lt;/p&gt;
+&lt;h2 id="the-problem"&gt;The problem&lt;/h2&gt;
+&lt;p&gt;The &amp;ldquo;new&amp;rdquo; GitHub Notifications UI&lt;sup id="fnref:1"&gt;&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref"&gt;1&lt;/a&gt;&lt;/sup&gt; was based on &lt;a href="https://octobox.io/"&gt;Octobox&lt;/a&gt;. It was a step in the right direction to help with my notification &amp;ldquo;workload&amp;rdquo;, although I recognise that it was not perceived as such by many others.&lt;/p&gt;
+&lt;p&gt;That said, they copied over the exact same design issue I had with Octobox: the action buttons are on the completely opposite side from where my attention is.&lt;/p&gt;</description><content:encoded><![CDATA[<p>I&rsquo;m someone who gets a <em>lot</em> of GitHub notifications &ndash; this week had &gt;100 individual notifications.</p>
 <h2 id="the-problem">The problem</h2>
 <p>The &ldquo;new&rdquo; GitHub Notifications UI<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> was based on <a href="https://octobox.io/">Octobox</a>. It was a step in the right direction to help with my notification &ldquo;workload&rdquo;, although I recognise that it was not perceived as such by many others.</p>
 <p>That said, they copied over the exact same design issue I had with Octobox: the action buttons are on the completely opposite side from where my attention is.</p>
-<p><img loading="lazy" src="/media/github-notifications-2024-vanilla.png" alt="Vanilla GitHub Notification UI entry, showing the action icons in their default location"  />
-</p>
+<p><img alt="Vanilla GitHub Notification UI entry, showing the action icons in their default location" loading="lazy" src="/media/github-notifications-2024-vanilla.png"></p>
 <p>I am going to scan and read the content of the notification, which is left aligned and very close to the <em>left</em> edge. All the action buttons are on the <em>right</em> edge. This makes it difficult when trying to triage notifications, especially when I&rsquo;m trying to do so in bulk where stuff like &ldquo;oh, this is not gonna need my attention&rdquo; requires me to drag my cursor over to the other side of the page.</p>
 <p>If there&rsquo;s a keyboard shortcut for this, I don&rsquo;t know it and I don&rsquo;t want to learn it anyway. I want to be able to use the mouse to do what I need here because that&rsquo;s how I use a computer.</p>
 <h2 id="the-solution">The solution</h2>
 <p>I wrote a blurb of CSS to remove this annoyance.</p>
-<p><img loading="lazy" src="/media/github-notifications-2024-modified.png" alt="Modified GitHub Notification UI row, showing the moved action icons"  />
-</p>
+<p><img alt="Modified GitHub Notification UI row, showing the moved action icons" loading="lazy" src="/media/github-notifications-2024-modified.png"></p>
 <p>It moves the action buttons toward the left side, so that I can quickly triage notifications without having to move my cursor across the screen. It also moves the text describing the content that the notification is for (repository and notification subject) to accommodate for the buttons.</p>
 <p>If you know me, you know that I will animate moving text to different locations. In the end, this was fairly easy to achieve in this case.</p>
-<p><img loading="lazy" src="/media/github-notifications-2024-modified.gif" alt="Three rows in the modified GitHub Notification UI row, showcasing the animation associated with hovering over a specific notification"  />
-</p>
+<p><img alt="Three rows in the modified GitHub Notification UI row, showcasing the animation associated with hovering over a specific notification" loading="lazy" src="/media/github-notifications-2024-modified.gif"></p>
 <p>I&rsquo;ve been using this for quite a few months now.</p>
 <h2 id="the-stylesheet">The stylesheet</h2>
 <p>Recently, while screen sharing with a friend, they asked me about my GitHub notifications doing this really cool thing. That&rsquo;s when I realised that I had completely forgotten that this was something I had been injecting into the page. I shared it with them and realised that some other people might find this useful too.</p>
 <p>If you also find this change to be an improvement, the CSS blurb that needs to be injected is provided below. You can add this via <a href="https://github.com/refined-github/refined-github">Refined GitHub</a>&rsquo;s preferences page or use a more generic extension like <a href="https://add0n.com/stylus.html">Stylus</a> to inject this into the GitHub Notifications page.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-css" data-lang="css"><span style="display:flex;"><span>.<span style="color:#a6e22e">notification-list-item-actions</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-css" data-lang="css"><span style="display:flex;"><span>.<span style="color:#a6e22e">notification-list-item-actions</span> {
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">right</span>: <span style="color:#66d9ef">unset</span> <span style="color:#75715e">!important</span>;
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">left</span>: <span style="color:#ae81ff">4</span><span style="color:#66d9ef">rem</span> <span style="color:#75715e">!important</span>;
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">padding</span>: <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">8</span><span style="color:#66d9ef">px</span>;
@@ -197,8 +202,13 @@ That said, they copied over the exact same design issue I had with Octobox: the 
 </li>
 </ol>
 </div>
-]]></content:encoded></item><item><title>About Me</title><link>https://pradyunsg.me/about/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/about/</guid><description>I am a software engineer, who likes to work on improving the experience of using software for other humans. I have a keen interest in open source software, with deep experience with developer tooling and technical writing &amp;amp; communication.
-I wear many hats in open source software spaces, including maintaining critical projects that serve as the foundational digital infrastructure for the ecosystem of the Python programming language, making it easier to create good technical documentation websites and being involved in community events.</description><content:encoded><![CDATA[<p>I am a software engineer, who likes to work on improving the experience of using
+]]></content:encoded></item><item><title>About Me</title><link>https://pradyunsg.me/about/</link><pubDate>Sat, 27 Jan 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/about/</guid><description>&lt;p&gt;I am a software engineer, who likes to work on improving the experience of using
+software for other humans. I have a keen interest in open source software, with
+deep experience with developer tooling and technical writing &amp;amp; communication.&lt;/p&gt;
+&lt;p&gt;I wear many hats in open source software spaces, including maintaining critical
+projects that serve as the foundational digital infrastructure for the ecosystem
+of the &lt;a href="https://en.wikipedia.org/wiki/Python_(programming_language)"&gt;Python programming language&lt;/a&gt;, making it easier to create good technical
+documentation websites and being involved in community events.&lt;/p&gt;</description><content:encoded><![CDATA[<p>I am a software engineer, who likes to work on improving the experience of using
 software for other humans. I have a keen interest in open source software, with
 deep experience with developer tooling and technical writing &amp; communication.</p>
 <p>I wear many hats in open source software spaces, including maintaining critical
@@ -762,8 +772,8 @@ API design, how languages differ and transpilation.
   
 </div>
 
-]]></content:encoded></item><item><title>Choreographing a release process for my PyPI packages</title><link>https://pradyunsg.me/blog/2024/01/27/package-release-workflow/</link><pubDate>Sat, 27 Jan 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/01/27/package-release-workflow/</guid><description>I maintain quite a few Python packages and they all have development workflows as well as release processes that are different in various ways.
-This is basically my research document as I am exploring what I want the release process (and supporting development workflow) to look like for the Python packages I maintain, so that I can reduce the overhead caused by the various differences in these projects as well as the need to make all these decisions myself.</description><content:encoded><![CDATA[<p>I maintain quite a few Python packages and they all have development workflows as well as release processes that are different in various ways.</p>
+]]></content:encoded></item><item><title>Choreographing a release process for my PyPI packages</title><link>https://pradyunsg.me/blog/2024/01/27/package-release-workflow/</link><pubDate>Sat, 27 Jan 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/01/27/package-release-workflow/</guid><description>&lt;p&gt;I maintain quite a few Python packages and they all have development workflows as well as release processes that are different in various ways.&lt;/p&gt;
+&lt;p&gt;This is basically my research document as I am exploring what I want the release process (and supporting development workflow) to look like for the Python packages I maintain, so that I can reduce the overhead caused by the various differences in these projects as well as the need to make all these decisions myself. I&amp;rsquo;m posting this publicly so that I can get feedback from a few people I know about this and whether they think it makes sense.&lt;/p&gt;</description><content:encoded><![CDATA[<p>I maintain quite a few Python packages and they all have development workflows as well as release processes that are different in various ways.</p>
 <p>This is basically my research document as I am exploring what I want the release process (and supporting development workflow) to look like for the Python packages I maintain, so that I can reduce the overhead caused by the various differences in these projects as well as the need to make all these decisions myself. I&rsquo;m posting this publicly so that I can get feedback from a few people I know about this and whether they think it makes sense.</p>
 <p>None of this is related to the whole &ldquo;what build-backend/environment management/script runner tool should I use&rdquo; situation but rather it&rsquo;s everything &ldquo;around&rdquo; that. I&rsquo;m not going into the test running or documentation building aspects here, &ldquo;just&rdquo; the mechanics around making a package release.</p>
 <h2 id="my-design-goals">My design goals</h2>
@@ -846,7 +856,7 @@ This is basically my research document as I am exploring what I want the release
 <p>In terms of detecting such cases, I guess I could have a GitHub Actions check that there isn&rsquo;t a commit in the PR after one that bumps the version.</p>
 <h4 id="looking-at-the-source-of-truth">Looking at the source of truth</h4>
 <p>Doing a quick search on the internet for how to find when a line has changed with git, I found <a href="https://stackoverflow.com/questions/13692072/git-blame-committed-line">a useful StackOverflow question</a> which points me to <code>git log -L &lt;range&gt;:&lt;file&gt;</code>. Trying it out on pip tells me this is a good option:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh-session" data-lang="sh-session"><span style="display:flex;"><span>❯ git ls -L 3,3:src/pip/__init__.py -q
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh-session" data-lang="sh-session"><span style="display:flex;"><span>❯ git ls -L 3,3:src/pip/__init__.py -q
 </span></span><span style="display:flex;"><span>c0cce3ca6 Bump for development [Stéphane Bidoul]
 </span></span><span style="display:flex;"><span>e3dc91dad (tag: 23.3) Bump for release [Stéphane Bidoul]
 </span></span><span style="display:flex;"><span>b6a267059 Bump for development [Paul Moore]
@@ -904,20 +914,34 @@ This is basically my research document as I am exploring what I want the release
 </li>
 </ol>
 </div>
-]]></content:encoded></item><item><title>PDM does not implement PEP 582, at the time of writing</title><link>https://pradyunsg.me/blog/2023/01/21/pdm-does-not-implement-pep-582/</link><pubDate>Sat, 21 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/21/pdm-does-not-implement-pep-582/</guid><description>Note: I&amp;rsquo;ve updated this to reflect how this happened, on recommendation from PDM&amp;rsquo;s author.
-PDM claims to implement PEP 582. However, if you look at what it implements, it is something completely different from the standard.
-PDM&amp;rsquo;s file system structure &amp;lt;root&amp;gt; __pypackages__ 3.10 bottle myscript.py PDM will scan for the __pypackages__ directory up to 5 folders above the &amp;ldquo;current&amp;rdquo; one.
-PEP 582&amp;rsquo;s file system structure &amp;lt;root&amp;gt; __pypackages__ lib python3.10 site-packages bottle myscript.</description><content:encoded><![CDATA[<p>Note: I&rsquo;ve updated this to reflect <em>how</em> this happened, on recommendation from PDM&rsquo;s author.</p>
+]]></content:encoded></item><item><title>PDM does not implement PEP 582, at the time of writing</title><link>https://pradyunsg.me/blog/2023/01/21/pdm-does-not-implement-pep-582/</link><pubDate>Sat, 21 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/21/pdm-does-not-implement-pep-582/</guid><description>&lt;p&gt;Note: I&amp;rsquo;ve updated this to reflect &lt;em&gt;how&lt;/em&gt; this happened, on recommendation from PDM&amp;rsquo;s author.&lt;/p&gt;
+&lt;p&gt;PDM &lt;a href="https://github.com/pdm-project/pdm/tree/c0974672a17be965ddcb0e191d35df08ad0c4b6e#highlights-of-features"&gt;claims to implement PEP 582&lt;/a&gt;. However, if you look at what it implements, it is &lt;a href="https://github.com/pdm-project/pdm/blob/c0974672a17be965ddcb0e191d35df08ad0c4b6e/src/pdm/pep582/sitecustomize.py#L11"&gt;something completely different&lt;/a&gt; from &lt;a href="https://peps.python.org/pep-0582/#example"&gt;the standard&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id="pdms-file-system-structure"&gt;PDM&amp;rsquo;s file system structure&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;lt;root&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; __pypackages__
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; 3.10
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; bottle
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; myscript.py
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;PDM will scan for the &lt;code&gt;__pypackages__&lt;/code&gt; directory up to 5 folders above the &amp;ldquo;current&amp;rdquo; one.&lt;/p&gt;
+&lt;h2 id="pep-582s-file-system-structure"&gt;PEP 582&amp;rsquo;s file system structure&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;lt;root&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; __pypackages__
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; lib
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; python3.10
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; site-packages
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; bottle
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; myscript.py
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;PEP 582 says that the &lt;code&gt;__pypackages__&lt;/code&gt; directory should be next to the script being executed, and there&amp;rsquo;s no discovery logic &amp;ldquo;above&amp;rdquo; the script.&lt;/p&gt;</description><content:encoded><![CDATA[<p>Note: I&rsquo;ve updated this to reflect <em>how</em> this happened, on recommendation from PDM&rsquo;s author.</p>
 <p>PDM <a href="https://github.com/pdm-project/pdm/tree/c0974672a17be965ddcb0e191d35df08ad0c4b6e#highlights-of-features">claims to implement PEP 582</a>. However, if you look at what it implements, it is <a href="https://github.com/pdm-project/pdm/blob/c0974672a17be965ddcb0e191d35df08ad0c4b6e/src/pdm/pep582/sitecustomize.py#L11">something completely different</a> from <a href="https://peps.python.org/pep-0582/#example">the standard</a>.</p>
 <h2 id="pdms-file-system-structure">PDM&rsquo;s file system structure</h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>&lt;root&gt;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>&lt;root&gt;
 </span></span><span style="display:flex;"><span>    __pypackages__
 </span></span><span style="display:flex;"><span>        3.10
 </span></span><span style="display:flex;"><span>            bottle
 </span></span><span style="display:flex;"><span>    myscript.py
 </span></span></code></pre></div><p>PDM will scan for the <code>__pypackages__</code> directory up to 5 folders above the &ldquo;current&rdquo; one.</p>
 <h2 id="pep-582s-file-system-structure">PEP 582&rsquo;s file system structure</h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>&lt;root&gt;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>&lt;root&gt;
 </span></span><span style="display:flex;"><span>    __pypackages__
 </span></span><span style="display:flex;"><span>        lib
 </span></span><span style="display:flex;"><span>            python3.10
@@ -940,8 +964,8 @@ PEP 582&amp;rsquo;s file system structure &amp;lt;root&amp;gt; __pypackages__ li
 </li>
 </ol>
 </div>
-]]></content:encoded></item><item><title>Thoughts on the Python packaging ecosystem</title><link>https://pradyunsg.me/blog/2023/01/21/thoughts-on-python-packaging/</link><pubDate>Sat, 21 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/21/thoughts-on-python-packaging/</guid><description>My response to the discussion topic posed in Python Packaging Strategy Discussion Part 1 had become quite long, so I decided to move it to write a blog post instead. This post then started absorbing various draft posts I&amp;rsquo;ve had on this topic since this blog was started, morphing to include my broader thoughts on where we are today.
-Note: I&amp;rsquo;ve updated this to cover an aspect of the recent LWN article on the topic as well.</description><content:encoded><![CDATA[<p>My response to the discussion topic posed in <a href="https://discuss.python.org/t/python-packaging-strategy-discussion-part-1/22420?u=pradyunsg">Python Packaging Strategy Discussion Part 1</a> had become quite long, so I decided to move it to write a blog post instead. This post then started absorbing various draft posts I&rsquo;ve had on this topic since this blog was started, morphing to include my broader thoughts on where we are today.</p>
+]]></content:encoded></item><item><title>Thoughts on the Python packaging ecosystem</title><link>https://pradyunsg.me/blog/2023/01/21/thoughts-on-python-packaging/</link><pubDate>Sat, 21 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/21/thoughts-on-python-packaging/</guid><description>&lt;p&gt;My response to the discussion topic posed in &lt;a href="https://discuss.python.org/t/python-packaging-strategy-discussion-part-1/22420?u=pradyunsg"&gt;Python Packaging Strategy Discussion Part 1&lt;/a&gt; had become quite long, so I decided to move it to write a blog post instead. This post then started absorbing various draft posts I&amp;rsquo;ve had on this topic since this blog was started, morphing to include my broader thoughts on where we are today.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Note&lt;/em&gt;: I&amp;rsquo;ve updated this to cover an aspect of the recent LWN article on the topic as well.&lt;/p&gt;</description><content:encoded><![CDATA[<p>My response to the discussion topic posed in <a href="https://discuss.python.org/t/python-packaging-strategy-discussion-part-1/22420?u=pradyunsg">Python Packaging Strategy Discussion Part 1</a> had become quite long, so I decided to move it to write a blog post instead. This post then started absorbing various draft posts I&rsquo;ve had on this topic since this blog was started, morphing to include my broader thoughts on where we are today.</p>
 <p><em>Note</em>: I&rsquo;ve updated this to cover an aspect of the recent LWN article on the topic as well.</p>
 <h2 id="tldr">TL;DR</h2>
 <p>This post is a bit long, so here&rsquo;s the key points I&rsquo;m making:</p>
@@ -967,7 +991,7 @@ Note: I&amp;rsquo;ve updated this to cover an aspect of the recent LWN article o
 </ul>
 </details>
 <!-- Python packaging has quite a reputation of being ridiculously difficult to get right, understand and work with. It would not be a stretch to say that the packaging and distribution story for Python is one of the main sources of pain for many users. -->
-<h2 id="python-users-are-_not_-software-engineers">Python users are <em>not</em> software engineers</h2>
+<h2 id="python-users-are-not-software-engineers">Python users are <em>not</em> software engineers</h2>
 <p>Many of the users who write Python code are <em>not</em> primarily full-time software engineers or &ldquo;developers&rdquo;. They are not particularly interested in this aspect of their job. They&rsquo;re using Python as a tool to get their job done. They&rsquo;re not interested in the details of how the tool works, or even how complicated things are under the hood.</p>
 <p>As Thea (Stargirl) Flowers <a href="https://hachyderm.io/@stargirl/109697057391904145">said recently</a>:</p>
 <blockquote>
@@ -1130,7 +1154,7 @@ Note: I&amp;rsquo;ve updated this to cover an aspect of the recent LWN article o
 <li>we don&rsquo;t pick one of two ~equivalent choices because &ldquo;they&rsquo;re both valid workflows&rdquo;</li>
 <li>there is <strong>no</strong> agreed upon direction for the ecosystem</li>
 </ul>
-<h2 id="we-dont-need-_more_-generic-build-backends-today">We don&rsquo;t need <em>more</em> &ldquo;generic&rdquo; build-backends today</h2>
+<h2 id="we-dont-need-more-generic-build-backends-today">We don&rsquo;t need <em>more</em> &ldquo;generic&rdquo; build-backends today</h2>
 <p>With <a href="https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html">setuptools gaining pyproject.toml configuration support</a> and <a href="https://packaging.python.org/en/latest/specifications/declaring-project-metadata/">a standard structure for declaring metadata that is implemented by ~every build-backend</a>, there isn&rsquo;t a significant difference between the various tools for pure-Python packages.</p>
 <p>There are only so many ways to construct a <code>.zip</code> file containing a bunch of pure-Python files + metadata. The only real difference is in the user experience, and the user experience is largely determined by the tooling that invokes the build-backend.</p>
 <p>Building more build-backends that are intended to be extended (beyond what we already have, between <code>hatchling</code>, <code>pdm-backend</code> and <code>setuptools</code>) feels unnecessary to me; and we might already have one too many options for this.</p>
@@ -1234,8 +1258,16 @@ Note: I&amp;rsquo;ve updated this to cover an aspect of the recent LWN article o
 </li>
 </ol>
 </div>
-]]></content:encoded></item><item><title>How the Python Packaging community is organised</title><link>https://pradyunsg.me/blog/2023/01/14/python-packaging-organisation/</link><pubDate>Sat, 14 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/14/python-packaging-organisation/</guid><description>The way the Python packaging community is organised is something that I&amp;rsquo;ve explained in multiple places, in multiple contexts. I figure that it&amp;rsquo;ll be useful to actually write it down in a single place, so that I don&amp;rsquo;t have to repeat myself.
-The Python Packaging Authority The Python Packaging Authority (PyPA) is a fairly loose group of projects that happen to be related to Python packaging. While the PyPA has a formal governance model, there&amp;rsquo;s no &amp;ldquo;oversight&amp;rdquo; or &amp;ldquo;enforcement&amp;rdquo; on projects that are part of the PyPA &amp;ndash; they are only required to adopt the PSF Code of Conduct and to be accepted by the existing members.</description><content:encoded><![CDATA[<p>The way the Python packaging community is organised is something that I&rsquo;ve
+]]></content:encoded></item><item><title>How the Python Packaging community is organised</title><link>https://pradyunsg.me/blog/2023/01/14/python-packaging-organisation/</link><pubDate>Sat, 14 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/14/python-packaging-organisation/</guid><description>&lt;p&gt;The way the Python packaging community is organised is something that I&amp;rsquo;ve
+explained in multiple places, in multiple contexts. I figure that it&amp;rsquo;ll be
+useful to actually write it down in a single place, so that I don&amp;rsquo;t have to
+repeat myself.&lt;/p&gt;
+&lt;h2 id="the-python-packaging-authority"&gt;The Python Packaging Authority&lt;/h2&gt;
+&lt;p&gt;The Python Packaging Authority (PyPA) is a fairly loose group of projects that
+happen to be related to Python packaging. While the PyPA has a formal
+&lt;a href="https://peps.python.org/pep-0609/"&gt;governance&lt;/a&gt; model, there&amp;rsquo;s no &amp;ldquo;oversight&amp;rdquo; or
+&amp;ldquo;enforcement&amp;rdquo; on projects that are part of the PyPA &amp;ndash; they are only required to
+adopt the PSF Code of Conduct and to be accepted by the existing members.&lt;/p&gt;</description><content:encoded><![CDATA[<p>The way the Python packaging community is organised is something that I&rsquo;ve
 explained in multiple places, in multiple contexts. I figure that it&rsquo;ll be
 useful to actually write it down in a single place, so that I don&rsquo;t have to
 repeat myself.</p>
@@ -1353,10 +1385,15 @@ GitHub org but have access to the various repositories).&#160;<a href="#fnref:3"
 </li>
 </ol>
 </div>
-]]></content:encoded></item><item><title>Excellent error messages from command line tools, according to ChatGPT</title><link>https://pradyunsg.me/blog/2023/01/02/chatgpt-fun-with-error-messages/</link><pubDate>Mon, 02 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/02/chatgpt-fun-with-error-messages/</guid><description>In late Dec 2022, I played around with ChatGPT in an evening.
-Since it was on the top of my mind1, I decided try to nudge ChatGPT into the direction of giving me a useful answer about error message design for command line tools.2
-Now, tell me what an excellent error message from a command line tool should contain.
-An excellent error message from a command line tool should contain the following elements:</description><content:encoded><![CDATA[<p>In late Dec 2022, I played around with <a href="https://openai.com/blog/chatgpt/">ChatGPT</a> in an evening.</p>
+]]></content:encoded></item><item><title>Excellent error messages from command line tools, according to ChatGPT</title><link>https://pradyunsg.me/blog/2023/01/02/chatgpt-fun-with-error-messages/</link><pubDate>Mon, 02 Jan 2023 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2023/01/02/chatgpt-fun-with-error-messages/</guid><description>&lt;p&gt;In late Dec 2022, I played around with &lt;a href="https://openai.com/blog/chatgpt/"&gt;ChatGPT&lt;/a&gt; in an evening.&lt;/p&gt;
+&lt;p&gt;Since it was on the top of my mind&lt;sup id="fnref:1"&gt;&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref"&gt;1&lt;/a&gt;&lt;/sup&gt;, I decided try to
+nudge ChatGPT into the direction of giving me a useful answer about error
+message design for command line tools.&lt;sup id="fnref:2"&gt;&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref"&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Now, tell me what an excellent error message from a command line tool should
+contain.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;An excellent error message from a command line tool should contain the
+following elements:&lt;/p&gt;</description><content:encoded><![CDATA[<p>In late Dec 2022, I played around with <a href="https://openai.com/blog/chatgpt/">ChatGPT</a> in an evening.</p>
 <p>Since it was on the top of my mind<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>, I decided try to
 nudge ChatGPT into the direction of giving me a useful answer about error
 message design for command line tools.<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
@@ -1459,8 +1496,12 @@ and document the fact that I&rsquo;d made this mistake &ndash; which is what thi
 </li>
 </ol>
 </div>
-]]></content:encoded></item><item><title>Wheels are faster, even for pure Python packages</title><link>https://pradyunsg.me/blog/2022/12/31/wheels-are-faster-pure-python/</link><pubDate>Sat, 31 Dec 2022 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2022/12/31/wheels-are-faster-pure-python/</guid><description>When installing with pip (or from PyPI in general), wheels are much faster than source distributions, even for pure-Python projects.
-Packages with native code are a clearer win, because the wheel file will contain pre-compiled binaries for the platform you&amp;rsquo;re installing on. This means that you don&amp;rsquo;t need to have a compiler and non-Python build dependencies installed, and you don&amp;rsquo;t need to wait for the compiler to do its thing.</description><content:encoded><![CDATA[<p>When installing with pip (or from PyPI in general), wheels are <em>much</em> faster
+]]></content:encoded></item><item><title>Wheels are faster, even for pure Python packages</title><link>https://pradyunsg.me/blog/2022/12/31/wheels-are-faster-pure-python/</link><pubDate>Sat, 31 Dec 2022 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2022/12/31/wheels-are-faster-pure-python/</guid><description>&lt;p&gt;When installing with pip (or from PyPI in general), wheels are &lt;em&gt;much&lt;/em&gt; faster
+than source distributions, &lt;em&gt;even&lt;/em&gt; for pure-Python projects.&lt;/p&gt;
+&lt;p&gt;Packages with native code are a clearer win, because the wheel file will contain
+pre-compiled binaries for the platform you&amp;rsquo;re installing on. This means that you
+don&amp;rsquo;t need to have a compiler and non-Python build dependencies installed, and
+you don&amp;rsquo;t need to wait for the compiler to do its thing.&lt;/p&gt;</description><content:encoded><![CDATA[<p>When installing with pip (or from PyPI in general), wheels are <em>much</em> faster
 than source distributions, <em>even</em> for pure-Python projects.</p>
 <p>Packages with native code are a clearer win, because the wheel file will contain
 pre-compiled binaries for the platform you&rsquo;re installing on. This means that you
@@ -2011,7 +2052,8 @@ that I&rsquo;ve bought tickets for since 2020!</p>
 of the organisers. I am also going to be at the event for sprints.</p>
 <h2 id="other-commitments">Other commitments</h2>
 <p>A full time job that pays my bills. :)</p>
-]]></content:encoded></item><item><title>Pradyun Gedam</title><link>https://pradyunsg.me/stuff/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/stuff/</guid><description>The information on this page has been consolidated into this page.</description><content:encoded>&lt;p>The information on this page has been consolidated into &lt;a href="../about/">this page&lt;/a>.&lt;/p></content:encoded></item><item><title>OSS Work update #14</title><link>https://pradyunsg.me/blog/2021/12/12/oss-update-14/</link><pubDate>Sun, 12 Dec 2021 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2021/12/12/oss-update-14/</guid><description>Making things look better and work better!</description><content:encoded><![CDATA[<h2 id="work-i-did">Work I did</h2>
+]]></content:encoded></item><item><title>Pradyun Gedam</title><link>https://pradyunsg.me/stuff/</link><pubDate>Sun, 27 Feb 2022 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/stuff/</guid><description>&lt;p&gt;The information on this page has been consolidated into &lt;a href="../about/"&gt;this page&lt;/a&gt;.&lt;/p&gt;</description><content:encoded>&lt;p>The information on this page has been consolidated into &lt;a href="../about/">this page&lt;/a>.&lt;/p>
+</content:encoded></item><item><title>OSS Work update #14</title><link>https://pradyunsg.me/blog/2021/12/12/oss-update-14/</link><pubDate>Sun, 12 Dec 2021 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2021/12/12/oss-update-14/</guid><description>Making things look better and work better!</description><content:encoded><![CDATA[<h2 id="work-i-did">Work I did</h2>
 <p>These last two months have been fairly dense!</p>
 <h3 id="oct-2021">Oct 2021</h3>
 <h4 id="technical">Technical</h4>
@@ -2070,8 +2112,7 @@ community members.</li>
 <p>The work for improving error messages in pip is coming along really nicely! This
 has been a great mix of frustratingly-difficult and visually-pleasing work that
 I&rsquo;m glad I&rsquo;m able to do.</p>
-<p><img loading="lazy" src="https://user-images.githubusercontent.com/3275593/141511663-e41a6e7c-162c-435d-b271-7b36aed21024.png" alt=""  />
-</p>
+<p><img loading="lazy" src="https://user-images.githubusercontent.com/3275593/141511663-e41a6e7c-162c-435d-b271-7b36aed21024.png"></p>
 <p>As a reminder, the next <a href="https://www.volunteeramnestyday.net">Volunteer Responsibility Amnesty Day</a> is <em>almost</em> here!
 If you are someone who volunteers for things, consider participating and
 checking in with yourself on December 21, 2021.</p>
@@ -2315,7 +2356,7 @@ chunks are becoming smaller and I&rsquo;m picking up bigger projects. :)</p>
 </ul>
 <h2 id="other-commitments">Other commitments</h2>
 <p>A full time job, that pays my bills. :)</p>
-]]></content:encoded></item><item><title>OSS Work update #9</title><link>https://pradyunsg.me/blog/2021/02/27/oss-update-9/</link><pubDate>Sat, 27 Feb 2021 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2021/02/27/oss-update-9/</guid><description>&lt;p>Alrighty! Let&amp;rsquo;s start doing this again.&lt;/p></description><content:encoded><![CDATA[<p>Alrighty! Let&rsquo;s start doing this again.</p>
+]]></content:encoded></item><item><title>OSS Work update #9</title><link>https://pradyunsg.me/blog/2021/02/27/oss-update-9/</link><pubDate>Sat, 27 Feb 2021 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2021/02/27/oss-update-9/</guid><description>&lt;p&gt;Alrighty! Let&amp;rsquo;s start doing this again.&lt;/p&gt;</description><content:encoded><![CDATA[<p>Alrighty! Let&rsquo;s start doing this again.</p>
 <p>The plan is to get
 back to doing these roughly once a month again.</p>
 <h2 id="work-i-did-1-jan-2021---26-feb-2021">Work I did (1 Jan 2021 - 26 Feb 2021)</h2>
@@ -2363,10 +2404,10 @@ the next release.</li>
 constructively.</li>
 </ul>
 <h2 id="other-commitments">Other commitments</h2>
-<p>Oh, I have a full time job at Bloomberg now. :)</p>]]></content:encoded></item><item><title>Catching up</title><link>https://pradyunsg.me/blog/2020/12/08/catchup/</link><pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2020/12/08/catchup/</guid><description>&lt;blockquote>
-&lt;p>I&amp;rsquo;m actually &lt;em>really good&lt;/em> at procrastinating things when I&amp;rsquo;m uncomfortable.&lt;br>
-- me, back in Feb 2020&lt;/p>
-&lt;/blockquote></description><content:encoded><![CDATA[<blockquote>
+<p>Oh, I have a full time job at Bloomberg now. :)</p>]]></content:encoded></item><item><title>Catching up</title><link>https://pradyunsg.me/blog/2020/12/08/catchup/</link><pubDate>Tue, 08 Dec 2020 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2020/12/08/catchup/</guid><description>&lt;blockquote&gt;
+&lt;p&gt;I&amp;rsquo;m actually &lt;em&gt;really good&lt;/em&gt; at procrastinating things when I&amp;rsquo;m uncomfortable.&lt;br&gt;
+- me, back in Feb 2020&lt;/p&gt;
+&lt;/blockquote&gt;</description><content:encoded><![CDATA[<blockquote>
 <p>I&rsquo;m actually <em>really good</em> at procrastinating things when I&rsquo;m uncomfortable.<br>
 - me, back in Feb 2020</p>
 </blockquote>
@@ -2390,9 +2431,10 @@ constructively.</li>
 <h2 id="i-went-to-san-francisco">I went to San Francisco</h2>
 <p><a href="https://chanzuckerberg.com/science/meetings/#essential-open-source-software-for-science-kickoff-meeting">CZI conducted an EOSS kickoff meeting</a>, bringing lots of members of their first cohort of 32 EOSS grantees into one room. This included me!</p>
 <p>It was a really well conducted event, and the room was filled with brilliant people. I felt like a squirrel in a room full of elephants.</p>
-<p>This happened <em>right before</em> COVID-19 was deemed serious enough to care about it. It was the last trip I had in the before-times, and it was definitely a good one.</p>]]></content:encoded></item><item><title>Testing the next-gen pip dependency resolver</title><link>https://pradyunsg.me/blog/2020/03/27/pip-resolver-testing/</link><pubDate>Fri, 27 Mar 2020 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2020/03/27/pip-resolver-testing/</guid><description>This is an attempt to summarize the broader software architecture around dependency resolution in pip and how testing is being done around this area.
-The motivation behind writing this, is to make sure all the developers working on this project are on the same page, and to have a written record about the state of affairs.
-Architecture The &amp;ldquo;legacy&amp;rdquo; resolver in pip, is implemented as part of pip&amp;rsquo;s codebase and has been a part of it for many years.</description><content:encoded><![CDATA[<p>This is an attempt to summarize the broader software architecture around dependency resolution in pip and how testing is being done around this area.</p>
+<p>This happened <em>right before</em> COVID-19 was deemed serious enough to care about it. It was the last trip I had in the before-times, and it was definitely a good one.</p>]]></content:encoded></item><item><title>Testing the next-gen pip dependency resolver</title><link>https://pradyunsg.me/blog/2020/03/27/pip-resolver-testing/</link><pubDate>Fri, 27 Mar 2020 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2020/03/27/pip-resolver-testing/</guid><description>&lt;p&gt;This is an attempt to summarize the broader software architecture around dependency resolution in pip and how testing is being done around this area.&lt;/p&gt;
+&lt;p&gt;The motivation behind writing this, is to make sure all the developers working on this project are on the same page, and to have a written record about the state of affairs.&lt;/p&gt;
+&lt;h2 id="architecture"&gt;Architecture&lt;/h2&gt;
+&lt;p&gt;The &amp;ldquo;legacy&amp;rdquo; resolver in pip, is implemented as part of pip&amp;rsquo;s codebase and has been a part of it for many years. It&amp;rsquo;s very tightly coupled with the existing code, isn&amp;rsquo;t easy to work with and has severe backward compatibility concerns with modifying directly &amp;ndash; which is why we&amp;rsquo;re implementing a separate &amp;ldquo;new&amp;rdquo; resolver in this project, instead of trying to improve the existing one.&lt;/p&gt;</description><content:encoded><![CDATA[<p>This is an attempt to summarize the broader software architecture around dependency resolution in pip and how testing is being done around this area.</p>
 <p>The motivation behind writing this, is to make sure all the developers working on this project are on the same page, and to have a written record about the state of affairs.</p>
 <h2 id="architecture">Architecture</h2>
 <p>The &ldquo;legacy&rdquo; resolver in pip, is implemented as part of pip&rsquo;s codebase and has been a part of it for many years. It&rsquo;s very tightly coupled with the existing code, isn&rsquo;t easy to work with and has severe backward compatibility concerns with modifying directly &ndash; which is why we&rsquo;re implementing a separate &ldquo;new&rdquo; resolver in this project, instead of trying to improve the existing one.</p>
@@ -2430,9 +2472,26 @@ YAML test &ldquo;harness&rdquo;: <a href="https://github.com/pypa/pip/blob/maste
 <hr>
 <p>Thanks to Paul Moore and Tzu-Ping for help in reviewing and writing this post,
 as well as Sumana Harihareswara for suggesting to put this up on my blog!</p>
-]]></content:encoded></item><item><title>OSS Work update #8</title><link>https://pradyunsg.me/blog/2020/02/19/oss-update-8/</link><pubDate>Wed, 19 Feb 2020 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2020/02/19/oss-update-8/</guid><description>I&amp;rsquo;m trying to post these roughly once a month. Here&amp;rsquo;s the January post.
-I am working on open source projects, as part of an internship at FOSSEE and as a part of grant-funded work on pip&amp;rsquo;s dependency resolver.
-Work I did (Jan 6 - Feb 5) Technical Co-worked with another developer, in person, for 1 week, on pip! Triaged pip&amp;rsquo;s issue tracker (a lot). Spend some time improving pip&amp;rsquo;s test suite infrastructure.</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month. <a href="/blog/2020/01/10/oss-update-7/">Here&rsquo;s the January post</a>.</p>
+]]></content:encoded></item><item><title>OSS Work update #8</title><link>https://pradyunsg.me/blog/2020/02/19/oss-update-8/</link><pubDate>Wed, 19 Feb 2020 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2020/02/19/oss-update-8/</guid><description>&lt;p&gt;I&amp;rsquo;m trying to post these roughly once a month. &lt;a href="https://pradyunsg.me/blog/2020/01/10/oss-update-7/"&gt;Here&amp;rsquo;s the January post&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I am working on open source projects, as part of an internship at &lt;a href="https://fossee.in/"&gt;FOSSEE&lt;/a&gt; and as a part of &lt;a href="https://wiki.python.org/psf/Pip2020DonorFundedRoadmap"&gt;grant-funded work on pip&amp;rsquo;s dependency resolver&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id="work-i-did-jan-6---feb-5"&gt;Work I did (Jan 6 - Feb 5)&lt;/h2&gt;
+&lt;h3 id="technical"&gt;Technical&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Co-worked with another developer, in person, for 1 week, on pip!&lt;/li&gt;
+&lt;li&gt;Triaged pip&amp;rsquo;s issue tracker (a lot).&lt;/li&gt;
+&lt;li&gt;Spend some time improving pip&amp;rsquo;s test suite infrastructure.&lt;/li&gt;
+&lt;li&gt;Investigated Python 2 usage, to identify anomalies.&lt;/li&gt;
+&lt;li&gt;Helped with virtualenv 20.0 release (kinda!).&lt;/li&gt;
+&lt;li&gt;Invested effort to improve pip&amp;rsquo;s test suite&lt;/li&gt;
+&lt;li&gt;Helped aggregate test cases for pip&amp;rsquo;s next generation resolver.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="communication"&gt;Communication&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Managed the pip 20.0 release fiasco.&lt;/li&gt;
+&lt;li&gt;Helped the UX folks get started with working on pip.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="additional-notes-on-challenges"&gt;Additional notes on challenges&lt;/h2&gt;
+&lt;p&gt;January has been a very productive month.&lt;/p&gt;</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month. <a href="/blog/2020/01/10/oss-update-7/">Here&rsquo;s the January post</a>.</p>
 <p>I am working on open source projects, as part of an internship at <a href="https://fossee.in/">FOSSEE</a> and as a part of <a href="https://wiki.python.org/psf/Pip2020DonorFundedRoadmap">grant-funded work on pip&rsquo;s dependency resolver</a>.</p>
 <h2 id="work-i-did-jan-6---feb-5">Work I did (Jan 6 - Feb 5)</h2>
 <h3 id="technical">Technical</h3>
@@ -2482,9 +2541,58 @@ go live on the day they&rsquo;re supposed to.</p>
 <li>talk with your company about becoming a PSF sponsor. The <a href="https://wiki.python.org/psf/Fundable%20Packaging%20Improvements">Fundable Packaging Improvements page</a> lists fairly well-scoped projects that would happen much faster if we get funding to achieve them.</li>
 <li>Have an <a href="https://python.zulipchat.com/#narrow/stream/218659-pip-development/topic/Talk.20to.20Bernard!">interview with our UX expert</a>, who is working to improve usability of Python Packaging tooling.</li>
 </ul>
-]]></content:encoded></item><item><title>OSS Work update #7</title><link>https://pradyunsg.me/blog/2020/01/10/oss-update-7/</link><pubDate>Fri, 10 Jan 2020 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2020/01/10/oss-update-7/</guid><description>I&amp;rsquo;m trying to post these roughly once a month. Here&amp;rsquo;s the December post.
-I am working on open source projects, as part of an internship at FOSSEE and as a part of grant-funded work on pip&amp;rsquo;s dependency resolver.
-Work I did (Dec 11 - Jan 5) Technical Wrore and adopted vendoring for use in pip. Initiated conversation for pipenv to switch to it too. Made progress toward TOML 1.0, via useful clarifications in the specification Continued tackling pip’s build logic refactoring.</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month. <a href="/blog/2019/12/11/oss-update-6/">Here&rsquo;s the December post</a>.</p>
+]]></content:encoded></item><item><title>OSS Work update #7</title><link>https://pradyunsg.me/blog/2020/01/10/oss-update-7/</link><pubDate>Fri, 10 Jan 2020 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2020/01/10/oss-update-7/</guid><description>&lt;p&gt;I&amp;rsquo;m trying to post these roughly once a month. &lt;a href="https://pradyunsg.me/blog/2019/12/11/oss-update-6/"&gt;Here&amp;rsquo;s the December post&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I am working on open source projects, as part of an internship at &lt;a href="https://fossee.in/"&gt;FOSSEE&lt;/a&gt; and as a part of grant-funded work on pip&amp;rsquo;s dependency resolver.&lt;/p&gt;
+&lt;h2 id="work-i-did-dec-11---jan-5"&gt;Work I did (Dec 11 - Jan 5)&lt;/h2&gt;
+&lt;h3 id="technical"&gt;Technical&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Wrore and adopted &lt;code&gt;vendoring&lt;/code&gt; for use in pip.
+&lt;ul&gt;
+&lt;li&gt;Initiated conversation for pipenv to switch to it too.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Made progress toward TOML 1.0, via useful clarifications in the specification&lt;/li&gt;
+&lt;li&gt;Continued tackling pip’s build logic refactoring.
+&lt;ul&gt;
+&lt;li&gt;Refactoring of pip&amp;rsquo;s wheel building logic.&lt;/li&gt;
+&lt;li&gt;Designing a &amp;ldquo;package builder&amp;rdquo; library &amp;ndash; figuring out what Python Packaging&amp;rsquo;s &amp;ldquo;build&amp;rdquo; step should look like to end users.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Started reviewing virtualenv’s rewrite.&lt;/li&gt;
+&lt;li&gt;PR Reviews: ~25, including improvements to pip’s installation logic, better wheel-related error messages and more.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="communication"&gt;Communication&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;A few release manager-y things:
+&lt;ul&gt;
+&lt;li&gt;(I&amp;rsquo;ll be the release manager for pip 20.0)&lt;/li&gt;
+&lt;li&gt;Identified tasks that need to happen prior to pip&amp;rsquo;s release.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Discussions on discuss.python.org:
+&lt;ul&gt;
+&lt;li&gt;Giving pip an API
+&lt;a href="https://discuss.python.org/t/2833"&gt;https://discuss.python.org/t/2833&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Python Packaging in GSoC 2020
+&lt;a href="https://discuss.python.org/t/2830"&gt;https://discuss.python.org/t/2830&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;PyPA governance PEP
+&lt;a href="https://discuss.python.org/t/2619"&gt;https://discuss.python.org/t/2619&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Discussions on issue trackers:
+&lt;ul&gt;
+&lt;li&gt;New Resolver: technical choices
+&lt;a href="https://github.com/pypa/pip/issues/7406"&gt;https://github.com/pypa/pip/issues/7406&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Switch to a dedicated tool for vendoring pip&amp;rsquo;s dependencies
+&lt;a href="https://github.com/pypa/pip/pull/7485"&gt;https://github.com/pypa/pip/pull/7485&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Provided helper/starter for pip&amp;rsquo;s UX review work.&lt;/li&gt;
+&lt;li&gt;Onboarded a new triager to pip: Welcome Stéphane Bidoul! :)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="additional-notes-on-challenges"&gt;Additional notes on challenges&lt;/h2&gt;
+&lt;p&gt;December was fairly productive, until the end of the month, when the holidays
+came in and I also wasn&amp;rsquo;t in the best of health.&lt;/p&gt;</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month. <a href="/blog/2019/12/11/oss-update-6/">Here&rsquo;s the December post</a>.</p>
 <p>I am working on open source projects, as part of an internship at <a href="https://fossee.in/">FOSSEE</a> and as a part of grant-funded work on pip&rsquo;s dependency resolver.</p>
 <h2 id="work-i-did-dec-11---jan-5">Work I did (Dec 11 - Jan 5)</h2>
 <h3 id="technical">Technical</h3>
@@ -2562,10 +2670,32 @@ came in and I also wasn&rsquo;t in the best of health.</p>
 <li>provide test cases where the latest released version of pip (19.3.1, at the time of writing) fails to resolve dependencies properly (on <a href="https://github.com/pradyunsg/zazo/issues">zazo&rsquo;s issue tracker</a>). They will help us design and test the new resolver.</li>
 <li>talk with your company about becoming a PSF sponsor. The <a href="https://wiki.python.org/psf/Fundable%20Packaging%20Improvements">Fundable Packaging Improvements page</a> lists fairly well-scoped projects that would happen much faster if we get funding to achieve them.</li>
 </ul>
-]]></content:encoded></item><item><title>OSS Work update #6</title><link>https://pradyunsg.me/blog/2019/12/11/oss-update-6/</link><pubDate>Wed, 11 Dec 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/12/11/oss-update-6/</guid><description>I&amp;rsquo;m trying to post these roughly once a month. Here&amp;rsquo;s the November post.
-This update has been a little late, since I have been traveling and recovering from an illness.
-I also have good news: I will be working on open source projects related to Python Packaging (full time) starting early Dec 2019 till May/Jun 2020.
-Work I did (Nov 6 - Dec 10) Technical Worked to separate pip&amp;rsquo;s dependency vendoring logic from rest of pip This would enable other projects that use similar mechanisms (eg.</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month. <a href="/blog/2019/11/06/oss-update-5/">Here&rsquo;s the November post</a>.</p>
+]]></content:encoded></item><item><title>OSS Work update #6</title><link>https://pradyunsg.me/blog/2019/12/11/oss-update-6/</link><pubDate>Wed, 11 Dec 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/12/11/oss-update-6/</guid><description>&lt;p&gt;I&amp;rsquo;m trying to post these roughly once a month. &lt;a href="https://pradyunsg.me/blog/2019/11/06/oss-update-5/"&gt;Here&amp;rsquo;s the November post&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This update has been a little late, since I have been traveling and recovering from an illness.&lt;/p&gt;
+&lt;p&gt;I also have good news: I will be working on open source projects related to Python Packaging (full time) starting early Dec 2019 till May/Jun 2020.&lt;/p&gt;
+&lt;h2 id="work-i-did-nov-6---dec-10"&gt;Work I did (Nov 6 - Dec 10)&lt;/h2&gt;
+&lt;h3 id="technical"&gt;Technical&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Worked to separate pip&amp;rsquo;s dependency vendoring logic from rest of pip
+&lt;ul&gt;
+&lt;li&gt;This would enable other projects that use similar mechanisms (eg. pipenv)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Made some progress for preparing for TOML&amp;rsquo;s 1.0 release&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="communication"&gt;Communication&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Finalized my internship, and got the necessary approvals at college&lt;/li&gt;
+&lt;li&gt;PyConf Hyderabad 2019! (yay!)
+&lt;ul&gt;
+&lt;li&gt;I gave a talk: Rethinking Python Packaging &amp;ndash; a thought experiment.&lt;/li&gt;
+&lt;li&gt;I ran a sprint! ~5 new contributors worked on pip!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Initiated a [discussion for Python Packaging &lt;a href="https://discuss.python.org/t/2603"&gt;at PyCon US&lt;/a&gt; and &lt;a href="https://discuss.python.org/t/2830"&gt;in GSoC 2020&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="additional-notes-on-challenges"&gt;Additional notes on challenges&lt;/h2&gt;
+&lt;p&gt;As I&amp;rsquo;d anticipated, November has been low productivity. I didn&amp;rsquo;t have much time to put toward working on &amp;ldquo;Open Source stuff&amp;rdquo;, due to various other commitments &amp;ndash; broadly: exam preparation, attending a family wedding and talk preparation for PyConf Hyderabad.&lt;/p&gt;</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month. <a href="/blog/2019/11/06/oss-update-5/">Here&rsquo;s the November post</a>.</p>
 <p>This update has been a little late, since I have been traveling and recovering from an illness.</p>
 <p>I also have good news: I will be working on open source projects related to Python Packaging (full time) starting early Dec 2019 till May/Jun 2020.</p>
 <h2 id="work-i-did-nov-6---dec-10">Work I did (Nov 6 - Dec 10)</h2>
@@ -2622,9 +2752,20 @@ things moving while I was away.</li>
 <li>provide test cases where the latest released version of pip (19.3.1, at the time of writing) fails to resolve dependencies properly (on <a href="https://github.com/pradyunsg/zazo/issues">zazo&rsquo;s issue tracker</a>). They will help us design and test the new resolver.</li>
 <li>help <a href="https://pip.pypa.io/en/latest/development/issue-triage/">triage pip&rsquo;s issue tracker</a>!</li>
 </ul>
-]]></content:encoded></item><item><title>OSS Work update #5</title><link>https://pradyunsg.me/blog/2019/11/06/oss-update-5/</link><pubDate>Wed, 06 Nov 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/11/06/oss-update-5/</guid><description>I&amp;rsquo;m trying to post these roughly once a month. Here&amp;rsquo;s the October post.
-Work I did (Oct 6 - Nov 5) Technical
-Wrapped up refactoring metadata generation within pip. (yay!) Started refactoring wheel building logic within pip. A few minor fixes/cleanup within pip. Helped out with pip 19.3&amp;rsquo;s release. Significantly simplified pip&amp;rsquo;s release processes. Reviewed &amp;gt;50 PRs. Fixed a &amp;ldquo;major&amp;rdquo; regression in pip&amp;rsquo;s detection of virtual environments. Got some work done, progressing closer to TOML 1.</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month. <a href="/blog/2019/10/06/oss-update-4/">Here&rsquo;s the October post</a>.</p>
+]]></content:encoded></item><item><title>OSS Work update #5</title><link>https://pradyunsg.me/blog/2019/11/06/oss-update-5/</link><pubDate>Wed, 06 Nov 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/11/06/oss-update-5/</guid><description>&lt;p&gt;I&amp;rsquo;m trying to post these roughly once a month. &lt;a href="https://pradyunsg.me/blog/2019/10/06/oss-update-4/"&gt;Here&amp;rsquo;s the October post&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id="work-i-did-oct-6---nov-5"&gt;Work I did (Oct 6 - Nov 5)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Technical&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Wrapped up refactoring metadata generation within pip. (yay!)&lt;/li&gt;
+&lt;li&gt;Started refactoring wheel building logic within pip.&lt;/li&gt;
+&lt;li&gt;A few minor fixes/cleanup within pip.&lt;/li&gt;
+&lt;li&gt;Helped out with pip 19.3&amp;rsquo;s release.&lt;/li&gt;
+&lt;li&gt;Significantly simplified pip&amp;rsquo;s release processes.&lt;/li&gt;
+&lt;li&gt;Reviewed &amp;gt;50 PRs.&lt;/li&gt;
+&lt;li&gt;Fixed a &amp;ldquo;major&amp;rdquo; regression in pip&amp;rsquo;s detection of virtual environments.&lt;/li&gt;
+&lt;li&gt;Got some work done, progressing closer to TOML 1.0.0.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Communication&lt;/strong&gt;&lt;/p&gt;</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month. <a href="/blog/2019/10/06/oss-update-4/">Here&rsquo;s the October post</a>.</p>
 <h2 id="work-i-did-oct-6---nov-5">Work I did (Oct 6 - Nov 5)</h2>
 <p><strong>Technical</strong></p>
 <ul>
@@ -2686,8 +2827,8 @@ workload to drain me by the end of the day. :)</p>
 <li>volunteer to <a href="https://github.com/pypa/integration-test/issues">help us build robust testing infrastructure</a></li>
 <li>triage pip bugs! Around 10% of pip&rsquo;s issues have not been triaged yet and many others need of action/review.</li>
 </ul>
-]]></content:encoded></item><item><title>What's up with bugs.python.org?</title><link>https://pradyunsg.me/blog/2019/11/02/state-of-bpo/</link><pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/11/02/state-of-bpo/</guid><description>bugs.python.org is the issue tracker for CPython. &amp;ldquo;bpo&amp;rdquo;, as it is commonly referenced, is where implementation bugs, smaller feature requests, and documentation issues are tracked as part of Python&amp;rsquo;s development.
-PEP 581 proposes sunsetting bugs.python.org, in favor of GitHub issues. &amp;ldquo;Why not focus on improving Roundup / bpo?&amp;rdquo; section made me wonder: What is needed to improve Roundup / bpo? This blog post is my attempt at summarizing the state of bpo and how it could be improving in the future, based on a discussion with folks maintaining bpo.</description><content:encoded><![CDATA[<p>bugs.python.org is the issue tracker for CPython. &ldquo;bpo&rdquo;, as it is commonly referenced, is where implementation bugs, smaller feature requests, and documentation issues are tracked as part of Python&rsquo;s development.</p>
+]]></content:encoded></item><item><title>What's up with bugs.python.org?</title><link>https://pradyunsg.me/blog/2019/11/02/state-of-bpo/</link><pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/11/02/state-of-bpo/</guid><description>&lt;p&gt;bugs.python.org is the issue tracker for CPython. &amp;ldquo;bpo&amp;rdquo;, as it is commonly referenced, is where implementation bugs, smaller feature requests, and documentation issues are tracked as part of Python&amp;rsquo;s development.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.python.org/dev/peps/pep-0581/"&gt;PEP 581&lt;/a&gt; proposes sunsetting bugs.python.org, in favor of GitHub issues. &amp;ldquo;Why not focus on improving Roundup / bpo?&amp;rdquo; section made me wonder: What is needed to improve Roundup / bpo? This blog post is my attempt at summarizing the state of bpo and how it could be improving in the future, based on a discussion with folks maintaining bpo.&lt;/p&gt;</description><content:encoded><![CDATA[<p>bugs.python.org is the issue tracker for CPython. &ldquo;bpo&rdquo;, as it is commonly referenced, is where implementation bugs, smaller feature requests, and documentation issues are tracked as part of Python&rsquo;s development.</p>
 <p><a href="https://www.python.org/dev/peps/pep-0581/">PEP 581</a> proposes sunsetting bugs.python.org, in favor of GitHub issues. &ldquo;Why not focus on improving Roundup / bpo?&rdquo; section made me wonder: What is needed to improve Roundup / bpo? This blog post is my attempt at summarizing the state of bpo and how it could be improving in the future, based on a discussion with folks maintaining bpo.</p>
 <p>I won&rsquo;t go into whether PEP 581 or PEP 595 is a better idea &ndash; that&rsquo;s something for the CPython core developers to decide on.</p>
 <h2 id="what-is-that-tracker">What is that tracker?</h2>
@@ -2729,9 +2870,25 @@ PEP 581 proposes sunsetting bugs.python.org, in favor of GitHub issues. &amp;ldq
 </li>
 </ol>
 </div>
-]]></content:encoded></item><item><title>OSS Work update #4</title><link>https://pradyunsg.me/blog/2019/10/06/oss-update-4/</link><pubDate>Sun, 06 Oct 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/10/06/oss-update-4/</guid><description>I&amp;rsquo;m trying to post these roughly once a month. Here&amp;rsquo;s the September post.
-Work I did (Sept 6 - Oct 5) Technical
-Figured out a rough structure for approaching pip&amp;rsquo;s build logic refactor. Discussed and sketched a rough &amp;ldquo;goal&amp;rdquo; model for pip&amp;rsquo;s build logic, to adopt after initial cleanups and decoupling refactor work. Made significant progress on refactoring pip&amp;rsquo;s metadata handling and generation logic. (yay!) Identified a quirk in how pip&amp;rsquo;s current resolution logic, which makes it conceptually intertwined with pip&amp;rsquo;s index interaction logic (sigh).</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month. <a href="/blog/2019/09/06/oss-update-3/">Here&rsquo;s the September post</a>.</p>
+]]></content:encoded></item><item><title>OSS Work update #4</title><link>https://pradyunsg.me/blog/2019/10/06/oss-update-4/</link><pubDate>Sun, 06 Oct 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/10/06/oss-update-4/</guid><description>&lt;p&gt;I&amp;rsquo;m trying to post these roughly once a month. &lt;a href="https://pradyunsg.me/blog/2019/09/06/oss-update-3/"&gt;Here&amp;rsquo;s the September post&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id="work-i-did-sept-6---oct-5"&gt;Work I did (Sept 6 - Oct 5)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Technical&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Figured out a rough structure for approaching pip&amp;rsquo;s build logic refactor.&lt;/li&gt;
+&lt;li&gt;Discussed and sketched a rough &amp;ldquo;goal&amp;rdquo; model for pip&amp;rsquo;s build logic, to adopt after initial cleanups and decoupling refactor work.&lt;/li&gt;
+&lt;li&gt;Made significant progress on refactoring pip&amp;rsquo;s metadata handling and generation logic. (yay!)&lt;/li&gt;
+&lt;li&gt;Identified a quirk in how pip&amp;rsquo;s current resolution logic, which makes it conceptually intertwined with pip&amp;rsquo;s index interaction logic (&lt;em&gt;sigh&lt;/em&gt;).
+&lt;ul&gt;
+&lt;li&gt;out-of-scope for the ongoing &amp;ldquo;build logic refactor&amp;rdquo;, but we do need to resolve this at some point.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Revamped pip&amp;rsquo;s linting pipeline to be&amp;hellip; simpler (i.e. better).&lt;/li&gt;
+&lt;li&gt;Multiple miscellaneous fixes/cleanup to pip.&lt;/li&gt;
+&lt;li&gt;A lots of PRs reviewed (&amp;gt;80).&lt;/li&gt;
+&lt;li&gt;Reviewed and merged ABNF-related PRs, for TOML.&lt;/li&gt;
+&lt;li&gt;Sunk a good day to debugging 500s on GitHub (it was due to emojis). :(&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Communication&lt;/strong&gt;&lt;/p&gt;</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month. <a href="/blog/2019/09/06/oss-update-3/">Here&rsquo;s the September post</a>.</p>
 <h2 id="work-i-did-sept-6---oct-5">Work I did (Sept 6 - Oct 5)</h2>
 <p><strong>Technical</strong></p>
 <ul>
@@ -2799,9 +2956,17 @@ Figured out a rough structure for approaching pip&amp;rsquo;s build logic refact
 <li>help improve our <a href="https://pip.pypa.io/en/latest/development/issue-triage/">&ldquo;how to triage pip bugs&rdquo; guide</a>.</li>
 <li>volunteer to <a href="https://github.com/pypa/integration-test/issues">help us build robust testing infrastructure</a></li>
 </ul>
-]]></content:encoded></item><item><title>OSS Work update #3</title><link>https://pradyunsg.me/blog/2019/09/06/oss-update-3/</link><pubDate>Fri, 06 Sep 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/09/06/oss-update-3/</guid><description>I&amp;rsquo;m trying to post these roughly once a month. Here&amp;rsquo;s the August post which includes the work I was planning to do this month.
-Work I did (Aug 6 - Sept 5) Technical
-Began working on splitting the code for handling of the two kinds of source distributions. Wrap up pip 19.2, with pip 19.2.3 release, unblocking Python 3.8&amp;rsquo;s final beta. Hooray! Fix documentation builds for pip, on ReadTheDocs &amp;ndash; this took way longer to figure out than I&amp;rsquo;d expected.</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month. <a href="/blog/2019/08/06/pip-update-2/">Here&rsquo;s the August post</a> which includes the work I was planning to do this month.</p>
+]]></content:encoded></item><item><title>OSS Work update #3</title><link>https://pradyunsg.me/blog/2019/09/06/oss-update-3/</link><pubDate>Fri, 06 Sep 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/09/06/oss-update-3/</guid><description>&lt;p&gt;I&amp;rsquo;m trying to post these roughly once a month. &lt;a href="https://pradyunsg.me/blog/2019/08/06/pip-update-2/"&gt;Here&amp;rsquo;s the August post&lt;/a&gt; which includes the work I was planning to do this month.&lt;/p&gt;
+&lt;h2 id="work-i-did-aug-6---sept-5"&gt;Work I did (Aug 6 - Sept 5)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Technical&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Began working on splitting the code for handling of the two kinds of source distributions.&lt;/li&gt;
+&lt;li&gt;Wrap up pip 19.2, with &lt;a href="https://github.com/pypa/pip/issues/6630"&gt;pip 19.2.3 release&lt;/a&gt;, unblocking Python 3.8&amp;rsquo;s final beta. Hooray!&lt;/li&gt;
+&lt;li&gt;Fix documentation builds for pip, &lt;a href="https://pip.pypa.io/"&gt;on ReadTheDocs&lt;/a&gt; &amp;ndash; this took way longer to figure out than I&amp;rsquo;d expected.&lt;/li&gt;
+&lt;li&gt;Multiple miscellaneous fixes that I could do in gaps between classes.&lt;/li&gt;
+&lt;li&gt;Lots of PRs reviewed (30+)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In August, I wanted to get further on separating &amp;ldquo;prepare distribution&amp;rdquo; logic from the resolution logic and on turning distribution-type-specific build code into dedicated modules within the new &amp;ldquo;distributions&amp;rdquo; sub-package in pip. I didn&amp;rsquo;t get there.&lt;/p&gt;</description><content:encoded><![CDATA[<p>I&rsquo;m trying to post these roughly once a month. <a href="/blog/2019/08/06/pip-update-2/">Here&rsquo;s the August post</a> which includes the work I was planning to do this month.</p>
 <h2 id="work-i-did-aug-6---sept-5">Work I did (Aug 6 - Sept 5)</h2>
 <p><strong>Technical</strong></p>
 <ul>
@@ -2848,12 +3013,33 @@ In the time that I could make, the urgency of the pip release, broken documentat
 <p>Also, if you care about how Python Packaging is governed, please respond to my <a href="https://discuss.python.org/t/pypa-governance-a-status-quo-model/2221">PyPA governance proposal</a>.</p>
 <p>Other than that, I have <a href="https://pradyunsg.me/blog/2019/06/23/pip-update/#help-us">the same list as in June</a>. Thanks!</p>
 <p>Also, thanks to Sumana Harihareswara for help in editing.</p>
-]]></content:encoded></item><item><title>OSS Work update #2</title><link>https://pradyunsg.me/blog/2019/08/06/oss-update-2/</link><pubDate>Tue, 06 Aug 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/08/06/oss-update-2/</guid><description>I&amp;rsquo;m going to try to post these roughly once a month. Here&amp;rsquo;s the late June post.
-Work I was planning to do Technical
-Clearly determine what parts of the build system are intertwined with pip&amp;rsquo;s resolution logic. Communication
-Get confirmation from my college about required dates/duration of internships in final semester. Work I did (24 June - 6 Aug) Technical
-Identified portion of build system intertwined with pip&amp;rsquo;s resolver:
-&amp;ldquo;Get abstract distribution&amp;rdquo;: building installable artifacts is intertwined with pip&amp;rsquo;s resolver.</description><content:encoded><![CDATA[<p>I&rsquo;m going to try to post these roughly once a month. <a href="/blog/2019/06/23/pip-update/">Here&rsquo;s the late June post.</a></p>
+]]></content:encoded></item><item><title>OSS Work update #2</title><link>https://pradyunsg.me/blog/2019/08/06/oss-update-2/</link><pubDate>Tue, 06 Aug 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/08/06/oss-update-2/</guid><description>&lt;p&gt;I&amp;rsquo;m going to try to post these roughly once a month. &lt;a href="https://pradyunsg.me/blog/2019/06/23/pip-update/"&gt;Here&amp;rsquo;s the late June post.&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="work-i-was-planning-to-do"&gt;Work I was planning to do&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Technical&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Clearly determine what parts of the build system are intertwined with pip&amp;rsquo;s resolution logic.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Communication&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Get confirmation from my college about required dates/duration of internships in final semester.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="work-i-did-24-june---6-aug"&gt;Work I did (24 June - 6 Aug)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Technical&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Identified portion of build system intertwined with pip&amp;rsquo;s resolver:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&amp;ldquo;Get abstract distribution&amp;rdquo;:
+&lt;ul&gt;
+&lt;li&gt;building installable artifacts is intertwined with pip&amp;rsquo;s resolver.&lt;/li&gt;
+&lt;li&gt;Specifically, the resolver currently passes information about how it would handle a distribution, to the &amp;ldquo;preparer&amp;rdquo; that fetches and builds it.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Marker evaluation and handling is done by &amp;ldquo;RequirementSet&amp;rdquo; and not the resolver.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Started moving code for pip&amp;rsquo;s handling of installable artifacts into a &lt;code&gt;pip._internal.distributions&lt;/code&gt; package.&lt;/p&gt;</description><content:encoded><![CDATA[<p>I&rsquo;m going to try to post these roughly once a month. <a href="/blog/2019/06/23/pip-update/">Here&rsquo;s the late June post.</a></p>
 <h2 id="work-i-was-planning-to-do">Work I was planning to do</h2>
 <p><strong>Technical</strong></p>
 <ul>
@@ -2909,9 +3095,10 @@ Identified portion of build system intertwined with pip&amp;rsquo;s resolver:
 <h2 id="help-us">Help us</h2>
 <p>I have <a href="https://pradyunsg.me/blog/2019/06/23/pip-update/#help-us">the same list as last time</a>. Thanks!</p>
 <p>Also, thanks to Sumana Harihareswara for adapting this from a separate update I&rsquo;d shared.</p>
-]]></content:encoded></item><item><title>What's happening with that pip dependency resolver?</title><link>https://pradyunsg.me/blog/2019/06/23/oss-update-1/</link><pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/06/23/oss-update-1/</guid><description>I&amp;rsquo;m glad you asked.
-What&amp;rsquo;s up? Over the past few months, I&amp;rsquo;ve worked on a prototype for a resolver in pip, spent some time planning what rolling out a new dependency resolver in pip might look like, and continue to work on pip&amp;rsquo;s build logic to decouple it from the dependency resolution logic.
-The prototype has helped me better understand the relationships and contracts between various portions of the codebase. This understanding has led me to conclude that it is a worthwhile investment to better decouple the build logic from the resolution logic, then introduce the abstractions defined in resolvelib/zazo, and then proceed to adopting better dependency resolution.</description><content:encoded><![CDATA[<p>I&rsquo;m glad you asked.</p>
+]]></content:encoded></item><item><title>What's happening with that pip dependency resolver?</title><link>https://pradyunsg.me/blog/2019/06/23/oss-update-1/</link><pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/06/23/oss-update-1/</guid><description>&lt;p&gt;I&amp;rsquo;m glad you asked.&lt;/p&gt;
+&lt;h2 id="whats-up"&gt;What&amp;rsquo;s up?&lt;/h2&gt;
+&lt;p&gt;Over the past few months, I&amp;rsquo;ve worked on &lt;a href="https://github.com/pradyunsg/pip/tree/resolver/make-it-inside"&gt;a prototype for a resolver in pip&lt;/a&gt;, spent some time &lt;a href="https://github.com/pypa/pip/issues/6536"&gt;planning&lt;/a&gt; what rolling out a new dependency resolver in pip might look like, and continue to &lt;a href="https://github.com/pypa/pip/projects/3"&gt;work on pip&amp;rsquo;s build logic&lt;/a&gt; to decouple it from the dependency resolution logic.&lt;/p&gt;
+&lt;p&gt;The prototype has helped me better understand the relationships and contracts between various portions of the codebase. This understanding has led me to conclude that it is a worthwhile investment to better decouple the build logic from the resolution logic, &lt;em&gt;then&lt;/em&gt; introduce the abstractions defined in &lt;a href="https://pypi.org/project/resolvelib/"&gt;resolvelib&lt;/a&gt;/&lt;a href="https://github.com/pradyunsg/zazo/"&gt;zazo&lt;/a&gt;, and &lt;em&gt;then&lt;/em&gt; proceed to adopting better dependency resolution.&lt;/p&gt;</description><content:encoded><![CDATA[<p>I&rsquo;m glad you asked.</p>
 <h2 id="whats-up">What&rsquo;s up?</h2>
 <p>Over the past few months, I&rsquo;ve worked on <a href="https://github.com/pradyunsg/pip/tree/resolver/make-it-inside">a prototype for a resolver in pip</a>, spent some time <a href="https://github.com/pypa/pip/issues/6536">planning</a> what rolling out a new dependency resolver in pip might look like, and continue to <a href="https://github.com/pypa/pip/projects/3">work on pip&rsquo;s build logic</a> to decouple it from the dependency resolution logic.</p>
 <p>The prototype has helped me better understand the relationships and contracts between various portions of the codebase. This understanding has led me to conclude that it is a worthwhile investment to better decouple the build logic from the resolution logic, <em>then</em> introduce the abstractions defined in <a href="https://pypi.org/project/resolvelib/">resolvelib</a>/<a href="https://github.com/pradyunsg/zazo/">zazo</a>, and <em>then</em> proceed to adopting better dependency resolution.</p>
@@ -2941,10 +3128,16 @@ The prototype has helped me better understand the relationships and contracts be
 </li>
 </ul>
 <p>Thanks to Sumana Harihareswara for (a lot of) help in writing this, and Dan Ryan for reviewing the content!</p>
-]]></content:encoded></item><item><title>Is this thing on?</title><link>https://pradyunsg.me/blog/2019/06/22/is-this-thing-on/</link><pubDate>Sat, 22 Jun 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/06/22/is-this-thing-on/</guid><description>*tap* *tap*
-Seems like this is reaching you.
-Hello there! I&amp;rsquo;m Pradyun. You probably knew that already. Thanks for spending the time to reach this random piece of writing by me.
-Acknowledgements This blog used to be built using Jekyll and the theme was based off Pixyll. The theme was heavily restyled to be more in line with how I wanted my site to look like. I ended up making changes to almost every element of the design, though the layout and colours were solid in Pixyll.</description><content:encoded><![CDATA[<p>*tap* *tap*</p>
+]]></content:encoded></item><item><title>Is this thing on?</title><link>https://pradyunsg.me/blog/2019/06/22/is-this-thing-on/</link><pubDate>Sat, 22 Jun 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/06/22/is-this-thing-on/</guid><description>&lt;p&gt;*tap* *tap*&lt;/p&gt;
+&lt;p&gt;Seems like this is reaching you.&lt;/p&gt;
+&lt;p&gt;Hello there! I&amp;rsquo;m Pradyun. You probably knew that already. Thanks for
+spending the time to reach this random piece of writing by me.&lt;/p&gt;
+&lt;h2 id="acknowledgements"&gt;Acknowledgements&lt;/h2&gt;
+&lt;p&gt;This blog used to be built using &lt;a href="http://jekyllrb.com/"&gt;Jekyll&lt;/a&gt; and the theme was based off
+&lt;a href="https://github.com/johnotander/pixyll"&gt;Pixyll&lt;/a&gt;. The theme was heavily restyled to be more in line with how I
+wanted my site to look like. I ended up making changes to almost every
+element of the design, though the layout and colours were solid in
+Pixyll.&lt;/p&gt;</description><content:encoded><![CDATA[<p>*tap* *tap*</p>
 <p>Seems like this is reaching you.</p>
 <p>Hello there! I&rsquo;m Pradyun. You probably knew that already. Thanks for
 spending the time to reach this random piece of writing by me.</p>

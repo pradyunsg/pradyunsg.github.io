@@ -1,6 +1,12 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>dotfiles on Pradyun Gedam</title><link>https://pradyunsg.me/tags/dotfiles/</link><description>Recent content in dotfiles on Pradyun Gedam</description><generator>Hugo -- 0.122.0</generator><language>en</language><lastBuildDate>Mon, 01 Jan 0001 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/tags/dotfiles/index.xml" rel="self" type="application/rss+xml"/><item><title>Improving my dotfiles manager with pipx and inline dependency metadata</title><link>https://pradyunsg.me/blog/2024/05/31/python-scripts-with-pipx-bash/</link><pubDate>Fri, 31 May 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/05/31/python-scripts-with-pipx-bash/</guid><description>I have a (somewhat unnecessarily) custom setup for managing my dotfiles and I made a nice improvement to it today.
-How it works The dotfiles are managed by a Python script. In broad strokes, the script will:
-read a TOML file locate the configured paths create symlinks, based on custom marker text in the filenames, for files in subdirectories under the configured paths1 If there&amp;rsquo;s a conflict (i.e. two configured paths provide the same symlink target location), the TOML file contains the resolution for it (i.</description><content:encoded><![CDATA[<p>I have a (somewhat unnecessarily) custom setup for managing my dotfiles and I made a nice improvement to it today.</p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Dotfiles on Pradyun Gedam</title><link>https://pradyunsg.me/tags/dotfiles/</link><description>Recent content in Dotfiles on Pradyun Gedam</description><generator>Hugo</generator><language>en</language><lastBuildDate>Fri, 31 May 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/tags/dotfiles/index.xml" rel="self" type="application/rss+xml"/><item><title>Improving my dotfiles manager with pipx and inline dependency metadata</title><link>https://pradyunsg.me/blog/2024/05/31/python-scripts-with-pipx-bash/</link><pubDate>Fri, 31 May 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/05/31/python-scripts-with-pipx-bash/</guid><description>&lt;p&gt;I have a (somewhat unnecessarily) custom setup for managing my dotfiles and I made a nice improvement to it today.&lt;/p&gt;
+&lt;h2 id="how-it-works"&gt;How it works&lt;/h2&gt;
+&lt;p&gt;The dotfiles are managed by a Python script. In broad strokes, the script will:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;read a TOML file&lt;/li&gt;
+&lt;li&gt;locate the configured paths&lt;/li&gt;
+&lt;li&gt;create symlinks, based on custom marker text in the filenames, for files in subdirectories under the configured paths&lt;sup id="fnref:1"&gt;&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref"&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If there&amp;rsquo;s a conflict (i.e. two configured paths provide the same symlink target location), the TOML file contains the resolution for it (i.e. specifies one of the paths as the &amp;ldquo;winner&amp;rdquo; for that file). If a resolution doesn&amp;rsquo;t exist, the script errors out.&lt;/p&gt;</description><content:encoded><![CDATA[<p>I have a (somewhat unnecessarily) custom setup for managing my dotfiles and I made a nice improvement to it today.</p>
 <h2 id="how-it-works">How it works</h2>
 <p>The dotfiles are managed by a Python script. In broad strokes, the script will:</p>
 <ul>
@@ -19,8 +25,8 @@ read a TOML file locate the configured paths create symlinks, based on custom ma
 <p>This is made possible by <code>pipx</code>, inline dependency metadata and Python&rsquo;s zipapps. There are also a few shenanigans to make this script a valid Bash script and a valid Python script. A <code>&quot;&quot;&quot;&quot;true</code> serves as our little gem of polyglot magic to make that possible.<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
 <h3 id="how-it-works-bash">How it works: Bash</h3>
 <p>Let me show you the script first, with Bash&rsquo;s syntax highlighting:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># /// script</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># requires-python = &#34;&gt;=3.8&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># dependencies = [</span>
@@ -54,7 +60,7 @@ read a TOML file locate the configured paths create symlinks, based on custom ma
 <p>Assuming you&rsquo;re on a compatible Python, <code>pipx</code> will parse that chunk, install the dependencies in a cached virtual environment and then run the script within that virtual environment. This means that the dependencies are installed by <code>pipx</code> and can/will be reused across multiple runs of the script by <code>pipx</code>.</p>
 <h3 id="how-it-works-python">How it works: Python</h3>
 <p>Let&rsquo;s look at the script again, this time with Python&rsquo;s syntax highlighting:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># /// script</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># requires-python = &#34;&gt;=3.8&#34;</span>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>meta on Pradyun Gedam</title><link>https://pradyunsg.me/tags/meta/</link><description>Recent content in meta on Pradyun Gedam</description><generator>Hugo -- 0.122.0</generator><language>en</language><lastBuildDate>Mon, 01 Jan 0001 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/tags/meta/index.xml" rel="self" type="application/rss+xml"/><item><title>Revamping my personal website</title><link>https://pradyunsg.me/blog/2021/04/09/revamping-this-site/</link><pubDate>Fri, 09 Apr 2021 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2021/04/09/revamping-this-site/</guid><description>Hopping onto the hype train and migrating to Hugo.</description><content:encoded><![CDATA[<p>I made an impulse decision to rework my personal website, to port it
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Meta on Pradyun Gedam</title><link>https://pradyunsg.me/tags/meta/</link><description>Recent content in Meta on Pradyun Gedam</description><generator>Hugo</generator><language>en</language><lastBuildDate>Fri, 09 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/tags/meta/index.xml" rel="self" type="application/rss+xml"/><item><title>Revamping my personal website</title><link>https://pradyunsg.me/blog/2021/04/09/revamping-this-site/</link><pubDate>Fri, 09 Apr 2021 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2021/04/09/revamping-this-site/</guid><description>Hopping onto the hype train and migrating to Hugo.</description><content:encoded><![CDATA[<p>I made an impulse decision to rework my personal website, to port it
 over to <a href="https://gohugo.io/">Hugo</a>, and away from <a href="https://jekyllrb.com/">Jekyll</a>. This is now built using the
 <a href="https://adityatelange.me/blog/papermod-went-viral/">recently-viral</a> <a href="https://adityatelange.github.io/hugo-PaperMod/">PaperMod</a> theme for Hugo.</p>
 <p>I took the opportunity to refresh/revamp the site structure, which
@@ -15,10 +15,16 @@ out whether something you&rsquo;re reading from a 2018 issue was removed.</li>
 <li>&ldquo;Why is this like this&rdquo; and other variants were spoken 17 times, in
 the span of 5 hours.</li>
 </ul>
-]]></content:encoded></item><item><title>Is this thing on?</title><link>https://pradyunsg.me/blog/2019/06/22/is-this-thing-on/</link><pubDate>Sat, 22 Jun 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/06/22/is-this-thing-on/</guid><description>*tap* *tap*
-Seems like this is reaching you.
-Hello there! I&amp;rsquo;m Pradyun. You probably knew that already. Thanks for spending the time to reach this random piece of writing by me.
-Acknowledgements This blog used to be built using Jekyll and the theme was based off Pixyll. The theme was heavily restyled to be more in line with how I wanted my site to look like. I ended up making changes to almost every element of the design, though the layout and colours were solid in Pixyll.</description><content:encoded><![CDATA[<p>*tap* *tap*</p>
+]]></content:encoded></item><item><title>Is this thing on?</title><link>https://pradyunsg.me/blog/2019/06/22/is-this-thing-on/</link><pubDate>Sat, 22 Jun 2019 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2019/06/22/is-this-thing-on/</guid><description>&lt;p&gt;*tap* *tap*&lt;/p&gt;
+&lt;p&gt;Seems like this is reaching you.&lt;/p&gt;
+&lt;p&gt;Hello there! I&amp;rsquo;m Pradyun. You probably knew that already. Thanks for
+spending the time to reach this random piece of writing by me.&lt;/p&gt;
+&lt;h2 id="acknowledgements"&gt;Acknowledgements&lt;/h2&gt;
+&lt;p&gt;This blog used to be built using &lt;a href="http://jekyllrb.com/"&gt;Jekyll&lt;/a&gt; and the theme was based off
+&lt;a href="https://github.com/johnotander/pixyll"&gt;Pixyll&lt;/a&gt;. The theme was heavily restyled to be more in line with how I
+wanted my site to look like. I ended up making changes to almost every
+element of the design, though the layout and colours were solid in
+Pixyll.&lt;/p&gt;</description><content:encoded><![CDATA[<p>*tap* *tap*</p>
 <p>Seems like this is reaching you.</p>
 <p>Hello there! I&rsquo;m Pradyun. You probably knew that already. Thanks for
 spending the time to reach this random piece of writing by me.</p>
