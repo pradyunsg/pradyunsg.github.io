@@ -1,7 +1,11 @@
 baseURL = "https://pradyunsg.me/"
 title = "Pradyun Gedam"
-theme = "PaperMod"
 env = "production"
+
+# Theme is imported as a Hugo module; see `go.mod`.
+[module]
+  [[module.imports]]
+    path = "github.com/adityatelange/hugo-PaperMod"
 
 # Infer my posts' dates from filename, like Jekyll
 [frontmatter]
