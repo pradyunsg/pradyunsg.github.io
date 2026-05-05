@@ -2,7 +2,7 @@
 title: "About Me"
 layout: single
 showReadingTime: false
-modified: 2024-01-27
+modified: 2026-04-21
 ---
 
 I am a software engineer, who likes to work on improving the experience of using
@@ -38,8 +38,11 @@ I contribute to a _lot_ of open source software projects.
 
 ## Community Organisation and Engagement
 
-{{< AboutList "recognition" >}}  
 {{< AboutList "community" >}}
+
+## Recognition
+
+{{< AboutList "recognition" >}}  
 
 ## Talks
 

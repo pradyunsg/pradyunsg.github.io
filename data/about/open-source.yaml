@@ -6,6 +6,13 @@
     The standard package manager for Python, for installing and managing libraries
     that aren't included in Python's standard library.
 
+- thing: Python Packaging Authority
+  detail: Member
+  timeline: 2016 - Now
+  link: https://www.pypa.io/
+  description: |-
+    Maintain tooling that serves foundational digital infrastructure for the Python packaging ecosystem.
+
 - thing: TOML
   detail: Maintainer
   timeline: 2018 - Now
@@ -21,13 +28,6 @@
   link: https://github.com/pypi/
   description: |-
     Serves as the primary repository of software for the Python programming language.
-
-- thing: CPython
-  detail: Core Developer
-  timeline: 2023 - Now
-  link: https://github.com/python/cpython
-  description: |-
-    The Python programming language. (became triager in 2022)
 
 - thing: vendoring
   detail: Creator
@@ -84,6 +84,13 @@
 
     [pr-diff]: https://github.com/sphinx-themes/sphinx-themes.org/pull/19
 
+- thing: Executable Books
+  detail: Member
+  timeline: 2021 - Now
+  link: https://executablebooks.org/
+  description: |-
+    Collaborate to enable executable books with Jupyter, building upon the Sphinx ecosystem.
+
 - thing: Flit
   detail: Maintainer
   timeline: 2021 - Now
@@ -114,3 +121,10 @@
   link: https://github.com/sphinx-doc/sphinx-autobuild
   description: |-
     Rebuild Sphinx documentation on changes, with live-reload in the browser.
+
+- thing: CPython
+  detail: Core Developer
+  timeline: 2023 - Now
+  link: https://github.com/python/cpython
+  description: |-
+    The Python programming language. (became triager in 2022)
