@@ -1,208 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Pradyun Gedam</title><link>https://pradyunsg.me/</link><description>Recent content on Pradyun Gedam</description><generator>Hugo</generator><language>en</language><lastBuildDate>Fri, 31 May 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/index.xml" rel="self" type="application/rss+xml"/><item><title>Improving my dotfiles manager with pipx and inline dependency metadata</title><link>https://pradyunsg.me/blog/2024/05/31/python-scripts-with-pipx-bash/</link><pubDate>Fri, 31 May 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/05/31/python-scripts-with-pipx-bash/</guid><description>&lt;p&gt;I have a (somewhat unnecessarily) custom setup for managing my dotfiles and I made a nice improvement to it today.&lt;/p&gt;
-&lt;h2 id="how-it-works"&gt;How it works&lt;/h2&gt;
-&lt;p&gt;The dotfiles are managed by a Python script. In broad strokes, the script will:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;read a TOML file&lt;/li&gt;
-&lt;li&gt;locate the configured paths&lt;/li&gt;
-&lt;li&gt;create symlinks, based on custom marker text in the filenames, for files in subdirectories under the configured paths&lt;sup id="fnref:1"&gt;&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref"&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;If there&amp;rsquo;s a conflict (i.e. two configured paths provide the same symlink target location), the TOML file contains the resolution for it (i.e. specifies one of the paths as the &amp;ldquo;winner&amp;rdquo; for that file). If a resolution doesn&amp;rsquo;t exist, the script errors out.&lt;/p&gt;</description><content:encoded><![CDATA[<p>I have a (somewhat unnecessarily) custom setup for managing my dotfiles and I made a nice improvement to it today.</p>
-<h2 id="how-it-works">How it works</h2>
-<p>The dotfiles are managed by a Python script. In broad strokes, the script will:</p>
-<ul>
-<li>read a TOML file</li>
-<li>locate the configured paths</li>
-<li>create symlinks, based on custom marker text in the filenames, for files in subdirectories under the configured paths<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></li>
-</ul>
-<p>If there&rsquo;s a conflict (i.e. two configured paths provide the same symlink target location), the TOML file contains the resolution for it (i.e. specifies one of the paths as the &ldquo;winner&rdquo; for that file). If a resolution doesn&rsquo;t exist, the script errors out.</p>
-<p>This setup exists mainly to allow me to have work-only dotfiles managed in work&rsquo;s VCS with all their corporate stuff while keeping them separate yet cooperative with my dotfiles managed publicly on GitHub.</p>
-<h2 id="the-problem">The problem</h2>
-<p>Now, this effectively means that my dotfiles manager is a Python script. It also has a bunch of dependencies (specifically, <code>rich</code> because I like colors and <code>tomli</code> because it should probably run on all supported Python versions).</p>
-<p>This usually means that you need to create a virtual environment to run it. That&rsquo;s gotten a bit tedious and fragile given how frequently I keep changing my Python installations (gotta keep up with the latest and greatest!).</p>
-<h2 id="the-solution">The solution</h2>
-<h3 id="the-implementation">The implementation</h3>
-<p>I figured out a way to ensure that the script can be run without needing to manage a virtual environment myself. Now, it can be run on any machine with a working <code>curl</code>, <code>bash</code>, <code>python3</code> and the ability to download from <a href="https://github.com">https://github.com</a>. It also gracefully triggers MacOS&rsquo; prompt for &ldquo;Hey, do you want to install our developer tooling stuff?&rdquo; (XCode Command Line Tools, via the <code>python3</code> shim they install on a new Mac).</p>
-<p>This is made possible by <code>pipx</code>, inline dependency metadata and Python&rsquo;s zipapps. There are also a few shenanigans to make this script a valid Bash script and a valid Python script. A <code>&quot;&quot;&quot;&quot;true</code> serves as our little gem of polyglot magic to make that possible.<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
-<h3 id="how-it-works-bash">How it works: Bash</h3>
-<p>Let me show you the script first, with Bash&rsquo;s syntax highlighting:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># /// script</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># requires-python = &#34;&gt;=3.8&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># dependencies = [</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#34;rich&#34;,</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#34;tomli&#34;,</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># ]</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># ///</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
-</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;&#34;</span>true
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> ! -f <span style="color:#e6db74">&#39;/tmp/pipx-dotfiles.pyz&#39;</span> <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>
-</span></span><span style="display:flex;"><span>  echo <span style="color:#e6db74">&#34;Downloading pipx...&#34;</span>
-</span></span><span style="display:flex;"><span>  curl --proto <span style="color:#e6db74">&#39;=https&#39;</span> --tlsv1.2 -sSLf https://github.com/pypa/pipx/releases/latest/download/pipx.pyz -o /tmp/pipx-dotfiles.pyz
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
-</span></span><span style="display:flex;"><span>python3 /tmp/pipx-dotfiles.pyz run <span style="color:#e6db74">&#34;</span>$0<span style="color:#e6db74">&#34;</span> -- <span style="color:#e6db74">&#34;</span>$@<span style="color:#e6db74">&#34;</span>
-</span></span><span style="display:flex;"><span>exit
-</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">import rich
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">print(rich.__version__)
-</span></span></span></code></pre></div><p>From Bash&rsquo;s perspective, this script has a bunch of comments, then a few commands, and then an <code>exit</code>.</p>
-<p>The way Bash processes a script is by reading it as a buffer and executing it before moving on. This allows Bash scripts containing syntax issues to be run, as long as the syntax issue is somewhere that isn&rsquo;t being read by Bash (i.e. after the point of exit). We&rsquo;re definitely using that since the Python code (which is not valid Bash syntax) is present after the <code>exit</code>.</p>
-<p>To Bash, our little gem of magic (<code>&quot;&quot;&quot;&quot;true</code>) is the same as a <code>true</code> command since it&rsquo;s a bunch of empty strings concatenated together with <code>true</code>. And, <code>true</code> is used as a no-op command (it exits with code 0 and does nothing else).<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup> It is treated the same as a <code>true</code> on its own line and Bash proceeds with the rest of the logic as a regular Bash script.</p>
-<p>The rest of the logic in the Bash script is to download <code>pipx</code>&rsquo;s zipapp (if it&rsquo;s not already downloaded) and then run the script itself with <code>python3 &lt;pipx-zipapp&gt; run &lt;script&gt; -- &lt;any arguments passed to the script&gt;</code>.</p>
-<h3 id="how-it-works-zipapp">How it works: zipapp</h3>
-<p>Wait, a zipapp?</p>
-<p>So, that&rsquo;s a fun Python feature: it can execute a zip file as if it were a script. Python will look for a <code>__main__.py</code> in the zip file and, if it&rsquo;s there, the <code>__main__.py</code> as if it were a script. See <a href="https://docs.python.org/3/library/zipapp.html">the documentation</a> if you want to learn more about this.</p>
-<p>In this case, the <code>pipx</code> maintainers create a maintain a zipapp and attach it to their GitHub releases. By using GitHub&rsquo;s <code>latest</code> release URL, we can fetch the zipapp for the latest release (with a redirect, hence the <code>-L</code> to <code>curl</code>) without much additional complexity.</p>
-<h3 id="how-it-works-pipx-run">How it works: pipx run</h3>
-<p><code>pipx run</code> enables running a script with the dependencies being installed by <code>pipx</code> in a cached virtual environment that is managed by <code>pipx</code>.</p>
-<p>Notably, it supports <a href="https://peps.python.org/pep-0723/">PEP 723</a> (inline script metadata) which enables declaring dependency information inline. This is what the <code>/// script</code> and <code>///</code> are serving as markers for. The <code>requires-python</code> and <code>dependencies</code> are bits of metadata that <code>pipx</code> will use to determine what needs to be present for running the script.</p>
-<p>Assuming you&rsquo;re on a compatible Python, <code>pipx</code> will parse that chunk, install the dependencies in a cached virtual environment and then run the script within that virtual environment. This means that the dependencies are installed by <code>pipx</code> and can/will be reused across multiple runs of the script by <code>pipx</code>.</p>
-<h3 id="how-it-works-python">How it works: Python</h3>
-<p>Let&rsquo;s look at the script again, this time with Python&rsquo;s syntax highlighting:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># /// script</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># requires-python = &#34;&gt;=3.8&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># dependencies = [</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#34;rich&#34;,</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#34;tomli&#34;,</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># ]</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># ///</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
-</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;&#34;true
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">if [[ ! -f &#39;/tmp/pipx-dotfiles.pyz&#39; ]]; then
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  echo &#34;Downloading pipx...&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  curl --proto &#39;=https&#39; --tlsv1.2 -sSLf https://github.com/pypa/pipx/releases/latest/download/pipx.pyz -o /tmp/pipx-dotfiles.pyz
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">fi
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">python3 /tmp/pipx-dotfiles.pyz run &#34;$0&#34; -- &#34;$@&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">exit
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> rich
-</span></span><span style="display:flex;"><span>print(rich<span style="color:#f92672">.</span>__version__)
-</span></span></code></pre></div><p>From Python&rsquo;s perspective, this script has a bunch of comments, then a docstring, and then the whole Python script.</p>
-<p>To Python, our little gem of magic (<code>&quot;&quot;&quot;&quot;true</code>) is the start of a multiline string which starts with the content <code>&quot;true\n</code>. This is valid Python syntax, and Python will happily treat it as the start of the string literal. The end of the string literal is the next <code>&quot;&quot;&quot;</code> it encounters, which is the one at the end of the Bash parts of the script.</p>
-<p>This means that the Bash script is treated as a multiline string by Python. It&rsquo;s treated as the docstring of the Python script. I am not too concerned about that since this is a script that doesn&rsquo;t need a docstring.</p>
-<div class="footnotes" role="doc-endnotes">
-<hr>
-<ol>
-<li id="fn:1">
-<p><code>symlink</code> with periods around it based on where in the file it shows up&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-<li id="fn:2">
-<p>I learned about this approach from <a href="https://stackoverflow.com/q/15190055/1931274">this StackOverflow question</a>.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-<li id="fn:3">
-<p>It is possible to put almost any valid Bash syntax after the 4 double quotes (like, you can start an <code>if</code> statement, or something else) as long as you don&rsquo;t have whitespace between the 4th double quote and the keyword/CLI tool name. I just didn&rsquo;t like how that stuff looked so I went with <code>true</code> on that line.&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-</ol>
-</div>
-]]></content:encoded></item><item><title>pip 24.1 betas -- help us test a major upcoming change!</title><link>https://pradyunsg.me/blog/2024/05/13/pip-24-1-betas/</link><pubDate>Mon, 13 May 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/05/13/pip-24-1-betas/</guid><description>&lt;p&gt;The pip team has released &lt;a href="https://pypi.org/project/pip/24.1b1/"&gt;pip 24.1b1&lt;/a&gt; which contains a &lt;a href="https://pip.pypa.io/en/latest/news/#b1-2024-05-06"&gt;lot of significant improvements and bug fixes&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;I&amp;rsquo;d like to highlight a major change in this blog post: the removal of support for &amp;ldquo;legacy&amp;rdquo; versions and dependency specification, or as I like to call it, nonsensical versions and dependencies. We&amp;rsquo;re releasing this as a beta to get feedback from the community on how this change affects their workflows.&lt;/p&gt;
-&lt;h2 id="nonsensical-versions-and-dependencies"&gt;Nonsensical versions and dependencies&lt;/h2&gt;
-&lt;p&gt;For a bunch of historical reasons, pip has allowed many arbitrary strings as versions and dependency specification. There&amp;rsquo;s so many kinds of bad behaviours that this &amp;ldquo;feature&amp;rdquo; has enabled.&lt;/p&gt;</description><content:encoded><![CDATA[<p>The pip team has released <a href="https://pypi.org/project/pip/24.1b1/">pip 24.1b1</a> which contains a <a href="https://pip.pypa.io/en/latest/news/#b1-2024-05-06">lot of significant improvements and bug fixes</a>.</p>
-<p>I&rsquo;d like to highlight a major change in this blog post: the removal of support for &ldquo;legacy&rdquo; versions and dependency specification, or as I like to call it, nonsensical versions and dependencies. We&rsquo;re releasing this as a beta to get feedback from the community on how this change affects their workflows.</p>
-<h2 id="nonsensical-versions-and-dependencies">Nonsensical versions and dependencies</h2>
-<p>For a bunch of historical reasons, pip has allowed many arbitrary strings as versions and dependency specification. There&rsquo;s so many kinds of bad behaviours that this &ldquo;feature&rdquo; has enabled.</p>
-<p>My favourite example is <a href="https://github.com/pypa/packaging/issues/530">one I wrote back in 2022</a> on the <code>packaging</code><sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> project&rsquo;s issue tracker:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;This is a completely random string&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>LegacyVersion(<span style="color:#e6db74">&#39;This is a completely random string&#39;</span>)<span style="color:#f92672">&gt;</span>
-</span></span></code></pre></div><p>Or providing weird version comparisons:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;1.0&#34;</span>) <span style="color:#f92672">&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;99999.0.whatever&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">True</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;1.0&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>Version(<span style="color:#e6db74">&#39;1.0&#39;</span>)<span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;99999.0.whatever&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>LegacyVersion(<span style="color:#e6db74">&#39;99999.0.whatever&#39;</span>)<span style="color:#f92672">&gt;</span>
-</span></span></code></pre></div><p>Or hiding mistakes in dependency declarations:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> all_dependencies <span style="color:#f92672">=</span> [
-</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>     <span style="color:#e6db74">&#34;package == 1&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>     <span style="color:#e6db74">&#34;another-package&#34;</span>,
-</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>     <span style="color:#e6db74">&#34;yet-another-package&#34;</span>,
-</span></span><span style="display:flex;"><span>]
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> [packaging<span style="color:#f92672">.</span>requirements<span style="color:#f92672">.</span>Requirement(s) <span style="color:#66d9ef">for</span> s <span style="color:#f92672">in</span> all_dependencies]
-</span></span><span style="display:flex;"><span>[<span style="color:#f92672">&lt;</span>Requirement(<span style="color:#e6db74">&#39;package==1another-package&#39;</span>)<span style="color:#f92672">&gt;</span>, <span style="color:#f92672">&lt;</span>Requirement(<span style="color:#e6db74">&#39;yet-another-package&#39;</span>)<span style="color:#f92672">&gt;</span>]
-</span></span></code></pre></div><p>Over a decade ago, the Python packaging ecosystem adopted <a href="https://peps.python.org/pep-0440/">PEP 440</a> which defined a standard for versions and dependency specification. While this standard has been adopted by basically every single tool in the ecosystem, support for &ldquo;legacy&rdquo; versions and requirements has been maintained even though it has caused a lot of user confusion and bugs in the Python ecosystem.</p>
-<h2 id="getting-rid-of-the-nonsense">Getting rid of the nonsense</h2>
-<p>Over the course of the last decade, across multiple projects in the Python packaging ecosystem, many PyPA projects have been working to make this behaviour not possible. The package index, <a href="https://pypi.org">https://pypi.org</a>, has not accepted uploads with bad versions for many years now and is also enforcing validity of the requirements on all uploads. The tooling that generate packages (build-backends) also now refuse to generate packages with such bad metadata in them.</p>
-<p>This effort has been undertaken by many people across the Python packaging ecosystem, and I&rsquo;m very grateful for all the work that has gone into this. It regularly surprises me how much work goes into making sure that the foundational pieces of Python&rsquo;s packaging ecosystem are improving, even absent any institutional investment into it.</p>
-<p>This pip release marks the next major step in the direction of improving behaviours in this area: updating the package installer to stop accepting such packages. Starting with this pip release, pip will refuse to install packages with bad versions or dependency specification and will ignore any files with such bad versions or dependency specification during the dependency resolution step.</p>
-<h2 id="where-we-cant-see-the-nonsense">Where we can&rsquo;t see the nonsense</h2>
-<p>While a substantial amount of effort has been put into making sure pip can work correctly when enforcing correctness around these versions and dependency specification, we want to be cautious in rolling out this change. There are many places that Python is used where we can&rsquo;t access the packages (e.g. private package indexes hosting proprietary code), and thus can&rsquo;t ensure that packages have appropriate metadata in those spaces.</p>
-<p>We&rsquo;re releasing this as a beta to get feedback from the community on any issues that might arise from this change. This will help us better understand how this change affects user workflows and what actionable guidance can be provided to users in various contexts.</p>
-<h2 id="help-us-test-the-changes">Help us test the changes</h2>
-<p>We&rsquo;re looking for feedback from Python users on this beta release. Notably, we&rsquo;d like for users who are using package indexes other than PyPI to test their workflows against this beta release of pip and provide us with feedback.</p>
-<p>You can let us know about issues related to this change on pip&rsquo;s issue tracker (please check for duplicates before filing, and use reactions rather than saying &ldquo;me too&rdquo;!). Please also feel welcome to tell us about the good stuff, like if this release made dependency resolves quicker &ndash; we like hearing about that too! :)</p>
-<h2 id="acknowledgements">Acknowledgements</h2>
-<p>While there&rsquo;s a lot of people who have worked on things I mentioned in this blog post, I can&rsquo;t really list them all here &ndash; you know who you are, and thank you for all the work you&rsquo;ve done toward this as well as the other cool things you&rsquo;ve worked on.</p>
-<p>I do want to thank Paul Moore, Stéphane Bidoul, Richard Si and Pavithra Eswaramoorthy for reviewing various drafts of this post and providing feedback on it.</p>
-<div class="footnotes" role="doc-endnotes">
-<hr>
-<ol>
-<li id="fn:1">
-<p>Listen, software engineers are great at naming things. This is obviously the Python package providing shared common implementations of Python packaging standards for Python packaging tools. And, yes, it&rsquo;s hosted on the Python package index.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-</ol>
-</div>
-]]></content:encoded></item><item><title>Making GitHub Notifications UI slightly nicer for bulk triage</title><link>https://pradyunsg.me/blog/2024/03/17/github-notifications-userstyles/</link><pubDate>Sun, 17 Mar 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/03/17/github-notifications-userstyles/</guid><description>&lt;p&gt;I&amp;rsquo;m someone who gets a &lt;em&gt;lot&lt;/em&gt; of GitHub notifications &amp;ndash; this week had &amp;gt;100 individual notifications.&lt;/p&gt;
-&lt;h2 id="the-problem"&gt;The problem&lt;/h2&gt;
-&lt;p&gt;The &amp;ldquo;new&amp;rdquo; GitHub Notifications UI&lt;sup id="fnref:1"&gt;&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref"&gt;1&lt;/a&gt;&lt;/sup&gt; was based on &lt;a href="https://octobox.io/"&gt;Octobox&lt;/a&gt;. It was a step in the right direction to help with my notification &amp;ldquo;workload&amp;rdquo;, although I recognise that it was not perceived as such by many others.&lt;/p&gt;
-&lt;p&gt;That said, they copied over the exact same design issue I had with Octobox: the action buttons are on the completely opposite side from where my attention is.&lt;/p&gt;</description><content:encoded><![CDATA[<p>I&rsquo;m someone who gets a <em>lot</em> of GitHub notifications &ndash; this week had &gt;100 individual notifications.</p>
-<h2 id="the-problem">The problem</h2>
-<p>The &ldquo;new&rdquo; GitHub Notifications UI<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> was based on <a href="https://octobox.io/">Octobox</a>. It was a step in the right direction to help with my notification &ldquo;workload&rdquo;, although I recognise that it was not perceived as such by many others.</p>
-<p>That said, they copied over the exact same design issue I had with Octobox: the action buttons are on the completely opposite side from where my attention is.</p>
-<p><img alt="Vanilla GitHub Notification UI entry, showing the action icons in their default location" loading="lazy" src="/media/github-notifications-2024-vanilla.png"></p>
-<p>I am going to scan and read the content of the notification, which is left aligned and very close to the <em>left</em> edge. All the action buttons are on the <em>right</em> edge. This makes it difficult when trying to triage notifications, especially when I&rsquo;m trying to do so in bulk where stuff like &ldquo;oh, this is not gonna need my attention&rdquo; requires me to drag my cursor over to the other side of the page.</p>
-<p>If there&rsquo;s a keyboard shortcut for this, I don&rsquo;t know it and I don&rsquo;t want to learn it anyway. I want to be able to use the mouse to do what I need here because that&rsquo;s how I use a computer.</p>
-<h2 id="the-solution">The solution</h2>
-<p>I wrote a blurb of CSS to remove this annoyance.</p>
-<p><img alt="Modified GitHub Notification UI row, showing the moved action icons" loading="lazy" src="/media/github-notifications-2024-modified.png"></p>
-<p>It moves the action buttons toward the left side, so that I can quickly triage notifications without having to move my cursor across the screen. It also moves the text describing the content that the notification is for (repository and notification subject) to accommodate for the buttons.</p>
-<p>If you know me, you know that I will animate moving text to different locations. In the end, this was fairly easy to achieve in this case.</p>
-<p><img alt="Three rows in the modified GitHub Notification UI row, showcasing the animation associated with hovering over a specific notification" loading="lazy" src="/media/github-notifications-2024-modified.gif"></p>
-<p>I&rsquo;ve been using this for quite a few months now.</p>
-<h2 id="the-stylesheet">The stylesheet</h2>
-<p>Recently, while screen sharing with a friend, they asked me about my GitHub notifications doing this really cool thing. That&rsquo;s when I realised that I had completely forgotten that this was something I had been injecting into the page. I shared it with them and realised that some other people might find this useful too.</p>
-<p>If you also find this change to be an improvement, the CSS blurb that needs to be injected is provided below. You can add this via <a href="https://github.com/refined-github/refined-github">Refined GitHub</a>&rsquo;s preferences page or use a more generic extension like <a href="https://add0n.com/stylus.html">Stylus</a> to inject this into the GitHub Notifications page.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-css" data-lang="css"><span style="display:flex;"><span>.<span style="color:#a6e22e">notification-list-item-actions</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">right</span>: <span style="color:#66d9ef">unset</span> <span style="color:#75715e">!important</span>;
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">left</span>: <span style="color:#ae81ff">4</span><span style="color:#66d9ef">rem</span> <span style="color:#75715e">!important</span>;
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">padding</span>: <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">8</span><span style="color:#66d9ef">px</span>;
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">notifications-list-item</span>:<span style="color:#a6e22e">hover</span> .<span style="color:#a6e22e">note</span>.<span style="color:#a6e22e">notification-list-item-hide-on-hover</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">visibility</span>: <span style="color:#66d9ef">visible</span> <span style="color:#75715e">!important</span>;
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">notifications-list-item</span> .<span style="color:#a6e22e">notification-list-item-link</span> <span style="color:#f92672">[</span><span style="color:#f92672">id</span><span style="color:#f92672">^=</span><span style="color:#e6db74">&#34;notification&#34;</span><span style="color:#f92672">]</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">margin-left</span>: <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">transition</span>: <span style="color:#66d9ef">margin-left</span> <span style="color:#ae81ff">100</span><span style="color:#66d9ef">ms</span> cubic-bezier(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.8</span>, <span style="color:#ae81ff">0.2</span>, <span style="color:#ae81ff">1</span>);
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">notifications-list-item</span>:<span style="color:#a6e22e">hover</span>
-</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">notification-list-item-link</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">[</span><span style="color:#f92672">id</span><span style="color:#f92672">^=</span><span style="color:#e6db74">&#34;notification&#34;</span><span style="color:#f92672">]</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">margin-left</span>: <span style="color:#ae81ff">8</span><span style="color:#66d9ef">rem</span>;
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">notification-list-item-link</span> <span style="color:#f92672">&gt;</span> :<span style="color:#a6e22e">nth-child</span><span style="color:#f92672">(</span><span style="color:#f92672">1</span><span style="color:#f92672">)</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">align-self</span>: <span style="color:#66d9ef">unset</span> <span style="color:#75715e">!important</span>;
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">notifications-list-item</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&gt;</span> <span style="color:#f92672">div</span>:<span style="color:#a6e22e">nth-child</span><span style="color:#f92672">(</span><span style="color:#f92672">1</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&gt;</span> <span style="color:#f92672">div</span>:<span style="color:#a6e22e">nth-child</span><span style="color:#f92672">(</span><span style="color:#f92672">1</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&gt;</span> <span style="color:#f92672">div</span>:<span style="color:#a6e22e">nth-child</span><span style="color:#f92672">(</span><span style="color:#f92672">1</span><span style="color:#f92672">)</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">align-self</span>: <span style="color:#66d9ef">unset</span> <span style="color:#75715e">!important</span>;
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><div class="footnotes" role="doc-endnotes">
-<hr>
-<ol>
-<li id="fn:1">
-<p>Does it count as new if it&rsquo;s been around since <a href="https://github.blog/2020-02-25-your-new-web-notifications-experience-is-here/">2020</a>?&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
-</li>
-</ol>
-</div>
-]]></content:encoded></item><item><title>About Me</title><link>https://pradyunsg.me/about/</link><pubDate>Sat, 27 Jan 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/about/</guid><description>&lt;p&gt;I am a software engineer, who likes to work on improving the experience of using
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Pradyun Gedam</title><link>https://pradyunsg.me/</link><description>Recent content on Pradyun Gedam</description><generator>Hugo</generator><language>en</language><lastBuildDate>Tue, 21 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://pradyunsg.me/index.xml" rel="self" type="application/rss+xml"/><item><title>About Me</title><link>https://pradyunsg.me/about/</link><pubDate>Tue, 21 Apr 2026 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/about/</guid><description>&lt;p&gt;I am a software engineer, who likes to work on improving the experience of using
 software for other humans. I have a keen interest in open source software, with
 deep experience with developer tooling and technical writing &amp;amp; communication.&lt;/p&gt;
 &lt;p&gt;I wear many hats in open source software spaces, including maintaining critical
@@ -240,6 +36,16 @@ that aren&rsquo;t included in Python&rsquo;s standard library.
       </div></div>
   </div>
   
+  <div class="about-item"><div class="about-item--context"><a href="#python-packaging-authority" id="python-packaging-authority">2016 - Now</a></div>
+
+    <div class="about-item--content">
+      <div class="about-item--title"><a class="about-item--link" href="https://www.pypa.io/"><span>Python Packaging Authority</span></a></div><div class="about-item--detail">
+        Member
+      </div><div class="about-item--description">
+        Maintain tooling that serves foundational digital infrastructure for the Python packaging ecosystem.
+      </div></div>
+  </div>
+  
   <div class="about-item"><div class="about-item--context"><a href="#toml" id="toml">2018 - Now</a></div>
 
     <div class="about-item--content">
@@ -259,16 +65,6 @@ file.
         Moderator
       </div><div class="about-item--description">
         Serves as the primary repository of software for the Python programming language.
-      </div></div>
-  </div>
-  
-  <div class="about-item"><div class="about-item--context"><a href="#cpython" id="cpython">2023 - Now</a></div>
-
-    <div class="about-item--content">
-      <div class="about-item--title"><a class="about-item--link" href="https://github.com/python/cpython"><span>CPython</span></a></div><div class="about-item--detail">
-        Core Developer
-      </div><div class="about-item--description">
-        The Python programming language. (became triager in 2022)
       </div></div>
   </div>
   
@@ -339,6 +135,16 @@ generator. Also, <a href="https://github.com/sphinx-themes/sphinx-themes.org/pul
       </div></div>
   </div>
   
+  <div class="about-item"><div class="about-item--context"><a href="#executable-books" id="executable-books">2021 - Now</a></div>
+
+    <div class="about-item--content">
+      <div class="about-item--title"><a class="about-item--link" href="https://executablebooks.org/"><span>Executable Books</span></a></div><div class="about-item--detail">
+        Member
+      </div><div class="about-item--description">
+        Collaborate to enable executable books with Jupyter, building upon the Sphinx ecosystem.
+      </div></div>
+  </div>
+  
   <div class="about-item"><div class="about-item--context"><a href="#flit" id="flit">2021 - Now</a></div>
 
     <div class="about-item--content">
@@ -382,66 +188,38 @@ versions and configurations of software.
       </div></div>
   </div>
   
+  <div class="about-item"><div class="about-item--context"><a href="#cpython" id="cpython">2023 - Now</a></div>
+
+    <div class="about-item--content">
+      <div class="about-item--title"><a class="about-item--link" href="https://github.com/python/cpython"><span>CPython</span></a></div><div class="about-item--detail">
+        Core Developer
+      </div><div class="about-item--description">
+        The Python programming language. (became triager in 2022)
+      </div></div>
+  </div>
+  
 </div>
 
 <h2 id="community-organisation-and-engagement">Community Organisation and Engagement</h2>
-<p>
-<div class="about-list">
-  
-  
-  
-  
-  <div class="about-item"><div class="about-item--context"><a href="#python-software-foundation-fellow" id="python-software-foundation-fellow">2019</a></div>
-
-    <div class="about-item--content">
-      <div class="about-item--title"><a class="about-item--link" href="https://pyfound.blogspot.com/2019/08/python-software-foundation-fellow.html"><span>Python Software Foundation Fellow</span></a></div><div class="about-item--description">
-        Recognized as a fellow by the Python Software Foundation for my significant
-contributions to the Python community.
-      </div></div>
-  </div>
-  
-  <div class="about-item"><div class="about-item--context"><a href="#google-open-source-peer-bonus" id="google-open-source-peer-bonus">2019</a></div>
-
-    <div class="about-item--content">
-      <div class="about-item--title"><a class="about-item--link" href="https://opensource.googleblog.com/2019/04/google-open-source-peer-bonus-winners.html"><span>Google Open Source Peer Bonus</span></a></div><div class="about-item--description">
-        Recognized as an external-to-Google individual who has made exceptional
-contributions to open source.
-      </div></div>
-  </div>
-  
-</div>
-<br>
 
 <div class="about-list">
   
   
   
   
-  <div class="about-item"><div class="about-item--context"><a href="#python-packaging-authority" id="python-packaging-authority">2017 - Now</a></div>
-
-    <div class="about-item--content">
-      <div class="about-item--title"><span>Python Packaging Authority</span></div><div class="about-item--detail">
-        Member
-      </div><div class="about-item--description">
-        Maintain tooling that serves foundational digital infrastructure for the Python packaging ecosystem.
-      </div></div>
-  </div>
-  
-  <div class="about-item"><div class="about-item--context"><a href="#executable-books" id="executable-books">2021 - Now</a></div>
-
-    <div class="about-item--content">
-      <div class="about-item--title"><span>Executable Books</span></div><div class="about-item--detail">
-        Member
-      </div><div class="about-item--description">
-        Part of a collaboration to create executable books with Jupyter, building upon the Sphinx ecosystem.
-      </div></div>
-  </div>
-  
-  <div class="about-item"><div class="about-item--context"><a href="#pycon-us-2022" id="pycon-us-2022">2022</a></div>
+  <div class="about-item"><div class="about-item--context"><a href="#pycon-us-packaging-summit" id="pycon-us-packaging-summit">2020 - Now</a></div>
 
     <div class="about-item--content">
       <div class="about-item--title"><span>PyCon US</span></div><div class="about-item--description">
-        Co-organised the Python Packaging Summit.
+        Co-chair of the (annual) Python Packaging Summit at PyCon US.
+      </div></div>
+  </div>
+  
+  <div class="about-item"><div class="about-item--context"><a href="#python-packaging-governance" id="python-packaging-governance">2025/2026</a></div>
+
+    <div class="about-item--content">
+      <div class="about-item--title"><span>Python Packaging Governance</span></div><div class="about-item--description">
+        Co-authored <a href="https://peps.python.org/pep-0772/">PEP 772</a> that establishes a Python Packaging Council.
       </div></div>
   </div>
   
@@ -453,7 +231,15 @@ contributions to open source.
       </div></div>
   </div>
   
-  <div class="about-item"><div class="about-item--context"><a href="#pycon-india-2022" id="pycon-india-2022">2019</a></div>
+  <div class="about-item"><div class="about-item--context"><a href="#pep-609" id="pep-609">2020</a></div>
+
+    <div class="about-item--content">
+      <div class="about-item--title"><span>Python Packaging Governance</span></div><div class="about-item--description">
+        Co-authored <a href="https://peps.python.org/pep-0609/">PEP 609</a> that set up a governance structure for Python Packaging Authority (PyPA).
+      </div></div>
+  </div>
+  
+  <div class="about-item"><div class="about-item--context"><a href="#pycon-india-2019" id="pycon-india-2019">2019</a></div>
 
     <div class="about-item--content">
       <div class="about-item--title"><span>PyCon India</span></div><div class="about-item--description">
@@ -486,7 +272,34 @@ contributions to open source.
   </div>
   
 </div>
-</p>
+
+<h2 id="recognition">Recognition</h2>
+
+<div class="about-list">
+  
+  
+  
+  
+  <div class="about-item"><div class="about-item--context"><a href="#python-software-foundation-fellow" id="python-software-foundation-fellow">2019</a></div>
+
+    <div class="about-item--content">
+      <div class="about-item--title"><a class="about-item--link" href="https://pyfound.blogspot.com/2019/08/python-software-foundation-fellow.html"><span>Python Software Foundation Fellow</span></a></div><div class="about-item--description">
+        Recognized as a fellow by the Python Software Foundation for my significant
+contributions to the Python community.
+      </div></div>
+  </div>
+  
+  <div class="about-item"><div class="about-item--context"><a href="#google-open-source-peer-bonus" id="google-open-source-peer-bonus">2019</a></div>
+
+    <div class="about-item--content">
+      <div class="about-item--title"><a class="about-item--link" href="https://opensource.googleblog.com/2019/04/google-open-source-peer-bonus-winners.html"><span>Google Open Source Peer Bonus</span></a></div><div class="about-item--description">
+        Recognized as an external-to-Google individual who has made exceptional
+contributions to open source.
+      </div></div>
+  </div>
+  
+</div>
+
 <h2 id="talks">Talks</h2>
 <p>I am an experienced public speaker, having presented at numerous conferences and
 meetups on topics related to Python and software development. My talks have
@@ -772,6 +585,210 @@ API design, how languages differ and transpilation.
   
 </div>
 
+]]></content:encoded></item><item><title>Improving my dotfiles manager with pipx and inline dependency metadata</title><link>https://pradyunsg.me/blog/2024/05/31/python-scripts-with-pipx-bash/</link><pubDate>Fri, 31 May 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/05/31/python-scripts-with-pipx-bash/</guid><description>&lt;p&gt;I have a (somewhat unnecessarily) custom setup for managing my dotfiles and I made a nice improvement to it today.&lt;/p&gt;
+&lt;h2 id="how-it-works"&gt;How it works&lt;/h2&gt;
+&lt;p&gt;The dotfiles are managed by a Python script. In broad strokes, the script will:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;read a TOML file&lt;/li&gt;
+&lt;li&gt;locate the configured paths&lt;/li&gt;
+&lt;li&gt;create symlinks, based on custom marker text in the filenames, for files in subdirectories under the configured paths&lt;sup id="fnref:1"&gt;&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref"&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If there&amp;rsquo;s a conflict (i.e. two configured paths provide the same symlink target location), the TOML file contains the resolution for it (i.e. specifies one of the paths as the &amp;ldquo;winner&amp;rdquo; for that file). If a resolution doesn&amp;rsquo;t exist, the script errors out.&lt;/p&gt;</description><content:encoded><![CDATA[<p>I have a (somewhat unnecessarily) custom setup for managing my dotfiles and I made a nice improvement to it today.</p>
+<h2 id="how-it-works">How it works</h2>
+<p>The dotfiles are managed by a Python script. In broad strokes, the script will:</p>
+<ul>
+<li>read a TOML file</li>
+<li>locate the configured paths</li>
+<li>create symlinks, based on custom marker text in the filenames, for files in subdirectories under the configured paths<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></li>
+</ul>
+<p>If there&rsquo;s a conflict (i.e. two configured paths provide the same symlink target location), the TOML file contains the resolution for it (i.e. specifies one of the paths as the &ldquo;winner&rdquo; for that file). If a resolution doesn&rsquo;t exist, the script errors out.</p>
+<p>This setup exists mainly to allow me to have work-only dotfiles managed in work&rsquo;s VCS with all their corporate stuff while keeping them separate yet cooperative with my dotfiles managed publicly on GitHub.</p>
+<h2 id="the-problem">The problem</h2>
+<p>Now, this effectively means that my dotfiles manager is a Python script. It also has a bunch of dependencies (specifically, <code>rich</code> because I like colors and <code>tomli</code> because it should probably run on all supported Python versions).</p>
+<p>This usually means that you need to create a virtual environment to run it. That&rsquo;s gotten a bit tedious and fragile given how frequently I keep changing my Python installations (gotta keep up with the latest and greatest!).</p>
+<h2 id="the-solution">The solution</h2>
+<h3 id="the-implementation">The implementation</h3>
+<p>I figured out a way to ensure that the script can be run without needing to manage a virtual environment myself. Now, it can be run on any machine with a working <code>curl</code>, <code>bash</code>, <code>python3</code> and the ability to download from <a href="https://github.com">https://github.com</a>. It also gracefully triggers MacOS&rsquo; prompt for &ldquo;Hey, do you want to install our developer tooling stuff?&rdquo; (XCode Command Line Tools, via the <code>python3</code> shim they install on a new Mac).</p>
+<p>This is made possible by <code>pipx</code>, inline dependency metadata and Python&rsquo;s zipapps. There are also a few shenanigans to make this script a valid Bash script and a valid Python script. A <code>&quot;&quot;&quot;&quot;true</code> serves as our little gem of polyglot magic to make that possible.<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
+<h3 id="how-it-works-bash">How it works: Bash</h3>
+<p>Let me show you the script first, with Bash&rsquo;s syntax highlighting:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># /// script</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># requires-python = &#34;&gt;=3.8&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># dependencies = [</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#34;rich&#34;,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#34;tomli&#34;,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ///</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;&#34;</span>true
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> ! -f <span style="color:#e6db74">&#39;/tmp/pipx-dotfiles.pyz&#39;</span> <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>  echo <span style="color:#e6db74">&#34;Downloading pipx...&#34;</span>
+</span></span><span style="display:flex;"><span>  curl --proto <span style="color:#e6db74">&#39;=https&#39;</span> --tlsv1.2 -sSLf https://github.com/pypa/pipx/releases/latest/download/pipx.pyz -o /tmp/pipx-dotfiles.pyz
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>python3 /tmp/pipx-dotfiles.pyz run <span style="color:#e6db74">&#34;</span>$0<span style="color:#e6db74">&#34;</span> -- <span style="color:#e6db74">&#34;</span>$@<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>exit
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">import rich
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">print(rich.__version__)
+</span></span></span></code></pre></div><p>From Bash&rsquo;s perspective, this script has a bunch of comments, then a few commands, and then an <code>exit</code>.</p>
+<p>The way Bash processes a script is by reading it as a buffer and executing it before moving on. This allows Bash scripts containing syntax issues to be run, as long as the syntax issue is somewhere that isn&rsquo;t being read by Bash (i.e. after the point of exit). We&rsquo;re definitely using that since the Python code (which is not valid Bash syntax) is present after the <code>exit</code>.</p>
+<p>To Bash, our little gem of magic (<code>&quot;&quot;&quot;&quot;true</code>) is the same as a <code>true</code> command since it&rsquo;s a bunch of empty strings concatenated together with <code>true</code>. And, <code>true</code> is used as a no-op command (it exits with code 0 and does nothing else).<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup> It is treated the same as a <code>true</code> on its own line and Bash proceeds with the rest of the logic as a regular Bash script.</p>
+<p>The rest of the logic in the Bash script is to download <code>pipx</code>&rsquo;s zipapp (if it&rsquo;s not already downloaded) and then run the script itself with <code>python3 &lt;pipx-zipapp&gt; run &lt;script&gt; -- &lt;any arguments passed to the script&gt;</code>.</p>
+<h3 id="how-it-works-zipapp">How it works: zipapp</h3>
+<p>Wait, a zipapp?</p>
+<p>So, that&rsquo;s a fun Python feature: it can execute a zip file as if it were a script. Python will look for a <code>__main__.py</code> in the zip file and, if it&rsquo;s there, the <code>__main__.py</code> as if it were a script. See <a href="https://docs.python.org/3/library/zipapp.html">the documentation</a> if you want to learn more about this.</p>
+<p>In this case, the <code>pipx</code> maintainers create a maintain a zipapp and attach it to their GitHub releases. By using GitHub&rsquo;s <code>latest</code> release URL, we can fetch the zipapp for the latest release (with a redirect, hence the <code>-L</code> to <code>curl</code>) without much additional complexity.</p>
+<h3 id="how-it-works-pipx-run">How it works: pipx run</h3>
+<p><code>pipx run</code> enables running a script with the dependencies being installed by <code>pipx</code> in a cached virtual environment that is managed by <code>pipx</code>.</p>
+<p>Notably, it supports <a href="https://peps.python.org/pep-0723/">PEP 723</a> (inline script metadata) which enables declaring dependency information inline. This is what the <code>/// script</code> and <code>///</code> are serving as markers for. The <code>requires-python</code> and <code>dependencies</code> are bits of metadata that <code>pipx</code> will use to determine what needs to be present for running the script.</p>
+<p>Assuming you&rsquo;re on a compatible Python, <code>pipx</code> will parse that chunk, install the dependencies in a cached virtual environment and then run the script within that virtual environment. This means that the dependencies are installed by <code>pipx</code> and can/will be reused across multiple runs of the script by <code>pipx</code>.</p>
+<h3 id="how-it-works-python">How it works: Python</h3>
+<p>Let&rsquo;s look at the script again, this time with Python&rsquo;s syntax highlighting:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># /// script</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># requires-python = &#34;&gt;=3.8&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># dependencies = [</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#34;rich&#34;,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#   &#34;tomli&#34;,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ///</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;&#34;true
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">if [[ ! -f &#39;/tmp/pipx-dotfiles.pyz&#39; ]]; then
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  echo &#34;Downloading pipx...&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  curl --proto &#39;=https&#39; --tlsv1.2 -sSLf https://github.com/pypa/pipx/releases/latest/download/pipx.pyz -o /tmp/pipx-dotfiles.pyz
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">fi
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">python3 /tmp/pipx-dotfiles.pyz run &#34;$0&#34; -- &#34;$@&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">exit
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> rich
+</span></span><span style="display:flex;"><span>print(rich<span style="color:#f92672">.</span>__version__)
+</span></span></code></pre></div><p>From Python&rsquo;s perspective, this script has a bunch of comments, then a docstring, and then the whole Python script.</p>
+<p>To Python, our little gem of magic (<code>&quot;&quot;&quot;&quot;true</code>) is the start of a multiline string which starts with the content <code>&quot;true\n</code>. This is valid Python syntax, and Python will happily treat it as the start of the string literal. The end of the string literal is the next <code>&quot;&quot;&quot;</code> it encounters, which is the one at the end of the Bash parts of the script.</p>
+<p>This means that the Bash script is treated as a multiline string by Python. It&rsquo;s treated as the docstring of the Python script. I am not too concerned about that since this is a script that doesn&rsquo;t need a docstring.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p><code>symlink</code> with periods around it based on where in the file it shows up&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>I learned about this approach from <a href="https://stackoverflow.com/q/15190055/1931274">this StackOverflow question</a>.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p>It is possible to put almost any valid Bash syntax after the 4 double quotes (like, you can start an <code>if</code> statement, or something else) as long as you don&rsquo;t have whitespace between the 4th double quote and the keyword/CLI tool name. I just didn&rsquo;t like how that stuff looked so I went with <code>true</code> on that line.&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded></item><item><title>pip 24.1 betas -- help us test a major upcoming change!</title><link>https://pradyunsg.me/blog/2024/05/13/pip-24-1-betas/</link><pubDate>Mon, 13 May 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/05/13/pip-24-1-betas/</guid><description>&lt;p&gt;The pip team has released &lt;a href="https://pypi.org/project/pip/24.1b1/"&gt;pip 24.1b1&lt;/a&gt; which contains a &lt;a href="https://pip.pypa.io/en/latest/news/#b1-2024-05-06"&gt;lot of significant improvements and bug fixes&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;d like to highlight a major change in this blog post: the removal of support for &amp;ldquo;legacy&amp;rdquo; versions and dependency specification, or as I like to call it, nonsensical versions and dependencies. We&amp;rsquo;re releasing this as a beta to get feedback from the community on how this change affects their workflows.&lt;/p&gt;
+&lt;h2 id="nonsensical-versions-and-dependencies"&gt;Nonsensical versions and dependencies&lt;/h2&gt;
+&lt;p&gt;For a bunch of historical reasons, pip has allowed many arbitrary strings as versions and dependency specification. There&amp;rsquo;s so many kinds of bad behaviours that this &amp;ldquo;feature&amp;rdquo; has enabled.&lt;/p&gt;</description><content:encoded><![CDATA[<p>The pip team has released <a href="https://pypi.org/project/pip/24.1b1/">pip 24.1b1</a> which contains a <a href="https://pip.pypa.io/en/latest/news/#b1-2024-05-06">lot of significant improvements and bug fixes</a>.</p>
+<p>I&rsquo;d like to highlight a major change in this blog post: the removal of support for &ldquo;legacy&rdquo; versions and dependency specification, or as I like to call it, nonsensical versions and dependencies. We&rsquo;re releasing this as a beta to get feedback from the community on how this change affects their workflows.</p>
+<h2 id="nonsensical-versions-and-dependencies">Nonsensical versions and dependencies</h2>
+<p>For a bunch of historical reasons, pip has allowed many arbitrary strings as versions and dependency specification. There&rsquo;s so many kinds of bad behaviours that this &ldquo;feature&rdquo; has enabled.</p>
+<p>My favourite example is <a href="https://github.com/pypa/packaging/issues/530">one I wrote back in 2022</a> on the <code>packaging</code><sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> project&rsquo;s issue tracker:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;This is a completely random string&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>LegacyVersion(<span style="color:#e6db74">&#39;This is a completely random string&#39;</span>)<span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><p>Or providing weird version comparisons:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;1.0&#34;</span>) <span style="color:#f92672">&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;99999.0.whatever&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;1.0&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>Version(<span style="color:#e6db74">&#39;1.0&#39;</span>)<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> packaging<span style="color:#f92672">.</span>version<span style="color:#f92672">.</span>parse(<span style="color:#e6db74">&#34;99999.0.whatever&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span>LegacyVersion(<span style="color:#e6db74">&#39;99999.0.whatever&#39;</span>)<span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><p>Or hiding mistakes in dependency declarations:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-py" data-lang="py"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> all_dependencies <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>     <span style="color:#e6db74">&#34;package == 1&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>     <span style="color:#e6db74">&#34;another-package&#34;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>     <span style="color:#e6db74">&#34;yet-another-package&#34;</span>,
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> [packaging<span style="color:#f92672">.</span>requirements<span style="color:#f92672">.</span>Requirement(s) <span style="color:#66d9ef">for</span> s <span style="color:#f92672">in</span> all_dependencies]
+</span></span><span style="display:flex;"><span>[<span style="color:#f92672">&lt;</span>Requirement(<span style="color:#e6db74">&#39;package==1another-package&#39;</span>)<span style="color:#f92672">&gt;</span>, <span style="color:#f92672">&lt;</span>Requirement(<span style="color:#e6db74">&#39;yet-another-package&#39;</span>)<span style="color:#f92672">&gt;</span>]
+</span></span></code></pre></div><p>Over a decade ago, the Python packaging ecosystem adopted <a href="https://peps.python.org/pep-0440/">PEP 440</a> which defined a standard for versions and dependency specification. While this standard has been adopted by basically every single tool in the ecosystem, support for &ldquo;legacy&rdquo; versions and requirements has been maintained even though it has caused a lot of user confusion and bugs in the Python ecosystem.</p>
+<h2 id="getting-rid-of-the-nonsense">Getting rid of the nonsense</h2>
+<p>Over the course of the last decade, across multiple projects in the Python packaging ecosystem, many PyPA projects have been working to make this behaviour not possible. The package index, <a href="https://pypi.org">https://pypi.org</a>, has not accepted uploads with bad versions for many years now and is also enforcing validity of the requirements on all uploads. The tooling that generate packages (build-backends) also now refuse to generate packages with such bad metadata in them.</p>
+<p>This effort has been undertaken by many people across the Python packaging ecosystem, and I&rsquo;m very grateful for all the work that has gone into this. It regularly surprises me how much work goes into making sure that the foundational pieces of Python&rsquo;s packaging ecosystem are improving, even absent any institutional investment into it.</p>
+<p>This pip release marks the next major step in the direction of improving behaviours in this area: updating the package installer to stop accepting such packages. Starting with this pip release, pip will refuse to install packages with bad versions or dependency specification and will ignore any files with such bad versions or dependency specification during the dependency resolution step.</p>
+<h2 id="where-we-cant-see-the-nonsense">Where we can&rsquo;t see the nonsense</h2>
+<p>While a substantial amount of effort has been put into making sure pip can work correctly when enforcing correctness around these versions and dependency specification, we want to be cautious in rolling out this change. There are many places that Python is used where we can&rsquo;t access the packages (e.g. private package indexes hosting proprietary code), and thus can&rsquo;t ensure that packages have appropriate metadata in those spaces.</p>
+<p>We&rsquo;re releasing this as a beta to get feedback from the community on any issues that might arise from this change. This will help us better understand how this change affects user workflows and what actionable guidance can be provided to users in various contexts.</p>
+<h2 id="help-us-test-the-changes">Help us test the changes</h2>
+<p>We&rsquo;re looking for feedback from Python users on this beta release. Notably, we&rsquo;d like for users who are using package indexes other than PyPI to test their workflows against this beta release of pip and provide us with feedback.</p>
+<p>You can let us know about issues related to this change on pip&rsquo;s issue tracker (please check for duplicates before filing, and use reactions rather than saying &ldquo;me too&rdquo;!). Please also feel welcome to tell us about the good stuff, like if this release made dependency resolves quicker &ndash; we like hearing about that too! :)</p>
+<h2 id="acknowledgements">Acknowledgements</h2>
+<p>While there&rsquo;s a lot of people who have worked on things I mentioned in this blog post, I can&rsquo;t really list them all here &ndash; you know who you are, and thank you for all the work you&rsquo;ve done toward this as well as the other cool things you&rsquo;ve worked on.</p>
+<p>I do want to thank Paul Moore, Stéphane Bidoul, Richard Si and Pavithra Eswaramoorthy for reviewing various drafts of this post and providing feedback on it.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Listen, software engineers are great at naming things. This is obviously the Python package providing shared common implementations of Python packaging standards for Python packaging tools. And, yes, it&rsquo;s hosted on the Python package index.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded></item><item><title>Making GitHub Notifications UI slightly nicer for bulk triage</title><link>https://pradyunsg.me/blog/2024/03/17/github-notifications-userstyles/</link><pubDate>Sun, 17 Mar 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/03/17/github-notifications-userstyles/</guid><description>&lt;p&gt;I&amp;rsquo;m someone who gets a &lt;em&gt;lot&lt;/em&gt; of GitHub notifications &amp;ndash; this week had &amp;gt;100 individual notifications.&lt;/p&gt;
+&lt;h2 id="the-problem"&gt;The problem&lt;/h2&gt;
+&lt;p&gt;The &amp;ldquo;new&amp;rdquo; GitHub Notifications UI&lt;sup id="fnref:1"&gt;&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref"&gt;1&lt;/a&gt;&lt;/sup&gt; was based on &lt;a href="https://octobox.io/"&gt;Octobox&lt;/a&gt;. It was a step in the right direction to help with my notification &amp;ldquo;workload&amp;rdquo;, although I recognise that it was not perceived as such by many others.&lt;/p&gt;
+&lt;p&gt;That said, they copied over the exact same design issue I had with Octobox: the action buttons are on the completely opposite side from where my attention is.&lt;/p&gt;</description><content:encoded><![CDATA[<p>I&rsquo;m someone who gets a <em>lot</em> of GitHub notifications &ndash; this week had &gt;100 individual notifications.</p>
+<h2 id="the-problem">The problem</h2>
+<p>The &ldquo;new&rdquo; GitHub Notifications UI<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> was based on <a href="https://octobox.io/">Octobox</a>. It was a step in the right direction to help with my notification &ldquo;workload&rdquo;, although I recognise that it was not perceived as such by many others.</p>
+<p>That said, they copied over the exact same design issue I had with Octobox: the action buttons are on the completely opposite side from where my attention is.</p>
+<p><img alt="Vanilla GitHub Notification UI entry, showing the action icons in their default location" loading="lazy" src="/media/github-notifications-2024-vanilla.png"></p>
+<p>I am going to scan and read the content of the notification, which is left aligned and very close to the <em>left</em> edge. All the action buttons are on the <em>right</em> edge. This makes it difficult when trying to triage notifications, especially when I&rsquo;m trying to do so in bulk where stuff like &ldquo;oh, this is not gonna need my attention&rdquo; requires me to drag my cursor over to the other side of the page.</p>
+<p>If there&rsquo;s a keyboard shortcut for this, I don&rsquo;t know it and I don&rsquo;t want to learn it anyway. I want to be able to use the mouse to do what I need here because that&rsquo;s how I use a computer.</p>
+<h2 id="the-solution">The solution</h2>
+<p>I wrote a blurb of CSS to remove this annoyance.</p>
+<p><img alt="Modified GitHub Notification UI row, showing the moved action icons" loading="lazy" src="/media/github-notifications-2024-modified.png"></p>
+<p>It moves the action buttons toward the left side, so that I can quickly triage notifications without having to move my cursor across the screen. It also moves the text describing the content that the notification is for (repository and notification subject) to accommodate for the buttons.</p>
+<p>If you know me, you know that I will animate moving text to different locations. In the end, this was fairly easy to achieve in this case.</p>
+<p><img alt="Three rows in the modified GitHub Notification UI row, showcasing the animation associated with hovering over a specific notification" loading="lazy" src="/media/github-notifications-2024-modified.gif"></p>
+<p>I&rsquo;ve been using this for quite a few months now.</p>
+<h2 id="the-stylesheet">The stylesheet</h2>
+<p>Recently, while screen sharing with a friend, they asked me about my GitHub notifications doing this really cool thing. That&rsquo;s when I realised that I had completely forgotten that this was something I had been injecting into the page. I shared it with them and realised that some other people might find this useful too.</p>
+<p>If you also find this change to be an improvement, the CSS blurb that needs to be injected is provided below. You can add this via <a href="https://github.com/refined-github/refined-github">Refined GitHub</a>&rsquo;s preferences page or use a more generic extension like <a href="https://add0n.com/stylus.html">Stylus</a> to inject this into the GitHub Notifications page.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-css" data-lang="css"><span style="display:flex;"><span>.<span style="color:#a6e22e">notification-list-item-actions</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">right</span>: <span style="color:#66d9ef">unset</span> <span style="color:#75715e">!important</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">left</span>: <span style="color:#ae81ff">4</span><span style="color:#66d9ef">rem</span> <span style="color:#75715e">!important</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">padding</span>: <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">8</span><span style="color:#66d9ef">px</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">notifications-list-item</span>:<span style="color:#a6e22e">hover</span> .<span style="color:#a6e22e">note</span>.<span style="color:#a6e22e">notification-list-item-hide-on-hover</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">visibility</span>: <span style="color:#66d9ef">visible</span> <span style="color:#75715e">!important</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">notifications-list-item</span> .<span style="color:#a6e22e">notification-list-item-link</span> <span style="color:#f92672">[</span><span style="color:#f92672">id</span><span style="color:#f92672">^=</span><span style="color:#e6db74">&#34;notification&#34;</span><span style="color:#f92672">]</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">margin-left</span>: <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">transition</span>: <span style="color:#66d9ef">margin-left</span> <span style="color:#ae81ff">100</span><span style="color:#66d9ef">ms</span> cubic-bezier(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.8</span>, <span style="color:#ae81ff">0.2</span>, <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">notifications-list-item</span>:<span style="color:#a6e22e">hover</span>
+</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">notification-list-item-link</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">[</span><span style="color:#f92672">id</span><span style="color:#f92672">^=</span><span style="color:#e6db74">&#34;notification&#34;</span><span style="color:#f92672">]</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">margin-left</span>: <span style="color:#ae81ff">8</span><span style="color:#66d9ef">rem</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">notification-list-item-link</span> <span style="color:#f92672">&gt;</span> :<span style="color:#a6e22e">nth-child</span><span style="color:#f92672">(</span><span style="color:#f92672">1</span><span style="color:#f92672">)</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">align-self</span>: <span style="color:#66d9ef">unset</span> <span style="color:#75715e">!important</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">notifications-list-item</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&gt;</span> <span style="color:#f92672">div</span>:<span style="color:#a6e22e">nth-child</span><span style="color:#f92672">(</span><span style="color:#f92672">1</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&gt;</span> <span style="color:#f92672">div</span>:<span style="color:#a6e22e">nth-child</span><span style="color:#f92672">(</span><span style="color:#f92672">1</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&gt;</span> <span style="color:#f92672">div</span>:<span style="color:#a6e22e">nth-child</span><span style="color:#f92672">(</span><span style="color:#f92672">1</span><span style="color:#f92672">)</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">align-self</span>: <span style="color:#66d9ef">unset</span> <span style="color:#75715e">!important</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>Does it count as new if it&rsquo;s been around since <a href="https://github.blog/2020-02-25-your-new-web-notifications-experience-is-here/">2020</a>?&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
 ]]></content:encoded></item><item><title>Choreographing a release process for my PyPI packages</title><link>https://pradyunsg.me/blog/2024/01/27/package-release-workflow/</link><pubDate>Sat, 27 Jan 2024 00:00:00 +0000</pubDate><guid>https://pradyunsg.me/blog/2024/01/27/package-release-workflow/</guid><description>&lt;p&gt;I maintain quite a few Python packages and they all have development workflows as well as release processes that are different in various ways.&lt;/p&gt;
 &lt;p&gt;This is basically my research document as I am exploring what I want the release process (and supporting development workflow) to look like for the Python packages I maintain, so that I can reduce the overhead caused by the various differences in these projects as well as the need to make all these decisions myself. I&amp;rsquo;m posting this publicly so that I can get feedback from a few people I know about this and whether they think it makes sense.&lt;/p&gt;</description><content:encoded><![CDATA[<p>I maintain quite a few Python packages and they all have development workflows as well as release processes that are different in various ways.</p>
 <p>This is basically my research document as I am exploring what I want the release process (and supporting development workflow) to look like for the Python packages I maintain, so that I can reduce the overhead caused by the various differences in these projects as well as the need to make all these decisions myself. I&rsquo;m posting this publicly so that I can get feedback from a few people I know about this and whether they think it makes sense.</p>
