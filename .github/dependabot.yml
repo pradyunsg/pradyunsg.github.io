@@ -1,0 +1,26 @@
+version: 2
+updates:
+- package-ecosystem: github-actions
+  directories:
+  - /
+  schedule:
+    interval: monthly
+  groups:
+    github-actions:
+      applies-to: version-updates
+      patterns:
+      - '*'
+  cooldown:
+    default-days: 7
+- package-ecosystem: gomod
+  directories:
+  - /
+  schedule:
+    interval: monthly
+  groups:
+    gomod:
+      applies-to: version-updates
+      patterns:
+      - '*'
+  cooldown:
+    default-days: 7

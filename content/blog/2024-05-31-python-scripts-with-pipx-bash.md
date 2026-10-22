@@ -98,7 +98,7 @@ Let's look at the script again, this time with Python's syntax highlighting:
 # ]
 # ///
 #
-""""true
+""" "true
 if [[ ! -f '/tmp/pipx-dotfiles.pyz' ]]; then
   echo "Downloading pipx..."
   curl --proto '=https' --tlsv1.2 -sSLf https://github.com/pypa/pipx/releases/latest/download/pipx.pyz -o /tmp/pipx-dotfiles.pyz
@@ -108,6 +108,7 @@ exit
 """
 
 import rich
+
 print(rich.__version__)
 ```
 
